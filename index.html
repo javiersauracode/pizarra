@@ -1852,7 +1852,7 @@ function viewHealth(){
       <button class="pill" data-act="visorImportar" data-id="">${ic('plus')} Ver a otra persona</button></div>
     ${VIS ? (() => { const p = vl.find(x => x.id === VIS.id) || VIS, u = visLastDate(S.health);
       return `<div class="note on vis-note" style="margin:10px 0 4px"><b>Viendo el Health de ${esc(p.nombre)} · solo lectura</b>
-        Copia importada: ${fmtShort((p.importada || '').slice(0, 10) || TODAY())}${u ? ` · último dato: ${fmtShort(u)}` : ''}. Para ver datos nuevos, pídele otra copia y pulsa «Actualizar copia».
+        Copia importada: ${fmtShort((p.importada || '').slice(0, 10) || TODAY())}${u ? ` · último dato: ${fmtShort(u)}` : ''}. Su app la sube sola a Nextcloud: para ver lo último, pulsa «Actualizar copia» y elige <b>metricas.json</b> en su carpeta compartida.
         <div class="row-btns" style="margin-top:10px"><button class="btn ghost sm" data-act="visorImportar" data-id="${esc(p.id)}">Actualizar copia</button><button class="btn ghost sm danger" data-act="visorQuitar" data-id="${esc(p.id)}">Quitar</button></div></div>`; })() : ''}`;
   const head = `<div class="sec-h"><h1>Health</h1>${t === 'metricas' && !VIS ? `<button class="btn ghost sm" data-act="healthGoal">${ic('flag')} Objetivo</button>` : ''}</div>
     <div class="seg" role="tablist" style="margin-top:8px">${[['metricas', 'Métricas'], ['pasos', 'Pasos'], ['macros', 'Macros']].map(([k, l]) => `<button class="${t === k ? 'on' : ''}" data-act="healthTab" data-t="${k}" role="tab">${l}</button>`).join('')}</div>`.replace('</div>', () => '</div>' + who); // quién: justo bajo el título
@@ -2265,7 +2265,7 @@ function viewHojas(){
     }).join('') || empty('Aún no hay hojas guardadas', 'Crea una nueva o importa la que te pase Claude.')}</div>`;
 }
 /* Cuenta de Nextcloud (app Android): estado de la sincronización y qué compartes con tu administrador */
-const SHARE_OPTS = [['peso', 'Peso'], ['macros', 'Macros'], ['habitos', 'Hábitos'], ['proyectos', 'Avance de proyectos']];
+const SHARE_OPTS = [['peso', 'Health completo (peso, pasos, macros y ajustes)'], ['macros', 'Macros'], ['habitos', 'Hábitos'], ['proyectos', 'Avance de proyectos']];
 let shareBusy = false, compartidos = null, copiasNc = null;
 const fechaHora = t => new Date(t).toLocaleString('es-ES', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
 function syncLinea(){
@@ -4049,9 +4049,10 @@ $('#visorFile').addEventListener('change', e => {
   r.onload = () => {
     e.target.value = '';
     let d; try { d = JSON.parse(r.result); } catch (err) { d = null; }
-    if (!d || typeof d.health !== 'object' || !d.health){ alert('Ese archivo no es una copia de Pizarra con datos de Health.'); return; }
+    if (!d || typeof d.health !== 'object' || !d.health){ alert(d && d.peso ? 'Ese metricas.json es de una versión antigua de la app: que esa persona actualice Pizarra en su Android y abra la app una vez.' : 'Ese archivo no es una copia de Pizarra con datos de Health.'); return; }
     const l = visList(), old = l.find(x => x.id === visTarget);
-    const nombre = old ? old.nombre : (prompt('¿De quién es esta copia?', '') || '').trim();
+    const suyo = d.user && d.user.name ? String(d.user.name) : '';   // metricas.json de su carpeta compartida
+    const nombre = old ? old.nombre : (prompt('¿De quién es esta copia?', suyo) || '').trim();
     if (!nombre) return;
     const p = {id:old ? old.id : uid(), nombre, importada:new Date().toISOString(), health:visHealth(d.health)};
     if (old) l[l.indexOf(old)] = p; else l.push(p);
