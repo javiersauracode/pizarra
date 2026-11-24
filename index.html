@@ -599,10 +599,13 @@ h3.sec{display:flex;align-items:center;gap:8px;font-size:14px;margin:20px 0 8px}
 .hl-goal-t{fill:var(--hl-yel);font-size:10.5px;font-weight:700;paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round}
 .hl-cur line{stroke:var(--text);stroke-width:1;stroke-dasharray:3 3;opacity:.5}
 .hl-cur circle{fill:#2BB673;stroke:#2BB673;stroke-width:1.5}
-.hl-tip{position:absolute;transform:translate(-50%,calc(-100% - 14px));background:var(--text);color:var(--bg);border-radius:10px;padding:6px 10px;text-align:center;pointer-events:none;opacity:0;transition:opacity .15s;white-space:nowrap;z-index:2}
-.hl-tip.show{opacity:1}
-.hl-tip b{display:block;font-size:15px}
-.hl-tip small{font-size:11px;opacity:.75}
+.hl-tip{position:absolute;transform:translate(-50%,calc(-100% - 9px));background:var(--text);color:var(--bg);border-radius:7px;padding:3px 7px;text-align:center;pointer-events:none;opacity:0;transition:opacity .15s;white-space:nowrap;z-index:2;line-height:1.25}
+.hl-tip.below{transform:translate(-50%,9px)}
+.hl-tip.show{opacity:.94}
+.hl-tip b{font-size:12.5px}
+.hl-tip small{font-size:10px;opacity:.75}
+.hl-tip .exp{display:block;font-size:10.5px;font-weight:700;color:#FFC93C}
+@media (prefers-color-scheme: dark){.hl-tip .exp{color:#8A6400}}
 .enter .hl-line{animation:draw 1.3s cubic-bezier(.4,0,.2,1) both}
 .enter .hl-area{animation:fade .9s .5s both}
 @keyframes draw{from{stroke-dashoffset:1}}
@@ -2098,11 +2101,20 @@ function healthPointer(e){
   cur.style.display = ''; cur.querySelector('line').setAttribute('x1', best.x); cur.querySelector('line').setAttribute('x2', best.x);
   cur.querySelector('circle').setAttribute('cx', best.x); cur.querySelector('circle').setAttribute('cy', best.y);
   const wk = box.dataset.wk === '1';
-  tip.innerHTML = box.dataset.kind === 'steps' ? `<b>${fmtSteps(best.n)} pasos</b><small class="cap">${fmtLong(best.d)}</small>`
-    : `<b>${fmtKg(best.kg, wk ? 2 : 1)}</b><small>${wk ? 'Semana del ' + fmtShort(best.d) + ` · ${best.n} pesada${best.n === 1 ? '' : 's'}` : fmtLong(best.d) + (best.n > 1 ? ` · media de ${best.n}` : '')}</small>`;
-  const left = best.x / vb.width * r.width;
-  tip.style.left = Math.max(70, Math.min(r.width - 70, left)) + 'px'; tip.style.top = (best.y / vb.height * r.height) + 'px';
+  // Cuadro compacto: valor · fecha corta; en el peso, debajo el peso esperado ese día (ritmo objetivo) en amarillo
+  const corta = d => parseISO(d).toLocaleDateString('es-ES', {day:'numeric', month:'short'}).replace('.', '');
+  let exp = '';
+  if (box.dataset.kind !== 'steps'){
+    const ex = expectedFrom();
+    if (ex && best.d >= ex.d0) exp = `<span class="exp">Esperado ${fmtKg(ex.at(ex.r.mid, best.d))}</span>`;
+  }
+  tip.innerHTML = box.dataset.kind === 'steps' ? `<b>${fmtSteps(best.n)}</b> <small>${corta(best.d)}</small>`
+    : `<b>${fmtKg(best.kg, wk ? 2 : 1)}</b> <small>${wk ? 'sem. ' : ''}${corta(best.d)}${best.n > 1 ? ` · ${best.n}` : ''}</small>${exp}`;
+  const left = best.x / vb.width * r.width, top = best.y / vb.height * r.height;
+  tip.classList.toggle('below', top < r.height * .45); // punto arriba: el cuadro va debajo para no tapar la línea
   tip.classList.add('show');
+  const half = tip.offsetWidth / 2 + 4;
+  tip.style.left = Math.max(half, Math.min(r.width - half, left)) + 'px'; tip.style.top = top + 'px';
 }
 document.addEventListener('pointermove', healthPointer);
 document.addEventListener('pointerdown', healthPointer);
