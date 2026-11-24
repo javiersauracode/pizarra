@@ -594,6 +594,15 @@ h3.sec{display:flex;align-items:center;gap:8px;font-size:14px;margin:20px 0 8px}
 .hl-ax{fill:var(--muted);font-size:10.5px;font-weight:600;font-variant-numeric:tabular-nums}
 .hl-area{fill:url(#hlFill)}
 .hl-line{fill:none;stroke:var(--hl);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0}
+/* Tendencia de 7 días: se queda con el verde; los datos diarios pasan a un verde grisáceo apagado */
+:root{--hl-muted:#A9BDB2}
+@media (prefers-color-scheme: dark){:root{--hl-muted:#56695E}}
+.hl-trend{fill:none;stroke:var(--hl);stroke-width:2.75;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0}
+.has-trend .hl-line{stroke:var(--hl-muted);stroke-width:1.75}
+.has-trend .hl-area{opacity:.45}
+.has-trend .hl-cur circle{fill:var(--hl-muted);stroke:var(--hl-muted)}
+.hl-tip .trd{display:block;font-size:10.5px;font-weight:700;color:#3FD68A}
+@media (prefers-color-scheme: dark){.hl-tip .trd{color:#13834D}}
 :root{--hl-yel:#E0A800}
 .hl-goal{stroke:var(--hl-yel);stroke-width:1.5;stroke-dasharray:5 5}
 .hl-goal-t{fill:var(--hl-yel);font-size:10.5px;font-weight:700;paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round}
@@ -607,7 +616,7 @@ h3.sec{display:flex;align-items:center;gap:8px;font-size:14px;margin:20px 0 8px}
 .hl-tip small{font-size:10px;opacity:.75}
 .hl-tip .exp{display:block;font-size:10.5px;font-weight:700;color:#FFC93C}
 @media (prefers-color-scheme: dark){.hl-tip .exp{color:#8A6400}}
-.enter .hl-line{animation:draw 1.3s cubic-bezier(.4,0,.2,1) both}
+.enter .hl-line,.enter .hl-trend{animation:draw 1.3s cubic-bezier(.4,0,.2,1) both}
 .enter .hl-area{animation:fade .9s .5s both}
 @keyframes draw{from{stroke-dashoffset:1}}
 .hl-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
@@ -686,6 +695,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 .hl-exp-t{fill:var(--hl-yel);font-size:10.5px;font-weight:700}
 .mc-legend.row{flex-direction:row;flex-wrap:wrap;gap:4px 12px;padding:6px 4px 8px;font-size:12px}
 .mc-legend.row span{gap:5px;flex-wrap:nowrap;font-variant-numeric:tabular-nums}
+.mc-legend .hl-trd-l i{background:none;box-shadow:none;border-top:3px solid #2BB673;border-radius:2px;height:0;width:14px}
 .mc-legend .hl-exp-l i{background:none;box-shadow:none;border-top:2px dashed var(--hl-yel);border-radius:0;height:0;width:14px}
 .enter .hl-exp,.enter .hl-exp-band{animation:fade .8s .6s both}
 /* Pasos */
@@ -1694,7 +1704,8 @@ function healthChart(pts, a, b){
   const ex = S.health.expected ? expectedFrom() : null;
   const bx = b;
   const exA = ex ? (ex.d0 > a ? ex.d0 : a) : null, exOn = ex && exA <= bx;
-  const vals = pts.map(p => p.kg).concat(isNaN(goal) ? [] : [goal], exOn ? [ex.at(ex.r.min, exA), ex.at(ex.r.max, exA), ex.at(ex.r.min, bx), ex.at(ex.r.max, bx)] : []);
+  const tr = S.health.trend ? trend7(pts[0].d, pts[pts.length - 1].d) : [];
+  const vals = pts.map(p => p.kg).concat(tr.map(p => p.kg), isNaN(goal) ? [] : [goal], exOn ? [ex.at(ex.r.min, exA), ex.at(ex.r.max, exA), ex.at(ex.r.min, bx), ex.at(ex.r.max, bx)] : []);
   let lo = Math.min(...vals), hi = Math.max(...vals);
   const pad = Math.max(0.4, (hi - lo) * 0.15); lo = Math.floor((lo - pad) * 2) / 2; hi = Math.ceil((hi + pad) * 2) / 2;
   const t0 = parseISO(a).getTime(), t1 = Math.max(parseISO(bx).getTime(), t0 + 864e5);
@@ -1723,7 +1734,9 @@ function healthChart(pts, a, b){
       ${ex.d0 >= a ? `<circle class="hl-exp-0" cx="${X(ex.d0)}" cy="${Y(r.mid, ex.d0)}" r="4"/>` : ''}
       <text class="hl-exp-t" x="${W - R}" y="${(+Y(r.max, bx) - 6).toFixed(1)}" text-anchor="end">Esperado ${fmtPct(r.mid)}/mes</text>`;
   }
-  return `<div class="hl-chart" id="hlChart" data-pts='${esc(JSON.stringify(P.map(p => ({x:p.x, y:p.y, d:p.d, kg:+p.kg.toFixed(2), n:p.n}))))}' data-wk="${wk ? 1 : 0}">
+  const trLine = tr.map((p, i) => (i ? 'L' : 'M') + x(p.d).toFixed(1) + ' ' + y(p.kg).toFixed(1)).join(' ');
+  const trMap = Object.fromEntries(tr.map(p => [p.d, +p.kg.toFixed(2)]));
+  return `<div class="hl-chart ${tr.length ? 'has-trend' : ''}" id="hlChart" data-pts='${esc(JSON.stringify(P.map(p => ({x:p.x, y:p.y, d:p.d, kg:+p.kg.toFixed(2), n:p.n}))))}' data-wk="${wk ? 1 : 0}" data-trend='${esc(JSON.stringify(trMap))}'>
     <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Evolución del peso">
       <defs><linearGradient id="hlFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--hl)" stop-opacity=".28"/><stop offset="1" stop-color="var(--hl)" stop-opacity="0"/></linearGradient></defs>
       ${bands}
@@ -1733,6 +1746,7 @@ function healthChart(pts, a, b){
       ${isNaN(goal) ? '' : `<line class="hl-goal" x1="${L}" x2="${W - R}" y1="${y(goal).toFixed(1)}" y2="${y(goal).toFixed(1)}"/><text class="hl-goal-t" x="${W - R}" y="${(y(goal) - 5).toFixed(1)}" text-anchor="end">Objetivo ${fmtKg(goal)}</text>`}
       <path class="hl-area" d="${area}"/>
       <path class="hl-line" d="${line}" pathLength="1"/>
+      ${tr.length > 1 ? `<path class="hl-trend" d="${trLine}" pathLength="1"/>` : ''}
       <g class="hl-cur" style="display:none"><line y1="${T}" y2="${H - B}"/><circle r="5.5"/></g>
     </svg>
     <div class="hl-tip"></div>
@@ -1744,6 +1758,17 @@ const fmtPct = (n, dec = 1) => (n > 0 ? '+' : n < 0 ? '−' : '±') + Math.abs(n
 function dayWeights(){ // un valor por día (media si hubo varias pesadas)
   const g = new Map(); weights().forEach(w => { const d = w.t.slice(0, 10); (g.get(d) || g.set(d, []).get(d)).push(w.kg); });
   return [...g.entries()].sort((x, y) => x[0].localeCompare(y[0])).map(([d, l]) => ({d, kg:l.reduce((s, v) => s + v, 0) / l.length}));
+}
+/* Tendencia de 7 días: para cada día con pesada entre a y b, la media de los días con pesada de esa semana (d-6…d).
+   Usa también los días anteriores a «a», así el primer punto ya es una media completa. */
+function trend7(a, b){
+  const ds = dayWeights(), out = [];
+  for (const p of ds){
+    if (p.d < a || p.d > b) continue;
+    const d0 = iso(addDays(parseISO(p.d), -6)), win = ds.filter(q => q.d >= d0 && q.d <= p.d);
+    out.push({d:p.d, kg:win.reduce((s, q) => s + q.kg, 0) / win.length});
+  }
+  return out;
 }
 function rateTarget(){ // ritmo objetivo en % al mes: {min, max, mid}
   let lo = numES(S.health.rateMin), hi = numES(S.health.rateMax);
@@ -2014,11 +2039,12 @@ function viewMetricas(){
     ${H.range === 'custom' ? `<div class="hl-custom"><label>Desde<input type="date" id="hlFrom" value="${esc(H.from || a)}" max="${TODAY()}"></label><label>Hasta<input type="date" id="hlTo" value="${esc(H.to || b)}" max="${TODAY()}"></label></div>` : ''}
     <div class="hl-card" style="--hl:${'#2BB673'}">
       <div class="hl-card-h"><b>${wk ? 'Media de cada semana' : 'Peso día a día'}</b><span class="muted small">${fmtShort(a)} – ${fmtShort(b)}</span>
-        ${(() => { const n = (H.expected ? 1 : 0) + (H.bands && H.macros.length ? 1 : 0); return `<button class="btn ghost sm hl-tools-btn" data-act="healthTools" aria-label="Herramientas de la gráfica">${ic('sliders')}${n ? `<b>${n}</b>` : ''}</button>`; })()}</div>
+        ${(() => { const n = (H.trend ? 1 : 0) + (H.expected ? 1 : 0) + (H.bands && H.macros.length ? 1 : 0); return `<button class="btn ghost sm hl-tools-btn" data-act="healthTools" aria-label="Herramientas de la gráfica">${ic('sliders')}${n ? `<b>${n}</b>` : ''}</button>`; })()}</div>
       ${healthChart(pts, a, b)}
       ${(() => { // leyenda compacta: solo color + kcal (y la línea esperada)
         const ex = H.expected ? expectedFrom() : null;
-        const its = (ex ? [`<span class="hl-exp-l"><i></i>Esperado ${fmtPct(ex.r.mid)}/mes</span>`] : [])
+        const its = (H.trend && pts.length ? [`<span class="hl-trd-l" style="--bc:#2BB673"><i></i>Tendencia 7 días</span>`] : [])
+          .concat(ex ? [`<span class="hl-exp-l"><i></i>Esperado ${fmtPct(ex.r.mid)}/mes</span>`] : [])
           .concat(H.bands && H.macros.length ? macroPeriods().filter(m => m.from <= b && (!m.to || m.to >= a)).map(m => `<span style="--bc:${m.color}"><i></i>${fmtNum(m.kcal || macroKcal(m))}</span>`) : []);
         return its.length ? `<div class="mc-legend row">${its.join('')}</div>` : '';
       })()}
@@ -2067,7 +2093,8 @@ function paintHealthTools(open){
   if (!open && !(sh.classList.contains('open') && sh.querySelector('.hl-tools'))) return;
   const r = rateTarget();
   const tg = (on, act, t, d) => `<button class="mc-toggle ${on ? 'on' : ''}" data-act="${act}" role="switch" aria-checked="${!!on}"><span class="mc-sw"></span><span>${t}<small>${d}</small></span></button>`;
-  const body = tg(H.expected, 'healthExpected', 'Progreso esperado', r ? `Recta desde el peso de hace 30 días a ${rateTxt(r)} al mes` : 'Antes fija el ritmo en Objetivo')
+  const body = tg(H.trend, 'healthTrend', 'Tendencia de 7 días', 'Media de los últimos 7 días en cada día: quita el vaivén diario del agua')
+    + tg(H.expected, 'healthExpected', 'Progreso esperado', r ? `Recta desde el peso de hace 30 días a ${rateTxt(r)} al mes` : 'Antes fija el ritmo en Objetivo')
     + (H.macros.length ? tg(H.bands, 'healthBands', 'Fondo por macros', 'Una franja de color por cada etapa de macros') : '');
   const box = sh.querySelector('.hl-tools');
   if (box && sh.classList.contains('open')){ box.innerHTML = body; return; } // ya abierta: solo cambia los interruptores
@@ -2106,8 +2133,10 @@ function healthPointer(e){
   const corta = d => parseISO(d).toLocaleDateString('es-ES', {day:'numeric', month:'short'}).replace('.', '');
   let exp = '';
   if (box.dataset.kind !== 'steps'){
+    const tm = box.dataset.trend ? JSON.parse(box.dataset.trend) : {};
+    if (tm[best.d] != null) exp += `<span class="trd">Tendencia ${fmtKg(tm[best.d], 2)}</span>`;
     const ex = expectedFrom();
-    if (ex && best.d >= ex.d0) exp = `<span class="exp">Esperado ${fmtKg(ex.at(ex.r.mid, best.d))}</span>`;
+    if (ex && best.d >= ex.d0) exp += `<span class="exp">Esperado ${fmtKg(ex.at(ex.r.mid, best.d))}</span>`;
   }
   tip.innerHTML = box.dataset.kind === 'steps' ? `<b>${fmtSteps(best.n)} pasos</b> <small>${corta(best.d)}</small>`
     : `<b>${fmtKg(best.kg, wk ? 2 : 1)}</b> <small>${wk ? 'sem. ' : ''}${corta(best.d)}${best.n > 1 ? ` · ${best.n}` : ''}</small>${exp}`;
@@ -2124,7 +2153,7 @@ function chartObstacles(box, svg){
   const sr = svg.getBoundingClientRect(), br = box.getBoundingClientRect(), vb = svg.viewBox.baseVal, k = sr.width / vb.width;
   const ox = sr.left - br.left, oy = sr.top - br.top, pts = [], rects = [];
   const R = b => ({x:ox + b.x * k, y:oy + b.y * k, w:b.width * k, h:b.height * k});
-  svg.querySelectorAll('.hl-line, .hl-exp, .hl-goal, .st-avg, .hl-exp-band').forEach(el => {
+  svg.querySelectorAll('.hl-line, .hl-trend, .hl-exp, .hl-goal, .st-avg, .hl-exp-band').forEach(el => {
     try { const L = el.getTotalLength(); for (let s = 0; s <= L; s += 3){ const p = el.getPointAtLength(s); pts.push([ox + p.x * k, oy + p.y * k]); } } catch (e) {}
   });
   svg.querySelectorAll('.st-bar, .hl-goal-t, .hl-exp-t, .st-avg-t, .hl-band-t').forEach(el => { try { const b = el.getBBox(); if (b.width && b.height) rects.push(R(b)); } catch (e) {} });
@@ -3697,6 +3726,7 @@ const actions = {
   andServer(){ if (confirm('¿Cambiar la dirección del servidor en esta app? Tendrás que volver a entrar.')) andCall('changeServer'); }, // pide permisos si faltan; si no, lee y sube ya (responde con onPizarraAndroid('health'))
   healthTab(el){ S.health.tab = el.dataset.t; render(); },
   healthBands(){ S.health.bands = !S.health.bands; render(); paintHealthTools(); },
+  healthTrend(){ S.health.trend = !S.health.trend; render(); paintHealthTools(); },
   healthTools(){ paintHealthTools(true); },
   healthList(){ weightListSheet(); },
   stepsList(){ stepsListSheet(); },
