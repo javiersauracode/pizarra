@@ -829,6 +829,7 @@ body.nav-open #scrim{animation:fade .25s}
 <div id="sheet"></div>
 <div id="toast" role="status"></div>
 <input type="file" id="importFile" accept="application/json,.json" hidden>
+<input type="file" id="visorFile" accept="application/json,.json,.txt" hidden>
 
 <script src="modelo.js"></script>
 <script src="nc-web.js"></script>
@@ -1047,7 +1048,31 @@ function load(){
   } catch (e) {}
   S = NUBE ? blankData() : seed(); // servida desde Nextcloud: nada de datos de ejemplo (los reales llegan al conectar)
 }
+/* ---------- Visor de Health de otra persona: su copia exportada desde Android, solo lectura y aparte de tus datos ----------
+   Mientras se ve a alguien, S.health es el suyo y el tuyo espera en MINE; save() guarda siempre el tuyo. */
+const VIS_KEY = 'pizarra.visor';
+let VIS = null, MINE = null;
+const visList = () => { try { return JSON.parse(lsGet(VIS_KEY) || '[]'); } catch (e) { return []; } };
+const visStore = l => { try { localStorage.setItem(VIS_KEY, JSON.stringify(l)); return true; } catch (e) { return false; } };
+const visHealth = h => ensureDefaults({health:JSON.parse(JSON.stringify(h || {})), device:{id:'visor'}}).health;
+const VIS_RO = new Set(['healthGoal', 'healthEdit', 'stepsEdit', 'macroEdit', 'healthDelRange', 'stepsDelRange', 'healthImport', 'stepsImport',
+  'stepsPaste', 'healthAndroid', 'healthHistory', 'exportData', 'importData', 'resetData']);
+function visLastDate(h){
+  const ds = (h.weight || []).map(w => (w.t || '').slice(0, 10)).concat((h.steps || []).map(s => s.d)).filter(Boolean).sort();
+  return ds[ds.length - 1] || '';
+}
+function visorSalir(){
+  if (!VIS) return;
+  const l = visList(), p = l.find(x => x.id === VIS.id);
+  if (p){ p.health = S.health; visStore(l); } // conserva lo que se ha cambiado de vista (pestaña, intervalo…)
+  S.health = MINE; MINE = null; VIS = null;
+}
+const conMios = fn => { if (!VIS) return fn(); const h = S.health; S.health = MINE; try { return fn(); } finally { S.health = h; } };
 function save(){
+  if (VIS){ conMios(saveReal); const l = visList(), p = l.find(x => x.id === VIS.id); if (p){ p.health = S.health; visStore(l); } return; }
+  saveReal();
+}
+function saveReal(){
   if (NC){ lsSet('pizarra.local', JSON.stringify({ui:S.ui, device:S.device})); ncSave(); scheduleSync(); return; }
   try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
   if (NUBE && PizarraNube.conectado()) PizarraNube.programar();
@@ -1059,10 +1084,11 @@ const NUBE = !NC && !window.__PIZARRA_DATA__ && !!(window.PizarraNube && (Pizarr
 function nubeIniciar(){
   if (!NUBE) return;
   PizarraNube.init({
-    obtener:() => S,
+    obtener:() => VIS ? {...S, health:MINE} : S,   // nunca sube el Health del visor
     puedeAdoptar:() => !$('#sheet').classList.contains('open'),
     adoptar:d => {
-      S = ensureDefaults({...d, ui:S.ui, device:S.device});
+      visorSalir();
+      S =ensureDefaults({...d, ui:S.ui, device:S.device});
       try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {}
       calCache = null; render();
     },
@@ -1798,7 +1824,7 @@ function viewMacros(){
   return `
     ${cur ? `<div class="mc-hero" style="--bc:${cur.color}">
       <div class="mc-top"><div><div class="muted small">${cur.from > TODAY() ? 'Próximas macros' : 'Macros actuales'} · desde ${fmtShort(cur.from)}</div><div class="hl-big">${fmtNum(cur.kcal || macroKcal(cur))} <small>kcal</small></div></div>
-      <button class="icon-btn" data-act="macroEdit" data-id="${cur.id}" aria-label="Editar">${ic('edit')}</button></div>
+      ${VIS ? '' : `<button class="icon-btn" data-act="macroEdit" data-id="${cur.id}" aria-label="Editar">${ic('edit')}</button>`}</div>
       <div class="mc-grid">${MC_PARTS.map(([k, l, f, c]) => `<div><i style="background:${c}"></i><b>${fmtNum(cur[k] || 0)} g</b><small>${l} · ${pct(Number(cur[k]) || 0, f, cur)} %</small></div>`).join('')}</div>
       ${macroBar(cur)}
       ${cur.kcal && Math.abs(cur.kcal - macroKcal(cur)) > 30 ? `<p class="muted small" style="margin:8px 0 0">Las macros suman ${fmtNum(macroKcal(cur))} kcal (CH×4 + P×4 + G×9).</p>` : ''}
@@ -1819,8 +1845,17 @@ function viewMacros(){
 }
 function viewHealth(){
   const t = S.health.tab;
-  const head = `<div class="sec-h"><h1>Health</h1>${t === 'metricas' ? `<button class="btn ghost sm" data-act="healthGoal">${ic('flag')} Objetivo</button>` : ''}</div>
-    <div class="seg" role="tablist" style="margin-top:8px">${[['metricas', 'Métricas'], ['pasos', 'Pasos'], ['macros', 'Macros']].map(([k, l]) => `<button class="${t === k ? 'on' : ''}" data-act="healthTab" data-t="${k}" role="tab">${l}</button>`).join('')}</div>`;
+  const vl = NC ? [] : visList();
+  const who = NC ? '' : `<div class="pills vis-pills" style="padding-top:4px;padding-bottom:0">
+      <button class="pill ${VIS ? '' : 'on'}" data-act="visorVer" data-id="">Yo</button>
+      ${vl.map(p => `<button class="pill ${VIS && VIS.id === p.id ? 'on' : ''}" data-act="visorVer" data-id="${esc(p.id)}">${esc(p.nombre)}</button>`).join('')}
+      <button class="pill" data-act="visorImportar" data-id="">${ic('plus')} Ver a otra persona</button></div>
+    ${VIS ? (() => { const p = vl.find(x => x.id === VIS.id) || VIS, u = visLastDate(S.health);
+      return `<div class="note on vis-note" style="margin:10px 0 4px"><b>Viendo el Health de ${esc(p.nombre)} · solo lectura</b>
+        Copia importada: ${fmtShort((p.importada || '').slice(0, 10) || TODAY())}${u ? ` · último dato: ${fmtShort(u)}` : ''}. Para ver datos nuevos, pídele otra copia y pulsa «Actualizar copia».
+        <div class="row-btns" style="margin-top:10px"><button class="btn ghost sm" data-act="visorImportar" data-id="${esc(p.id)}">Actualizar copia</button><button class="btn ghost sm danger" data-act="visorQuitar" data-id="${esc(p.id)}">Quitar</button></div></div>`; })() : ''}`;
+  const head = `<div class="sec-h"><h1>Health</h1>${t === 'metricas' && !VIS ? `<button class="btn ghost sm" data-act="healthGoal">${ic('flag')} Objetivo</button>` : ''}</div>
+    <div class="seg" role="tablist" style="margin-top:8px">${[['metricas', 'Métricas'], ['pasos', 'Pasos'], ['macros', 'Macros']].map(([k, l]) => `<button class="${t === k ? 'on' : ''}" data-act="healthTab" data-t="${k}" role="tab">${l}</button>`).join('')}</div>`.replace('</div>', () => '</div>' + who); // quién: justo bajo el título
   if (t === 'macros') return head + viewMacros();
   if (t === 'pasos') return head + viewPasos();
   return head + viewMetricas();
@@ -1878,8 +1913,8 @@ function viewPasos(){
       <div><small>Peor día</small><b>${ns.length ? fmtSteps(Math.min(...ns)) : '–'}</b></div>
     </div>
     <button class="hl-entry" data-act="stepsList">${ic('list')}<div><b>Historial de días</b><small>${list.length ? `${list.length} día${list.length === 1 ? '' : 's'} con pasos · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>
-    <div class="rm-sub" style="margin-top:22px">De dónde salen los pasos</div>
-    ${AND ? stepsAndroidNote() : stepsIphoneNote()}`;
+    ${VIS ? '' : `<div class="rm-sub" style="margin-top:22px">De dónde salen los pasos</div>
+    ${AND ? stepsAndroidNote() : stepsIphoneNote()}`}`;
 }
 function stepsAndroidNote(){
   const h = andJSON('healthStatus') || {};
@@ -1991,8 +2026,8 @@ function viewMetricas(){
       <div><small>Máximo</small><b>${fmtKg(kgs.length ? Math.max(...kgs) : null)}</b></div>
     </div>
     <button class="hl-entry" data-act="healthList">${ic('list')}<div><b>Historial de ${wk ? 'semanas' : 'pesadas'}</b><small>${ws.length ? `${ws.length} pesada${ws.length === 1 ? '' : 's'} · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>
-    <div class="rm-sub" style="margin-top:22px">Conexión con RENPHO</div>
-    ${AND ? healthAndroidNote() : `<div class="note ${synced ? 'on' : ''}" style="margin-top:0"><b>La báscula se conecta desde la app Android</b>
+    ${VIS ? '' : `<div class="rm-sub" style="margin-top:22px">Conexión con RENPHO</div>`}
+    ${VIS ? '' : AND ? healthAndroidNote() : `<div class="note ${synced ? 'on' : ''}" style="margin-top:0"><b>La báscula se conecta desde la app Android</b>
       Las pesadas pasan de RENPHO Health a Health Connect y la app de Pizarra las lee y las guarda en tu Nextcloud. Aquí puedes importar un CSV.
       <div class="row-btns" style="margin-top:10px"><button class="btn ghost sm" data-act="healthImport">Importar CSV</button></div>
     </div>`}`;
@@ -2002,7 +2037,7 @@ function openListSheet(title, sub, html, delAct){
   const sh = $('#sheet'); delete sh.dataset.day; sh.classList.remove('has-pv');
   sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
     <div class="sheet-h"><h2>${title}</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
-    <div class="hl-subrow" style="margin-top:-6px"><span class="muted small">${sub}</span><button class="btn ghost sm danger" data-act="${delAct}">${ic('trash')} Borrar un periodo</button></div>
+    <div class="hl-subrow" style="margin-top:-6px"><span class="muted small">${sub}</span>${VIS ? '' : `<button class="btn ghost sm danger" data-act="${delAct}">${ic('trash')} Borrar un periodo</button>`}</div>
     <div class="hl-list">${html}</div></div>`;
   sh.classList.add('open'); document.body.classList.add('locked');
 }
@@ -2791,13 +2826,14 @@ function enterAnim(){
   clearTimeout(enterTimer); enterTimer = setTimeout(() => v.classList.remove('enter'), 1300);
 }
 function render(){
+  if (VIS && S.ui.view !== 'health') visorSalir(); // al salir de Health vuelven tus datos
   S.projects.forEach(syncRoadmapTasks);
   // si el apartado abierto se ha ocultado en la barra, abre el primero visible
   if (NAV_DEFS[S.ui.view] && !navOn(S.ui.view)){
     const f = S.navCfg.find(x => x.on && x.k !== 'proyectos');
     if (f) S.ui.view = f.k; else if (S.projects[0]){ S.ui.view = 'proyecto'; S.ui.projectId = S.projects[0].id; } else S.ui.view = 'ajustes';
   }
-  $('#side').innerHTML = sideHTML();
+  $('#side').innerHTML = conMios(sideHTML);
   const v = S.ui.view;
   let title, html;
   if (v === 'calendario'){
@@ -2818,7 +2854,7 @@ function render(){
   const keepIn = $('#calbox') ? $('#calbox').scrollTop : 0, keepDv = $('#dvGrid') ? $('#dvGrid').scrollTop : 0;
   $('#title').textContent = title;
   $('#view').dataset.v = S.ui.view; // permite anchos distintos por vista
-  $('#fab').style.display = S.ui.view === 'ajustes' && !['perfiles', 'hojas'].includes(S.ui.setTab) ? 'none' : ''; // el + solo donde crea algo
+  $('#fab').style.display = VIS || S.ui.view === 'ajustes' &&!['perfiles', 'hojas'].includes(S.ui.setTab) ? 'none' : ''; // el + solo donde crea algo
   $('#view').innerHTML = html;
   enterAnim();
   document.documentElement.style.setProperty('--tb', $('.topbar').offsetHeight + 'px');
@@ -3924,6 +3960,7 @@ document.addEventListener('click', e => {
   const el = e.target.closest('[data-act]');
   if (!el) return;
   const fn = actions[el.dataset.act];
+  if (fn && VIS && VIS_RO.has(el.dataset.act)){ e.preventDefault(); e.stopPropagation(); toast('Es un visor: solo lectura'); return; }
   if (fn){ e.preventDefault(); e.stopPropagation(); tapFx(e, el); fn(el, el.dataset.id); popAfter(el); }
 });
 /* Respuesta visual a cada toque */
@@ -3985,6 +4022,43 @@ $('#importFile').addEventListener('change', e => {
       S = ensureDefaults(d); render(); toast('Copia importada');
     } catch (err) { alert('Ese archivo no es una copia válida de Pizarra.'); }
     e.target.value = '';
+  };
+  r.readAsText(file);
+});
+
+/* Visor de Health: importar la copia de otra persona (no toca tus datos) */
+let visTarget = '';
+Object.assign(actions, {
+  visorVer(el){
+    const id = el.dataset.id || '';
+    if (VIS) visorSalir();
+    if (id){ const p = visList().find(x => x.id === id); if (!p) return render(); MINE = S.health; S.health = visHealth(p.health); VIS = {id:p.id, nombre:p.nombre, importada:p.importada}; }
+    render(); scrollTo(0, 0);
+  },
+  visorImportar(el){ visTarget = el.dataset.id || ''; $('#visorFile').click(); },
+  visorQuitar(el){
+    const id = el.dataset.id, p = visList().find(x => x.id === id);
+    if (!p || !confirm(`¿Quitar el visor de ${p.nombre}? Solo se borra de este dispositivo.`)) return;
+    if (VIS && VIS.id === id){ S.health = MINE; MINE = null; VIS = null; }
+    visStore(visList().filter(x => x.id !== id)); render(); toast('Visor quitado');
+  },
+});
+$('#visorFile').addEventListener('change', e => {
+  const file = e.target.files[0]; if (!file) return;
+  const r = new FileReader();
+  r.onload = () => {
+    e.target.value = '';
+    let d; try { d = JSON.parse(r.result); } catch (err) { d = null; }
+    if (!d || typeof d.health !== 'object' || !d.health){ alert('Ese archivo no es una copia de Pizarra con datos de Health.'); return; }
+    const l = visList(), old = l.find(x => x.id === visTarget);
+    const nombre = old ? old.nombre : (prompt('¿De quién es esta copia?', '') || '').trim();
+    if (!nombre) return;
+    const p = {id:old ? old.id : uid(), nombre, importada:new Date().toISOString(), health:visHealth(d.health)};
+    if (old) l[l.indexOf(old)] = p; else l.push(p);
+    if (!visStore(l)){ alert('No hay espacio en este dispositivo para guardar la copia.'); return; }
+    if (VIS){ S.health = MINE; MINE = null; VIS = null; }  // sin guardar la vista anterior: la copia nueva manda
+    MINE = S.health; S.health = visHealth(p.health); VIS = {id:p.id, nombre:p.nombre, importada:p.importada};
+    S.ui.view = 'health'; render(); scrollTo(0, 0); toast(old ? `Copia de ${nombre} actualizada` : `Ya puedes ver el Health de ${nombre}`);
   };
   r.readAsText(file);
 });
