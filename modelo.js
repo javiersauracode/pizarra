@@ -14,6 +14,8 @@
        macros/<id>          S.health.macros[]
        pesadas/<AAAA-MM>    S.health.weight[] de ese mes  → {items:[…]}
        pasos/<AAAA-MM>      S.health.steps[] de ese mes   → {items:[{d:'AAAA-MM-DD', n, src:'hc'|'salud'|'manual'}]}
+       nutricion/<AAAA-MM>  S.health.nutri[] de ese mes   → {items:[{d, kcal, p, c, g, fib, bmr, burned, ok, op, oc, og, src}]}
+                            (ingesta, gasto y objetivo de cada día, de SparkyFitness)
        ajustes/<clave>      cualquier otra clave de S      → {valor: …}
          ajustes/health       el resto de S.health (objetivo, pesadas borradas, vista…)
          ajustes/orden        el orden de cada lista (perfiles, proyectos…) → {valor:{profiles:[ids], …}}
@@ -56,7 +58,13 @@
         (mesesP[s.d.slice(0, 7)] = mesesP[s.d.slice(0, 7)] || []).push(s);
       }
       for (const mes of Object.keys(mesesP).sort()) m.set('pasos/' + mes, {items:mesesP[mes].slice().sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0)});
-      const resto = {}; for (const k of Object.keys(H)) if (k !== 'weight' && k !== 'macros' && k !== 'steps') resto[k] = H[k];
+      const mesesN = {};
+      for (const s of (Array.isArray(H.nutri) ? H.nutri : [])){
+        if (!s || typeof s.d !== 'string' || s.d.length < 10) continue;
+        (mesesN[s.d.slice(0, 7)] = mesesN[s.d.slice(0, 7)] || []).push(s);
+      }
+      for (const mes of Object.keys(mesesN).sort()) m.set('nutricion/' + mes, {items:mesesN[mes].slice().sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0)});
+      const resto = {}; for (const k of Object.keys(H)) if (k !== 'weight' && k !== 'macros' && k !== 'steps' && k !== 'nutri') resto[k] = H[k];
       m.set('ajustes/health', {valor:resto});
     }
     for (const k of Object.keys(S)){
@@ -90,8 +98,11 @@
       .sort((a, b) => a.t < b.t ? -1 : a.t > b.t ? 1 : 0);
     const pasos = (por.pasos || []).slice().sort((a, b) => a.id < b.id ? -1 : 1).flatMap(e => (e.datos && Array.isArray(e.datos.items)) ? e.datos.items : [])
       .sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0);
+    const nutri = (por.nutricion || []).slice().sort((a, b) => a.id < b.id ? -1 : 1).flatMap(e => (e.datos && Array.isArray(e.datos.items)) ? e.datos.items : [])
+      .sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0);
     const macros = ordenar('macros', 'macros'); const sinM = ajuste('sinid-macros'); if (Array.isArray(sinM)) macros.push(...sinM);
-    if (resto !== undefined || pesos.length || macros.length || pasos.length) S.health = Object.assign({}, resto || {}, {weight:pesos, macros}, pasos.length ? {steps:pasos} : {});
+    if (resto !== undefined || pesos.length || macros.length || pasos.length || nutri.length)
+      S.health = Object.assign({}, resto || {}, {weight:pesos, macros}, pasos.length ? {steps:pasos} : {}, nutri.length ? {nutri} : {});
     for (const e of por.ajustes || []){
       if (e.id === 'orden' || e.id === 'health' || e.id.startsWith('sinid-')) continue;
       S[e.id] = e.datos.valor;

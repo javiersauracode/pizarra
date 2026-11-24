@@ -13,7 +13,7 @@
   const M = raiz.PizarraModelo;
   if (!M) return;
   const CFG = 'pizarra.nube', ENT = 'pizarra.nube.ent';
-  const TIPOS = ['perfiles', 'publicaciones', 'proyectos', 'tareas', 'biblioteca', 'macros', 'pesadas', 'pasos', 'ajustes'];
+  const TIPOS = ['perfiles', 'publicaciones', 'proyectos', 'tareas', 'biblioteca', 'macros', 'pesadas', 'pasos', 'nutricion', 'ajustes'];
   const enNextcloud = /^\/(index\.php\/)?raw\//.test(location.pathname) || /[?&]nube=1\b/.test(location.search);
   const leer = k => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } };
   const escribir = (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
