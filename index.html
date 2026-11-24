@@ -2175,16 +2175,16 @@ function sparkyIphoneNote(){
     <details class="st-guide"><summary>Cómo crear el atajo «Sparky a Pizarra» (una sola vez)</summary>
       <ol class="hl-steps">
         <li>En Sparky (web) → <b>Settings → Developer &amp; Integrations → API Key Management</b>, crea una clave con <b>Access: Read-only</b> y cópiala. Solo irá dentro de tu atajo, en tu iPhone.</li>
-        <li>Abre <b>Atajos</b> → <b>+</b>. Añade <b>Ajustar fecha</b>: <b>Fecha actual</b> · Sumar · <b>1 día</b>.</li>
+        <li>Abre <b>Atajos</b> → <b>+</b>. Añade <b>Ajustar fecha</b>: sumar <b>1 día</b> a <b>Fecha actual</b>; después <b>Establecer variable</b> → <code>Manana</code>.</li>
         <li>Añade <b>Repetir</b> · <b>7 veces</b>. Dentro de la repetición:
           <ol>
-            <li><b>Ajustar fecha</b>: la «Fecha ajustada» anterior · Restar · <b>Índice de repetición</b> días.</li>
-            <li><b>Formatear fecha</b>: Personalizado → <code>yyyy-MM-dd</code>.</li>
-            <li><b>Obtener contenido de URL</b>: <code>${srv}/api/daily-summary?date=</code> + «Fecha formateada». Toca <b>Mostrar más</b> → Cabeceras → añade <code>X-API-Key</code> con tu clave.</li>
-            <li>Otra <b>Obtener contenido de URL</b>: <code>${srv}/api/food-entries/nutrition/today?date=</code> + «Fecha formateada», con la misma cabecera.</li>
-            <li><b>Diccionario</b> con tres claves de tipo Texto: <code>d</code> = «Fecha formateada», <code>s</code> = el contenido de la primera URL, <code>n</code> = el de la segunda.</li>
+            <li><b>Ajustar fecha</b>: restar <b>Índice de repetición</b> días a <code>Manana</code>.</li>
+            <li><b>Formatear fecha</b> (la fecha ajustada): Formato <b>Personalizado</b> → <code>yyyy-MM-dd</code>; después <b>Establecer variable</b> → <code>Dia</code>.</li>
+            <li><b>URL</b>: <code>${srv}/api/daily-summary?date=</code> + <code>Dia</code>. Luego <b>Obtener contenido de URL</b>; en <b>Mostrar más</b> → Cabeceras, añade <code>X-API-Key</code> con tu clave. Después <b>Establecer variable</b> → <code>Resumen</code>.</li>
+            <li>Lo mismo con <code>${srv}/api/food-entries/nutrition/today?date=</code> + <code>Dia</code> (misma cabecera) → variable <code>Totales</code>.</li>
+            <li><b>Diccionario</b> con tres elementos de tipo Texto: <code>d</code> = <code>Dia</code>, <code>s</code> = <code>Resumen</code>, <code>n</code> = <code>Totales</code>. Debe ser la última acción dentro de la repetición.</li>
           </ol></li>
-        <li>Debajo de «Fin de repetir», añade <b>Copiar al portapapeles</b> («Resultados de repetir»).</li>
+        <li>Debajo de «Fin de repetir»: <b>Combinar texto</b> («Resultados de repetir», con <b>Salto de línea</b>) y <b>Copiar al portapapeles</b>.</li>
         <li>Llámalo «Sparky a Pizarra», ejecútalo y en Pizarra → Health → Nutrición pulsa <b>Pegar datos de Sparky</b>.</li>
       </ol>
       <span class="small">Para no tener que acordarte: Atajos → <b>Automatización</b> → <b>Hora del día</b> (p. ej. 22:30, a diario) → <b>Ejecutar inmediatamente</b> → «Sparky a Pizarra». Los días repetidos se actualizan, no se duplican.<br>
