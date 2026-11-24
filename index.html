@@ -599,13 +599,11 @@ h3.sec{display:flex;align-items:center;gap:8px;font-size:14px;margin:20px 0 8px}
 .hl-goal-t{fill:var(--hl-yel);font-size:10.5px;font-weight:700;paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round}
 .hl-cur line{stroke:var(--text);stroke-width:1;stroke-dasharray:3 3;opacity:.5}
 .hl-cur circle{fill:#2BB673;stroke:#2BB673;stroke-width:1.5}
-.hl-tip{position:absolute;transform:translate(-50%,calc(-100% - 9px));background:var(--text);color:var(--bg);border-radius:7px;padding:3px 7px;text-align:center;pointer-events:none;opacity:0;transition:opacity .15s;white-space:nowrap;z-index:2;line-height:1.25}
-.hl-tip.below{transform:translate(-50%,9px)}
-.hl-tip.show{opacity:.94}
-.hl-tip b{font-size:12.5px}
-.hl-tip small{font-size:10px;opacity:.75}
-.hl-tip .exp{display:block;font-size:10.5px;font-weight:700;color:#FFC93C}
-@media (prefers-color-scheme: dark){.hl-tip .exp{color:#8A6400}}
+/* Lectura del punto tocado: una fila fija encima de la gráfica (nunca la tapa ni la mueve) */
+.hl-tip{display:flex;align-items:baseline;gap:6px;flex-wrap:nowrap;height:22px;margin:2px 0 4px;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;pointer-events:none}
+.hl-tip b{font-size:14px;color:var(--text)}
+.hl-tip small{font-size:12px}
+.hl-tip .exp{margin-left:auto;font-size:12px;font-weight:700;color:var(--hl-yel)}
 .enter .hl-line{animation:draw 1.3s cubic-bezier(.4,0,.2,1) both}
 .enter .hl-area{animation:fade .9s .5s both}
 @keyframes draw{from{stroke-dashoffset:1}}
@@ -1723,6 +1721,7 @@ function healthChart(pts, a, b){
       <text class="hl-exp-t" x="${W - R}" y="${(+Y(r.max, bx) - 6).toFixed(1)}" text-anchor="end">Esperado ${fmtPct(r.mid)}/mes</text>`;
   }
   return `<div class="hl-chart" id="hlChart" data-pts='${esc(JSON.stringify(P.map(p => ({x:p.x, y:p.y, d:p.d, kg:+p.kg.toFixed(2), n:p.n}))))}' data-wk="${wk ? 1 : 0}">
+    <div class="hl-tip">Toca la gráfica para ver un día</div>
     <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Evolución del peso">
       <defs><linearGradient id="hlFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--hl)" stop-opacity=".28"/><stop offset="1" stop-color="var(--hl)" stop-opacity="0"/></linearGradient></defs>
       ${bands}
@@ -1734,7 +1733,6 @@ function healthChart(pts, a, b){
       <path class="hl-line" d="${line}" pathLength="1"/>
       <g class="hl-cur" style="display:none"><line y1="${T}" y2="${H - B}"/><circle r="5.5"/></g>
     </svg>
-    <div class="hl-tip"></div>
   </div>`;
 }
 /* ---------- Ritmo de peso: % de los últimos 30 días y progreso esperado ---------- */
@@ -1882,6 +1880,7 @@ function stepsChart(list, a, b, avg){
   const every = Math.max(1, Math.round(days / 5)), ticks = []; for (let i = 0; i < days; i += every) ticks.push(iso(addDays(parseISO(a), i)));
   const P = list.map((s, i) => ({x:+x(s.d).toFixed(1), y:+y(s.n).toFixed(1), d:s.d, n:s.n, i}));
   return `<div class="hl-chart" id="stChart" data-kind="steps" data-pts='${esc(JSON.stringify(P.map(p => ({x:p.x, y:p.y, d:p.d, n:p.n}))))}'>
+    <div class="hl-tip">Toca la gráfica para ver un día</div>
     <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Pasos de cada día">
       ${grid.map(v => `<line class="hl-grid" x1="${L}" x2="${W - R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text class="hl-ax" x="${L - 6}" y="${(y(v) + 4).toFixed(1)}" text-anchor="end">${v >= 1000 ? (v / 1000).toLocaleString('es-ES', {maximumFractionDigits:1}) + 'k' : v}</text>`).join('')}
       ${ticks.map(d => `<text class="hl-ax" x="${x(d).toFixed(1)}" y="${H - 8}" text-anchor="middle">${parseISO(d).getDate()} ${parseISO(d).toLocaleDateString('es-ES', {month:'short'}).replace('.', '')}</text>`).join('')}
@@ -1889,7 +1888,6 @@ function stepsChart(list, a, b, avg){
       ${avg ? `<line class="st-avg" x1="${L}" x2="${W - R}" y1="${y(avg).toFixed(1)}" y2="${y(avg).toFixed(1)}"/><text class="st-avg-t" x="${W - R}" y="${(y(avg) - 5).toFixed(1)}" text-anchor="end">Media ${fmtSteps(avg)}</text>` : ''}
       <g class="hl-cur" style="display:none"><line y1="${T}" y2="${H - B}"/><circle r="5"/></g>
     </svg>
-    <div class="hl-tip"></div>
   </div>`;
 }
 function viewPasos(){
@@ -2101,20 +2099,15 @@ function healthPointer(e){
   cur.style.display = ''; cur.querySelector('line').setAttribute('x1', best.x); cur.querySelector('line').setAttribute('x2', best.x);
   cur.querySelector('circle').setAttribute('cx', best.x); cur.querySelector('circle').setAttribute('cy', best.y);
   const wk = box.dataset.wk === '1';
-  // Cuadro compacto: valor · fecha corta; en el peso, debajo el peso esperado ese día (ritmo objetivo) en amarillo
+  // Lectura en la fila de encima de la gráfica: valor · fecha corta; en el peso, a la derecha el esperado ese día en amarillo
   const corta = d => parseISO(d).toLocaleDateString('es-ES', {day:'numeric', month:'short'}).replace('.', '');
   let exp = '';
   if (box.dataset.kind !== 'steps'){
     const ex = expectedFrom();
     if (ex && best.d >= ex.d0) exp = `<span class="exp">Esperado ${fmtKg(ex.at(ex.r.mid, best.d))}</span>`;
   }
-  tip.innerHTML = box.dataset.kind === 'steps' ? `<b>${fmtSteps(best.n)}</b> <small>${corta(best.d)}</small>`
-    : `<b>${fmtKg(best.kg, wk ? 2 : 1)}</b> <small>${wk ? 'sem. ' : ''}${corta(best.d)}${best.n > 1 ? ` · ${best.n}` : ''}</small>${exp}`;
-  const left = best.x / vb.width * r.width, top = best.y / vb.height * r.height;
-  tip.classList.toggle('below', top < r.height * .45); // punto arriba: el cuadro va debajo para no tapar la línea
-  tip.classList.add('show');
-  const half = tip.offsetWidth / 2 + 4;
-  tip.style.left = Math.max(half, Math.min(r.width - half, left)) + 'px'; tip.style.top = top + 'px';
+  tip.innerHTML = box.dataset.kind === 'steps' ? `<b>${fmtSteps(best.n)} pasos</b> <small>${corta(best.d)}</small>`
+    : `<b>${fmtKg(best.kg, wk ? 2 : 1)}</b> <small>${wk ? 'semana del ' : ''}${corta(best.d)}${best.n > 1 ? ` · media de ${best.n}` : ''}</small>${exp}`;
 }
 document.addEventListener('pointermove', healthPointer);
 document.addEventListener('pointerdown', healthPointer);
