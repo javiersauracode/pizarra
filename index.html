@@ -699,6 +699,10 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 .nu-bar{fill:#5B8DEF;opacity:.85}
 .nu-gasto{fill:none;stroke:#F08A4B;stroke-width:2.25;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0}
 .nu-gasto-p{fill:#F08A4B}
+.nu-sparky{fill:none;stroke:#B4541C;stroke-width:1.75;stroke-dasharray:4 3;opacity:.9;stroke-linejoin:round}
+@media (prefers-color-scheme: dark){.nu-sparky{stroke:#FFC39A}}
+.mc-legend .nu-sparky-l i{background:none;box-shadow:none;border-top:2px dashed #B4541C;border-radius:0;height:0;width:14px}
+.hl-delta.nu-sp{opacity:.6}
 #nuChart .hl-cur circle{fill:#5B8DEF;stroke:#5B8DEF}
 .nu-obj{fill:none;stroke:var(--muted);stroke-width:1.25;stroke-dasharray:3 3;opacity:.7}
 .enter .nu-gasto{animation:draw 1.1s .2s cubic-bezier(.4,0,.2,1) both}
@@ -2059,8 +2063,40 @@ function importSteps(txt, src){
    S.health.nutri = [{d, kcal, p, c, g, fib?, bmr?, burned?, ok?, op?, oc?, og?, src:'sparky'|'atajo'}]
    Información, no control: el objetivo se enseña solo como referencia y en gris; nada en rojo ni avisos de «no cumples». */
 const NU_COL = {in:'#5B8DEF', gasto:'#F08A4B'};
-const nuGasto = n => n && n.bmr != null && n.burned != null ? n.bmr + n.burned : null;   // basal + ejercicio y actividad
+/* Gasto real (por tu peso): en un periodo, lo comido de media menos lo que ha cambiado el peso, pasado a kcal.
+     gasto ≈ ingesta media − (peso de la última semana − peso de la primera) × 7.700 / días entre ambas
+   No hace falta estimar basal, ejercicio, sueño ni actividad: se mide el resultado. Solo se da con datos suficientes:
+   al menos 14 días, 3 de cada 4 días con comidas registradas y 2 pesadas en la primera y en la última semana.
+   El gasto de cada día es el de sus 28 días anteriores (incluido él). El de Sparky (basal + quemado) queda como referencia. */
+const KCAL_KG = 7700, G_VENTANA = 28, G_MIN = 14;
+let gCache = null;
+function gBase(){ // pesos por día y comida por día, calculados una vez por cada versión de los datos
+  const H = S.health;
+  if (gCache && gCache.w === H.weight && gCache.wl === H.weight.length && gCache.n === H.nutri && gCache.nl === (H.nutri || []).length && gCache.del === H.del) return gCache;
+  const kc = new Map((H.nutri || []).filter(n => n.kcal > 0).map(n => [n.d, n.kcal]));
+  return gCache = {w:H.weight, wl:H.weight.length, n:H.nutri, nl:(H.nutri || []).length, del:H.del, dw:dayWeights(), kc, dia:new Map()};
+}
+function gastoPeriodo(from, to){
+  const L = daysBetween(from, to) + 1; if (L < G_MIN) return null;
+  const B = gBase();
+  const f1 = iso(addDays(parseISO(from), 6)), t0 = iso(addDays(parseISO(to), -6));
+  const ini = B.dw.filter(p => p.d >= from && p.d <= f1), fin = B.dw.filter(p => p.d >= t0 && p.d <= to);
+  if (ini.length < 2 || fin.length < 2) return null;
+  let sum = 0, cnt = 0; for (const [d, k] of B.kc) if (d >= from && d <= to){ sum += k; cnt++; }
+  if (cnt < L * .75) return null;
+  const centro = l => l.reduce((s, p) => s + daysBetween(from, p.d), 0) / l.length, media = l => l.reduce((s, p) => s + p.kg, 0) / l.length;
+  const span = centro(fin) - centro(ini); if (span < 7) return null;
+  const kin = sum / cnt, dkg = media(fin) - media(ini);
+  return {kcal:kin - dkg * KCAL_KG / span, kin, dkg, span, dias:cnt, L};
+}
+function gastoDia(d){ // gasto real de los 28 días que acaban en d (memorizado)
+  const B = gBase(); if (B.dia.has(d)) return B.dia.get(d);
+  const g = gastoPeriodo(iso(addDays(parseISO(d), -(G_VENTANA - 1))), d), v = g ? g.kcal : null;
+  B.dia.set(d, v); return v;
+}
+const nuGasto = n => n ? gastoDia(n.d) : null;
 const nuBal = n => { const g = nuGasto(n); return g != null && n.kcal ? n.kcal - g : null; };
+const nuGastoSparky = n => n && n.bmr != null && n.burned != null ? n.bmr + n.burned : null;   // basal (fórmula) + quemado registrado
 const fmtKcal = v => v == null || isNaN(v) ? '–' : fmtSteps(Math.round(v));   // con punto de miles también en 4 cifras (2.489)
 const fmtBal = v => v == null || isNaN(v) ? '–' : (v > 0 ? '+' : v < 0 ? '−' : '±') + fmtSteps(Math.abs(Math.round(v)));
 const avgOf = (l, f) => { const v = l.map(f).filter(x => x != null && !isNaN(x)); return v.length ? v.reduce((s, x) => s + x, 0) / v.length : null; };
@@ -2069,13 +2105,17 @@ function nutriRange(){
   if (H.nutriRange === 'custom' && H.nutriFrom && H.nutriTo) return H.nutriFrom <= H.nutriTo ? [H.nutriFrom, H.nutriTo] : [H.nutriTo, H.nutriFrom];
   return [iso(addDays(new Date(), -((+H.nutriRange || 30) - 1))), t];
 }
-const nutriIn = (a, b) => (S.health.nutri || []).filter(n => n.d >= a && n.d <= b && (n.kcal > 0 || nuGasto(n) != null));
-/* Resumen de un periodo: ingesta, gasto y balance medios, macros medias, y lo que hizo el peso (tendencia de 7 días) */
+const nutriIn = (a, b) => (S.health.nutri || []).filter(n => n.d >= a && n.d <= b && n.kcal > 0);
+/* Resumen de un periodo: ingesta, gasto y balance medios, macros medias, y lo que hizo el peso (tendencia de 7 días).
+   Gasto del periodo: si dura 14 días o más y hay datos, el gasto real de ese mismo periodo; si no, la media del
+   gasto real (28 días) de cada uno de sus días. */
 function nutriPeriod(a, b){
-  const l = nutriIn(a, b), com = l.filter(n => n.kcal > 0), gl = l.filter(n => nuGasto(n) != null && n.kcal > 0);
+  const com = nutriIn(a, b), gl = com.filter(n => nuGasto(n) != null);
   if (!com.length) return null;
   const tr = trend7(a, b), dw = tr.length > 1 ? tr[tr.length - 1].kg - tr[0].kg : null;
-  return {days:com.length, kin:avgOf(com, n => n.kcal), kout:avgOf(gl, nuGasto), bal:avgOf(gl, nuBal), balSum:gl.reduce((s, n) => s + nuBal(n), 0), balDays:gl.length,
+  const kin = avgOf(com, n => n.kcal), gp = gastoPeriodo(a, b < TODAY() ? b : TODAY());
+  const kout = gp ? gp.kcal : avgOf(gl, nuGasto), bal = kout != null ? kin - kout : null;
+  return {days:com.length, kin, kout, gPropio:!!gp, ks:avgOf(com, nuGastoSparky), bal, balSum:bal != null ? bal * com.length : 0, balDays:bal != null ? com.length : 0,
     p:avgOf(com, n => n.p), c:avgOf(com, n => n.c), g:avgOf(com, n => n.g),
     op:avgOf(com, n => n.op), oc:avgOf(com, n => n.oc), og:avgOf(com, n => n.og), ok:avgOf(com, n => n.ok), dw, dwFrom:tr[0], dwTo:tr[tr.length - 1]};
 }
@@ -2084,23 +2124,26 @@ function nutriChart(list, a, b){
   const W = Math.max(300, Math.min(1100, ($('#view') ? $('#view').clientWidth : 360) - 2 * 16 - 2)), H = 220;
   const L = 44, R = 14, T = 16, B = 28;
   const days = daysBetween(a, b) + 1, slot = (W - L - R) / days, bw = Math.max(1.5, Math.min(22, slot * .62));
-  const mx = Math.max(...list.map(n => Math.max(n.kcal || 0, nuGasto(n) || 0, n.ok || 0)));
+  const mx = Math.max(...list.map(n => Math.max(n.kcal || 0, nuGasto(n) || 0, nuGastoSparky(n) || 0, n.ok || 0)));
   const top = Math.max(1000, Math.ceil(mx * 1.32 / 500) * 500);   // aire arriba: ahí cabe el cuadro sin tapar barras
   const x = d => L + (daysBetween(a, d) + .5) * slot, y = v => T + (top - v) / top * (H - T - B);
   const grid = Array.from({length:5}, (_, i) => top * i / 4);
   const every = Math.max(1, Math.round(days / 5)), ticks = []; for (let i = 0; i < days; i += every) ticks.push(iso(addDays(parseISO(a), i)));
-  const P = list.map((n, i) => ({x:+x(n.d).toFixed(1), y:+y(n.kcal || 0).toFixed(1), d:n.d, kcal:n.kcal || 0, gasto:nuGasto(n), bal:nuBal(n), p:n.p, c:n.c, g:n.g, i}));
+  const P = list.map((n, i) => ({x:+x(n.d).toFixed(1), y:+y(n.kcal || 0).toFixed(1), d:n.d, kcal:n.kcal || 0, gasto:nuGasto(n), gs:nuGastoSparky(n), bal:nuBal(n), p:n.p, c:n.c, g:n.g, i}));
   const gs = list.filter(n => nuGasto(n) != null);
   const gLine = gs.map((n, i) => (i ? 'L' : 'M') + x(n.d).toFixed(1) + ' ' + y(nuGasto(n)).toFixed(1)).join(' ');
+  const ss = list.filter(n => nuGastoSparky(n) != null);
+  const sLine = ss.map((n, i) => (i ? 'L' : 'M') + x(n.d).toFixed(1) + ' ' + y(nuGastoSparky(n)).toFixed(1)).join(' ');
   const os = list.filter(n => n.ok > 0);
   const oLine = os.map((n, i) => (i ? 'L' : 'M') + (x(n.d) - slot / 2).toFixed(1) + ' ' + y(n.ok).toFixed(1) + ' H' + (x(n.d) + slot / 2).toFixed(1)).join(' ');
-  return `<div class="hl-chart" id="nuChart" data-kind="nutri" data-pts='${esc(JSON.stringify(P.map(p => ({x:p.x, y:p.y, d:p.d, kcal:p.kcal, gasto:p.gasto, bal:p.bal, p:p.p, c:p.c, g:p.g}))))}'>
+  return `<div class="hl-chart" id="nuChart" data-kind="nutri" data-pts='${esc(JSON.stringify(P.map(p => ({x:p.x, y:p.y, d:p.d, kcal:p.kcal, gasto:p.gasto, gs:p.gs, bal:p.bal, p:p.p, c:p.c, g:p.g}))))}'>
     <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Ingesta y gasto de cada día">
       ${grid.map(v => `<line class="hl-grid" x1="${L}" x2="${W - R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text class="hl-ax" x="${L - 6}" y="${(y(v) + 4).toFixed(1)}" text-anchor="end">${v >= 1000 ? (v / 1000).toLocaleString('es-ES', {maximumFractionDigits:1}) + 'k' : v}</text>`).join('')}
       ${ticks.map(d => `<text class="hl-ax" x="${x(d).toFixed(1)}" y="${H - 8}" text-anchor="middle">${parseISO(d).getDate()} ${parseISO(d).toLocaleDateString('es-ES', {month:'short'}).replace('.', '')}</text>`).join('')}
       ${P.map(p => `<rect class="nu-bar" x="${(p.x - bw / 2).toFixed(1)}" y="${p.y}" width="${bw.toFixed(1)}" height="${Math.max(0, H - B - p.y).toFixed(1)}" rx="${Math.min(4, bw / 3).toFixed(1)}" style="--i:${p.i}"/>`).join('')}
       ${os.length ? `<path class="nu-obj" d="${oLine}"/>` : ''}
-      ${gs.length > 1 ? `<path class="nu-gasto" d="${gLine}" pathLength="1"/>` : ''}
+      ${ss.length > 1 ? `<path class="nu-sparky" d="${sLine}"/>` : ''}
+      ${gs.length > 1 ?`<path class="nu-gasto" d="${gLine}" pathLength="1"/>` : ''}
       ${gs.map(n => `<circle class="nu-gasto-p" cx="${x(n.d).toFixed(1)}" cy="${y(nuGasto(n)).toFixed(1)}" r="${slot > 9 ? 2.6 : 1.6}"/>`).join('')}
       <g class="hl-cur" style="display:none"><line y1="${T}" y2="${H - B}"/><circle r="5"/></g>
     </svg>
@@ -2112,12 +2155,12 @@ function viewNutricion(){
   const all = (H.nutri || []).filter(n => n.kcal > 0), last = all[all.length - 1];
   const per = nutriPeriod(a, b), days = daysBetween(a, b) + 1;
   const pcg = n => `P ${fmtNum(n.p || 0)} · C ${fmtNum(n.c || 0)} · G ${fmtNum(n.g || 0)}`;
-  const g = last ? nuGasto(last) : null, bal = last ? nuBal(last) : null;
-  const legend = `<div class="mc-legend row"><span style="--bc:${NU_COL.in}"><i></i>Ingesta</span>${list.some(n => nuGasto(n) != null) ? `<span class="nu-gasto-l"><i></i>Gasto estimado</span>` : ''}${list.some(n => n.ok > 0) ? `<span class="nu-obj-l"><i></i>Objetivo de Sparky</span>` : ''}</div>`;
+  const g = last ? nuGasto(last) : null, gsp = last ? nuGastoSparky(last) : null, bal = last ? nuBal(last) : null;
+  const legend = `<div class="mc-legend row"><span style="--bc:${NU_COL.in}"><i></i>Ingesta</span>${list.some(n => nuGasto(n) != null) ? `<span class="nu-gasto-l"><i></i>Gasto real (por tu peso)</span>` : ''}${list.some(n => nuGastoSparky(n) != null) ? `<span class="nu-sparky-l"><i></i>Gasto según Sparky</span>` : ''}${list.some(n => n.ok > 0) ? `<span class="nu-obj-l"><i></i>Objetivo de Sparky</span>` : ''}</div>`;
   return `
     <div class="hl-hero">
       ${last ? `<div><div class="muted small">${last.d === TODAY() ? 'Hoy, de momento' : 'Último día con registro · ' + fmtShort(last.d)}</div><div class="hl-big">${fmtKcal(last.kcal)} <small>kcal</small></div><div class="muted small">${pcg(last)}</div></div>
-      <div class="hl-side">${g != null ? `<div class="hl-delta">${fmtKcal(g)}<small>gasto estimado</small></div><div class="hl-delta">${fmtBal(bal)}<small>balance</small></div>` : ''}</div>`
+      <div class="hl-side">${g != null ? `<div class="hl-delta">${fmtKcal(g)}<small>gasto real</small></div>` : ''}${gsp != null ? `<div class="hl-delta nu-sp">${fmtKcal(gsp)}<small>según Sparky</small></div>` : ''}${bal != null ? `<div class="hl-delta">${fmtBal(bal)}<small>balance</small></div>` : ''}</div>`
       : `<div><div class="hl-big">— kcal</div><div class="muted small">Aún no hay datos de nutrición. ${AND ? 'Conecta tu cuenta de Sparky abajo.' : 'Usa el atajo de Sparky que se explica abajo.'}</div></div>`}
     </div>
     <div class="pills" style="padding-top:12px">${[['7', 'Últimos 7 días'], ['30', 'Últimos 30 días'], ['90', 'Últimos 90 días'], ['custom', 'Personalizado']].map(([k, l]) => `<button class="pill ${(H.nutriRange || '30') === k ? 'on' : ''}" data-act="nutriRange" data-v="${k}">${l}</button>`).join('')}</div>
@@ -2129,19 +2172,22 @@ function viewNutricion(){
     </div>
     <div class="hl-stats">
       <div><small>Ingesta media</small><b>${per ? fmtKcal(per.kin) : '–'}</b></div>
-      <div><small>Gasto medio</small><b>${per && per.kout != null ? fmtKcal(per.kout) : '–'}</b></div>
+      <div><small>Gasto real</small><b>${per && per.kout != null ? fmtKcal(per.kout) : '–'}</b></div>
+      <div><small>Según Sparky</small><b>${per && per.ks != null ? fmtKcal(per.ks) : '–'}</b></div>
       <div><small>Balance medio</small><b>${per && per.bal != null ? fmtBal(per.bal) : '–'}</b></div>
-      <div><small>Días con registro</small><b>${per ? per.days : 0}<small class="muted"> / ${days}</small></b></div>
     </div>
     ${per ? `<div class="nu-card">
       <div class="rm-sub" style="margin:0 0 8px">En este periodo</div>
       <div class="nu-rows">
+        <div><span>Días con comidas registradas</span><b>${per.days} de ${days}</b></div>
+        ${per.kout != null && per.ks != null ? `<div><span>Diferencia entre gastos</span><b>${fmtBal(per.kout - per.ks)} kcal/día</b><small>lo que tu peso dice que gastas frente a lo que calcula Sparky (basal por fórmula + lo quemado que registra)</small></div>` : ''}
         <div><span>Macros medias al día</span><b>P ${fmtNum(per.p)} · C ${fmtNum(per.c)} · G ${fmtNum(per.g)} g</b>${per.op ? `<small>objetivo de Sparky: P ${fmtNum(per.op)} · C ${fmtNum(per.oc)} · G ${fmtNum(per.og)} g</small>` : ''}</div>
         ${per.balDays ? `<div><span>Balance acumulado</span><b>${fmtBal(per.balSum)} kcal</b><small>en ${per.balDays} día${per.balDays === 1 ? '' : 's'} con gasto · equivale a ≈ ${fmtDiff(per.balSum / 7700)} (7.700 kcal ≈ 1 kg, orientativo)</small></div>` : ''}
         ${per.dw != null ? `<div><span>Peso (tendencia de 7 días)</span><b>${fmtDiff(per.dw)}</b><small>${fmtKg(per.dwFrom.kg, 1)} → ${fmtKg(per.dwTo.kg, 1)}</small></div>` : ''}
         ${(() => { const st = periodSteps(a, b); return st ? `<div><span>Pasos de media</span><b>${fmtSteps(st.avg)}</b></div>` : ''; })()}
       </div>
-      <p class="hint" style="padding-left:0;margin:8px 0 0">Gasto estimado = metabolismo basal (fórmula de Sparky) + lo quemado con ejercicio y actividad que registra Sparky. Es una aproximación: sirve para comparar periodos, no como cifra exacta.</p>
+      <p class="hint" style="padding-left:0;margin:8px 0 0"><b>Gasto real (por tu peso):</b> lo que comes de media menos lo que cambia tu peso, pasado a kcal (7.700 kcal ≈ 1 kg), con las 4 semanas anteriores a cada día${per.gPropio ? '; la media del periodo usa el periodo entero' : ''}. Hace falta comer registrado 3 de cada 4 días y pesarse al menos 2 veces la primera y la última semana. El balance se calcula con este gasto.<br>
+        <b>Según Sparky:</b> metabolismo basal por fórmula + lo quemado con ejercicio y actividad que registra Sparky. Suele quedarse corto (no cuenta la digestión ni toda la actividad diaria).</p>
     </div>` : ''}
     <button class="hl-entry" data-act="nutriList">${ic('list')}<div><b>Historial de días</b><small>${list.length ? `${list.length} día${list.length === 1 ? '' : 's'} · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>
     ${VIS ? '' : `<div class="rm-sub" style="margin-top:22px">De dónde salen los datos</div>${AND ? sparkyAndroidNote() : sparkyIphoneNote()}`}`;
@@ -2149,8 +2195,9 @@ function viewNutricion(){
 function nutriListSheet(){
   const [a, b] = nutriRange(), list = nutriIn(a, b);
   const html = list.length ? list.slice().reverse().map(n => {
-    const g = nuGasto(n), bal = nuBal(n);
-    return `<div class="hl-row"><div><b class="cap">${fmtLong(n.d)}</b><small>${n.kcal ? `P ${fmtNum(n.p || 0)} · C ${fmtNum(n.c || 0)} · G ${fmtNum(n.g || 0)} g` : 'sin comidas registradas'}${g != null ? ` · gasto ${fmtKcal(g)}` : ''}</small></div>
+    const g = nuGasto(n), gsp = nuGastoSparky(n), bal = nuBal(n);
+    return `<div class="hl-row"><div><b class="cap">${fmtLong(n.d)}</b><small>${n.kcal ? `P ${fmtNum(n.p || 0)} · C ${fmtNum(n.c || 0)} · G ${fmtNum(n.g || 0)} g` : 'sin comidas registradas'}</small>
+      <small>${g != null ? `gasto real ${fmtKcal(g)}` : 'gasto real: faltan datos'}${gsp != null ? ` · Sparky ${fmtKcal(gsp)}` : ''}</small></div>
       <span class="hl-d">${bal != null ? fmtBal(bal) : ''}</span><b class="hl-kg">${n.kcal ? fmtKcal(n.kcal) + ' kcal' : '–'}</b></div>`;
   }).join('') : '<p class="hint" style="padding-left:12px">Nada en este periodo.</p>';
   const sh = $('#sheet'); delete sh.dataset.day; sh.classList.remove('has-pv');
@@ -2167,7 +2214,7 @@ function macroNutri(from, to){ const p = nutriPeriod(from, to); return p ? `${fm
 function macroComidoFila(from, to, dur){
   const p = nutriPeriod(from, to); if (!p) return '';
   return `<small class="mc-nu">Comido de media (${p.days} de ${dur} día${dur === 1 ? '' : 's'}): ${fmtKcal(p.kin)} kcal · CH ${fmtNum(p.c)} · P ${fmtNum(p.p)} · G ${fmtNum(p.g)}</small>
-    ${p.bal != null ? `<small class="mc-nu">Gasto ${fmtKcal(p.kout)} · balance ${fmtBal(p.bal)} kcal/día</small>` : ''}`;
+    ${p.bal != null || p.ks != null ? `<small class="mc-nu">${p.bal != null ? `Gasto real ${fmtKcal(p.kout)} · balance ${fmtBal(p.bal)} kcal/día` : 'Gasto real: faltan datos'}${p.ks != null ? ` · Sparky ${fmtKcal(p.ks)}` : ''}</small>` : ''}`;
 }
 function macroComidoHero(m){
   const end = m.to && m.to < TODAY() ? m.to : TODAY(), p = nutriPeriod(m.from, end); if (!p) return '';
@@ -2176,7 +2223,7 @@ function macroComidoHero(m){
   return `<div class="mc-eat">
     <div class="muted small">Comido de media en esta etapa · ${p.days} de ${dur} día${dur === 1 ? '' : 's'} con registro</div>
     <div class="mc-eat-g">${cel(p.kin, m.kcal || macroKcal(m), 'kcal')}${cel(p.c, m.ch, 'CH')}${cel(p.p, m.p, 'P')}${cel(p.g, m.g, 'G')}</div>
-    ${p.bal != null ? `<div class="muted small">Gasto estimado ${fmtKcal(p.kout)} kcal · balance ${fmtBal(p.bal)} kcal/día</div>` : ''}
+    <div class="muted small">${p.bal != null ? `Gasto real (por tu peso) ${fmtKcal(p.kout)} kcal · balance ${fmtBal(p.bal)} kcal/día` : 'Gasto real: faltan datos (14 días con comidas y pesadas)'}${p.ks != null ? ` · según Sparky ${fmtKcal(p.ks)}` : ''}</div>
   </div>`;
 }
 
@@ -2184,7 +2231,7 @@ function macroComidoHero(m){
 let sparkyBusy = false;
 function sparkyAndroidNote(){
   const s = andJSON('sparkyStatus') || {};
-  if (!s.conectado) return `<div class="note" style="margin-top:0"><b>Conecta tu cuenta de SparkyFitness</b>Pizarra leerá sola lo que comes cada día (kcal, proteína, hidratos y grasa), tu gasto estimado y el objetivo de Sparky. Se actualiza al abrir la app y cada 15 minutos.
+  if (!s.conectado) return `<div class="note" style="margin-top:0"><b>Conecta tu cuenta de SparkyFitness</b>Pizarra leerá sola lo que comes cada día (kcal, proteína, hidratos y grasa), el gasto que calcula Sparky y su objetivo. El gasto real lo calcula Pizarra con tu peso. Se actualiza al abrir la app y cada 15 minutos.
     <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="sparkyForm">Conectar Sparky</button></div></div>`;
   const when = s.ultima ? new Date(s.ultima).toLocaleString('es-ES', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) : '';
   return `<div class="note ${s.error ? '' : 'on'}" style="margin-top:0"><b>SparkyFitness conectado</b>${esc(s.cuenta || '')}${s.servidor ? ` · ${esc(s.servidor.replace('https://', ''))}` : ''}<br>
@@ -2406,7 +2453,8 @@ function healthPointer(e){
     if (ex && best.d >= ex.d0) exp += `<span class="exp">Esperado ${fmtKg(ex.at(ex.r.mid, best.d))}</span>`;
   }
   tip.innerHTML = box.dataset.kind === 'nutri' ? `<b>${fmtKcal(best.kcal)} kcal</b> <small>${corta(best.d)}</small>`
-      + (best.gasto != null ? `<span class="nu-t">Gasto ${fmtKcal(best.gasto)} · balance ${fmtBal(best.bal)}</span>` : '')
+      + (best.gasto != null ? `<span class="nu-t">Gasto real ${fmtKcal(best.gasto)} · balance ${fmtBal(best.bal)}</span>` : '')
+      + (best.gs != null ? `<span class="nu-t2">Sparky: gasto ${fmtKcal(best.gs)}</span>` : '')
       + (best.kcal ? `<span class="nu-t2">P ${fmtNum(best.p || 0)} · C ${fmtNum(best.c || 0)} · G ${fmtNum(best.g || 0)}</span>` : '')
     : box.dataset.kind === 'steps' ? `<b>${fmtSteps(best.n)} pasos</b> <small>${corta(best.d)}</small>`
     : `<b>${fmtKg(best.kg, wk ? 2 : 1)}</b> <small>${wk ? 'sem. ' : ''}${corta(best.d)}${best.n > 1 ? ` · ${best.n}` : ''}</small>${exp}`;
@@ -2423,7 +2471,7 @@ function chartObstacles(box, svg){
   const sr = svg.getBoundingClientRect(), br = box.getBoundingClientRect(), vb = svg.viewBox.baseVal, k = sr.width / vb.width;
   const ox = sr.left - br.left, oy = sr.top - br.top, pts = [], rects = [];
   const R = b => ({x:ox + b.x * k, y:oy + b.y * k, w:b.width * k, h:b.height * k});
-  svg.querySelectorAll('.hl-line, .hl-trend, .hl-exp, .hl-goal, .st-avg, .hl-exp-band, .nu-gasto, .nu-obj').forEach(el => {
+  svg.querySelectorAll('.hl-line, .hl-trend, .hl-exp, .hl-goal, .st-avg, .hl-exp-band, .nu-gasto, .nu-sparky, .nu-obj').forEach(el => {
     try { const L = el.getTotalLength(); for (let s = 0; s <= L; s += 3){ const p = el.getPointAtLength(s); pts.push([ox + p.x * k, oy + p.y * k]); } } catch (e) {}
   });
   svg.querySelectorAll('.st-bar, .nu-bar, .hl-goal-t, .hl-exp-t, .st-avg-t, .hl-band-t').forEach(el => { try { const b = el.getBBox(); if (b.width && b.height) rects.push(R(b)); } catch (e) {} });
