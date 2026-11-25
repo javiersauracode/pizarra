@@ -721,7 +721,8 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 .nu-chips small{font-weight:500;color:#B9B8BE;font-size:11px}
 .nu-swipe{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(-1 * var(--gx,16px));padding:0 var(--gx,16px) 6px;scrollbar-width:none;scroll-padding:0 var(--gx,16px)}
 .nu-swipe::-webkit-scrollbar{display:none}
-.nu-swipe > .et-card{flex:0 0 min(90%,460px);scroll-snap-align:start}
+.nu-swipe > .et-card{flex:0 0 min(86%,460px);scroll-snap-align:start}
+.nu-swipe{gap:6px}
 /* Tarjeta de etapa de macros (Macros y Nutrición) */
 .et-list{display:flex;flex-direction:column;gap:12px;margin-top:6px}
 .et-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 14px 12px;overflow:hidden;cursor:pointer;
@@ -739,17 +740,25 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 .et-leg{display:flex;gap:12px;font-size:10.5px;color:var(--muted);font-weight:650}
 .et-leg span{display:inline-flex;align-items:center;gap:5px}
 .et-leg i{width:12px;height:6px;border-radius:3px}
-.et-leg .pl i{background:color-mix(in srgb,var(--bc) 35%,var(--surface2))}
-.et-leg .co i{background:var(--bc)}
 .et-r{display:grid;grid-template-columns:30px 1fr 34px;align-items:center;gap:7px}
 .et-l{font-size:11.5px;font-weight:800;color:var(--muted)}
-.et-bars{display:flex;flex-direction:column;gap:3px;min-width:0}
-.et-b{position:relative;height:15px;border-radius:5px;background:var(--surface2);overflow:hidden}
-.et-b i{position:absolute;left:0;top:0;bottom:0;border-radius:5px}
-.et-b.pl i{background:color-mix(in srgb,var(--bc) 35%,var(--surface2))}
-.et-b.co i{background:var(--bc)}
-.et-b b{position:relative;z-index:1;display:block;font-size:10.5px;line-height:15px;padding-left:6px;font-variant-numeric:tabular-nums;white-space:nowrap}
-.et-b.co b{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.et-b{position:relative;height:18px;border-radius:6px;background:var(--surface2);min-width:0}
+.et-b i{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--mc)}
+.et-b em{position:absolute;left:80%;top:-3px;bottom:-3px;border-left:2px dashed var(--bc)}
+.et-b b{position:relative;z-index:1;display:block;font-size:11px;line-height:18px;padding-left:7px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.et-b b small{font-weight:500;opacity:.8;font-size:10px}
+.et-leg .co i{background:linear-gradient(90deg,var(--bc),color-mix(in srgb,var(--bc) 60%,#fff))}
+.et-leg .pl i{width:0;height:10px;border-radius:0;border-left:2px dashed var(--bc)}
+.et-peso b{font-size:20px}
+.et-peso.ok b,.et-peso.ok em{color:#18A957}
+.et-peso.off b,.et-peso.off em{color:#D19A00}
+.et-peso.ok{background:color-mix(in srgb,#18A957 12%,var(--surface2))}
+.et-peso.off{background:color-mix(in srgb,#E0A800 14%,var(--surface2))}
+.et-flecha{flex:0 0 auto;align-self:center;display:grid;place-items:center;width:14px;color:var(--muted);opacity:.55}
+.et-flecha .i{width:14px;height:14px}
+.mc-tools{display:flex;justify-content:flex-end;margin:2px 0 4px}
+.mc-tools .btn i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:-2px}
+.mc-tools .btn i:last-of-type{margin-right:6px}
 .et-pc{font-size:11px;font-weight:700;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
 .et-bidw{display:flex;flex-direction:column;align-items:center;gap:4px}
 .et-bidw small{font-size:9.5px;color:var(--muted);font-weight:650;white-space:nowrap}
@@ -759,7 +768,6 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 .et-bid-tapon{fill:color-mix(in srgb,var(--text) 45%,transparent)}
 .et-bid-ola{fill:none;stroke:rgba(255,255,255,.55);stroke-width:1.2}
 .et-bid-t{font-size:10px;font-weight:800;fill:#fff}
-.et-bid-t.osc{fill:#16457F}
 .et-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;padding-left:4px}
 .et-tile{background:color-mix(in srgb,var(--bc) 10%,var(--surface2));border-radius:12px;padding:8px 9px;display:flex;flex-direction:column;gap:1px;min-width:0}
 .et-tile small{font-size:10.5px;color:var(--muted);font-weight:650}
@@ -1909,7 +1917,8 @@ function macroBlue(i, n){
   const t = n <= 1 ? .55 : i / (n - 1);
   return `hsl(${Math.round(203 + 17 * t)}, ${Math.round(82 - 12 * t)}%, ${Math.round(74 - 44 * t)}%)`;
 }
-const MC_PARTS = [['ch', 'CH', 4, '#8EC5F4'], ['p', 'P', 4, '#3D8BE0'], ['g', 'G', 9, '#16457F']]; // CH, P y G: de claro a oscuro
+const MC_DEF = {ch:'#8EC5F4', p:'#3D8BE0', g:'#16457F'};   // CH, P y G por defecto: de claro a oscuro
+const mcParts = () => { const c = Object.assign({}, MC_DEF, S && S.macroCols || {}); return [['ch', 'CH', 4, c.ch], ['p', 'P', 4, c.p], ['g', 'G', 9, c.g]]; };
 function macroPeriods(){ // ordenadas por fecha; cada una dura hasta el día antes de la siguiente
   const ms = S.health.macros.slice().sort((x, y) => x.from.localeCompare(y.from));
   return ms.map((m, i) => ({...m, color:m.color || macroBlue(i, ms.length), // color elegido o azules automáticos
@@ -1918,7 +1927,7 @@ function macroPeriods(){ // ordenadas por fecha; cada una dura hasta el día ant
 const macroKcal = m => (Number(m.ch) || 0) * 4 + (Number(m.p) || 0) * 4 + (Number(m.g) || 0) * 9;
 function macroBar(m){ // reparto de calorías entre CH, P y G
   const seg = (v, f, c, l) => v ? `<span style="flex:${v * f};background:${c}" title="${l}"></span>` : '';
-  return `<div class="mc-bar">${MC_PARTS.map(([k, l, f, c]) => seg(Number(m[k]), f, c, l)).join('')}</div>`;
+  return `<div class="mc-bar">${mcParts().map(([k, l, f, c]) => seg(Number(m[k]), f, c, l)).join('')}</div>`;
 }
 /* Cambio de peso de un periodo: media de los 3 primeros días con pesada frente a la de los 3 últimos */
 function periodWeightChange(from, to){
@@ -1954,8 +1963,37 @@ function period30(from, to){
    Arriba: fechas, días y razón. Centro: por cada macro, barra de lo planificado y barra de lo comido (escaladas igual,
    para compararlas de un vistazo) y, a la derecha, el bidón con el reparto de CH, P y G. Abajo: gasto real, balance
    diario y cómo habría cambiado el peso en 30 días al ritmo de esa etapa. Informativo: sin rojos ni avisos. */
+/* Texto legible sobre un color de fondo: oscuro sobre colores claros y blanco sobre oscuros */
+function txtSobre(c){
+  const m = String(c || '').match(/^#([0-9a-f]{6})$/i); if (!m) return '#fff';
+  const n = parseInt(m[1], 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255;
+  return (0.299 * r + 0.587 * g + 0.114 * b) > 160 ? '#14141A' : '#fff';
+}
+/* Objetivo de una etapa: subir, mantener o bajar, con su rango de ritmo en % al mes (si no se pone, el de Objetivo de
+   Métricas para subir y bajar, y ±0,5 % para mantener). Sirve para pintar el cambio de peso: verde si cae dentro del
+   rango y amarillo si no. */
+function objetivoEtapa(m){
+  const H = S.health, obj = m.obj || '';
+  let lo = numES(m.rateMin), hi = numES(m.rateMax);
+  if (lo == null && hi == null){
+    if (obj === 'mantener'){ lo = -0.5; hi = 0.5; }
+    else if (obj === 'subir' || obj === 'bajar'){ const r = rateTarget(); if (r){ lo = r.min; hi = r.max; } }
+  }
+  if (lo == null) lo = hi; if (hi == null) hi = lo; if (lo != null && lo > hi) [lo, hi] = [hi, lo];
+  return {obj, lo, hi};
+}
+/* Color del cambio de peso de una etapa: 'ok' (verde) dentro del rango objetivo, 'off' (amarillo) fuera. Sin rango,
+   según la dirección del objetivo; sin objetivo, neutro. */
+function colorPeso(m, pct){
+  const o = objetivoEtapa(m);
+  if (o.lo != null) return pct >= o.lo - 1e-9 && pct <= o.hi + 1e-9 ? 'ok' : 'off';
+  if (o.obj === 'subir') return pct > 0 ? 'ok' : 'off';
+  if (o.obj === 'bajar') return pct < 0 ? 'ok' : 'off';
+  return '';
+}
+const OBJ_TXT = {subir:'Subir de peso', mantener:'Mantener', bajar:'Bajar de peso'};
 function bidonMacros(m, id){
-  const kc = MC_PARTS.map(([k, l, f, c]) => ({l, c, k:(Number(m[k]) || 0) * f}));
+  const kc = mcParts().map(([k, l, f, c]) => ({l, c, k:(Number(m[k]) || 0) * f}));
   const tot = kc.reduce((s, x) => s + x.k, 0);
   const top = 22, bot = 114, alto = bot - top;
   let y = bot;
@@ -1967,7 +2005,7 @@ function bidonMacros(m, id){
       ${capas.map(x => `<rect x="0" y="${x.y.toFixed(1)}" width="60" height="${(x.h + .4).toFixed(1)}" fill="${x.c}"/>`).join('')}
       <path d="M6 ${top} Q18 ${top - 4} 30 ${top} T54 ${top}" class="et-bid-ola"/></g>
     <path d="${silueta}" class="et-bid-borde"/><rect x="18" y="2" width="24" height="7" rx="2.5" class="et-bid-tapon"/>
-    ${capas.filter(x => x.h >= 13).map(x => `<text x="30" y="${(x.y + x.h / 2 + 4).toFixed(1)}" text-anchor="middle" class="et-bid-t ${x.l === 'CH' ? 'osc' : ''}">${x.pc}%</text>`).join('')}
+    ${capas.filter(x => x.h >= 13).map(x => `<text x="30" y="${(x.y + x.h / 2 + 4).toFixed(1)}" text-anchor="middle" class="et-bid-t" style="fill:${txtSobre(x.c)}">${x.pc}%</text>`).join('')}
   </svg>`;
 }
 function etapaCard(m, ctx){
@@ -1977,19 +2015,24 @@ function etapaCard(m, ctx){
   const p = empezada ? nutriPeriod(m.from, end) : null, w = empezada ? period30(m.from, end) : null;
   const plan = {kcal:Number(m.kcal) || macroKcal(m), ch:Number(m.ch) || 0, p:Number(m.p) || 0, g:Number(m.g) || 0};
   const comido = p ? {kcal:p.kin, ch:p.c, p:p.p, g:p.g} : null;
+  const colMacro = Object.fromEntries(mcParts().map(([k, l, f, c]) => [k, c]));
+  /* Una barra por dato: se llena hasta lo comido de media (en el color de ese macro; las kcal, en el de la etapa) y una
+     línea discontinua del color de la etapa marca lo planificado. Escala: el plan queda al 80 % del ancho. */
   const fila = (k, l, u) => {
-    const pl = plan[k], co = comido ? comido[k] : null, mx = Math.max(pl || 0, co || 0) || 1;
+    const pl = plan[k], co = comido ? comido[k] : null, col = k === 'kcal' ? m.color : colMacro[k];
     const pc = pl && co != null ? Math.round(co / pl * 100) : null;
+    const ancho = pl && co != null ? Math.min(100, co / pl * 80) : 0;
     return `<div class="et-r"><span class="et-l">${l}</span>
-      <div class="et-bars">
-        <div class="et-b pl"><i style="width:${(pl / mx * 100).toFixed(1)}%"></i><b>${fmtKcal(pl)}${u}</b></div>
-        ${co != null ? `<div class="et-b co"><i style="width:${(co / mx * 100).toFixed(1)}%"></i><b>${fmtKcal(co)}${u}</b></div>` : ''}
-      </div><span class="et-pc">${pc != null ? pc + ' %' : ''}</span></div>`;
+      <div class="et-b" style="--mc:${col}"><i style="width:${ancho.toFixed(1)}%"></i>${pl ? '<em></em>' : ''}
+        <b style="color:${ancho > 30 ? txtSobre(col) : 'var(--text)'}">${co != null ? fmtKcal(co) : '–'}<small> / ${fmtKcal(pl)}${u}</small></b></div>
+      <span class="et-pc">${pc != null ? pc + ' %' : ''}</span></div>`;
   };
-  // peso a 30 días al ritmo de la etapa, en % y en kg (con el peso medio de la etapa)
+  // peso a 30 días al ritmo de la etapa: % en grande y kg en pequeño, en verde o amarillo según el objetivo
   const pesos = w ? dayWeights().filter(x => x.d >= m.from && x.d <= end) : [];
   const kgMedio = pesos.length ? pesos.reduce((s, x) => s + x.kg, 0) / pesos.length : null;
   const kg30 = w && kgMedio ? w.pct30 / 100 * kgMedio : null;
+  const cp = w ? colorPeso(m, w.pct30) : '', o = objetivoEtapa(m);
+  const rango = o.lo != null ? (Math.abs(o.lo - o.hi) < 1e-9 ? fmtPct(o.lo) : `${fmtPct(o.lo).replace(' %', '')} a ${fmtPct(o.hi)}`) : '';
   const balW = p && p.bal != null ? Math.min(50, Math.abs(p.bal) / 500 * 50) : 0;   // ±500 kcal = media barra
   const tiles = [
     p && p.kout != null ? `<div class="et-tile"><small>Gasto real</small><b>${fmtKcal(p.kout)}</b><em>kcal/día${p.ks != null ? ` · Sparky ${fmtKcal(p.ks)}` : ''}</em></div>`
@@ -1997,17 +2040,17 @@ function etapaCard(m, ctx){
     p && p.bal != null ? `<div class="et-tile"><small>Balance diario</small><b>${fmtBal(p.bal)}</b><em>kcal/día</em>
       <span class="et-bal"><i class="${p.bal >= 0 ? 'mas' : 'menos'}" style="width:${balW.toFixed(1)}%"></i></span></div>`
       : `<div class="et-tile off"><small>Balance diario</small><b>–</b><em>&nbsp;</em></div>`,
-    w ? `<div class="et-tile"><small>Peso a 30 días</small><b class="${w.pct30 > 0 ? 'up' : w.pct30 < 0 ? 'down' : ''}">${kg30 != null ? fmtDiff(kg30) : fmtPct(w.pct30, 2)}</b><em>${fmtPct(w.pct30, 2)} al ritmo de la etapa</em></div>`
+    w ? `<div class="et-tile et-peso ${cp}"><small>Peso a 30 días</small><b>${fmtPct(w.pct30, 2)}</b><em>${kg30 != null ? fmtDiff(kg30) : ''}${rango ? ` · obj. ${rango}` : ''}</em></div>`
       : `<div class="et-tile off"><small>Peso a 30 días</small><b>–</b><em>faltan pesadas</em></div>`];
   const razon = m.reason || m.note;
   return `<div class="et-card ${cur ? 'cur' : ''}" data-act="macroEdit" data-id="${esc(m.id)}" style="--bc:${m.color}">
     <div class="et-h"><span class="et-dot"></span>
       <div class="et-t"><b>${fmtShort(m.from)} → ${m.to ? fmtShort(m.to) : 'hoy'}</b>
-        <small>${!empezada ? 'Empieza más adelante' : `${dur} día${dur === 1 ? '' : 's'}${p ? ` · ${p.days} con comidas registradas` : ''}`}${razon ? ' · ' + esc(razon) : ''}</small></div>
+        <small>${o.obj ? OBJ_TXT[o.obj] + ' · ' : ''}${!empezada ? 'Empieza más adelante' : `${dur} día${dur === 1 ? '' : 's'}${p ? ` · ${p.days} con comidas registradas` : ''}`}${razon ? ' · ' + esc(razon) : ''}</small></div>
       ${cur ? '<span class="et-badge">Actual</span>' : ''}</div>
     <div class="et-body">
       <div class="et-rows">
-        <div class="et-leg"><span class="pl"><i></i>Planificado</span>${comido ? '<span class="co"><i></i>Comido de media</span>' : ''}</div>
+        <div class="et-leg"><span class="co"><i></i>Comido de media</span><span class="pl"><i></i>Planificado</span></div>
         ${fila('kcal', 'kcal', '')}${fila('ch', 'CH', ' g')}${fila('p', 'P', ' g')}${fila('g', 'G', ' g')}
       </div>
       <div class="et-bidw">${bidonMacros(m, `bd-${ctx}-${String(m.id).replace(/[^A-Za-z0-9_-]/g, '')}`)}<small>CH · P · G</small></div>
@@ -2018,7 +2061,8 @@ function etapaCard(m, ctx){
 function viewMacros(){
   const ps = macroPeriods();
   if (!ps.length) return `<div class="empty" style="margin-top:6px"><b>Aún no has guardado macros</b>Pulsa + para apuntar tus CH, P y G. Cada vez que las cambies, añade una nueva con su fecha y su razón: la app calcula sola el ritmo de peso y tu media de pasos en cada periodo.</div>`;
-  return `<div class="et-list">${ps.slice().reverse().map(m => etapaCard(m, 'mc')).join('')}</div>
+  return `<div class="mc-tools"><button class="btn ghost sm" data-act="macroColors">${mcParts().map(([k, l, f, c]) => `<i style="background:${c}"></i>`).join('')} Colores de CH, P y G</button></div>
+    <div class="et-list">${ps.slice().reverse().map(m => etapaCard(m, 'mc')).join('')}</div>
     <p class="hint" style="padding-left:0">Toca una etapa para editarla o cambiar su color. «Peso a 30 días»: cuánto habría cambiado tu peso en 30 días si se hubiera mantenido el ritmo de esa etapa (media de los 3 primeros días con pesada frente a la de los 3 últimos). El gasto real y el balance salen de lo comido (Sparky) y de tus pesadas.</p>`;
 }
 function viewHealth(){
@@ -2303,7 +2347,7 @@ function nutriEtapas(){
   const ps = macroPeriods().filter(m => m.from <= TODAY());
   if (!ps.length) return '';
   return `<div class="rm-sub" style="margin-top:22px">Macros: planificado y comido</div>
-    <div class="nu-swipe">${ps.map(m => etapaCard(m, 'nu')).join('')}</div>
+    <div class="nu-swipe">${ps.map(m => etapaCard(m, 'nu')).join('<span class="et-flecha" aria-hidden="true">' + ic('chev') + '</span>')}</div>
     ${ps.length > 1 ? '<p class="hint" style="padding-left:0;margin-top:2px">Desliza a izquierda o derecha para ver cada etapa de macros.</p>' : ''}`;
 }
 function paintNutriTools(open){
@@ -4198,23 +4242,33 @@ const actions = {
     const base = m || macroPeriods().pop() || {};
     const num = v => { const n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? 0 : Math.round(n); };
     openForm({title:m ? 'Macros' : 'Nuevo cambio de macros',
-      note:'Rigen desde la fecha de cambio hasta el siguiente cambio. Si dejas las kcal vacías, se calculan: CH×4 + P×4 + G×9.',
-      values:{color:m ? m.color || '' : '', from:m ? m.from : TODAY(), kcal:m ? m.kcal || '' : '', ch:base.ch || '', p:base.p || '', g:base.g || '', reason:m ? m.reason || m.note || '' : ''},
+      note:'Rigen desde la fecha de cambio hasta el siguiente cambio. Si dejas las kcal vacías, se calculan: CH×4 + P×4 + G×9.<br><b>Objetivo y ritmo:</b> el cambio de peso de la etapa sale en verde si cae dentro del rango (en % al mes; en negativo para bajar) y en amarillo si no. Si no pones ritmo: el de Objetivo en Métricas, o ±0,5 % para mantener.',
+      values:{color:m ? m.color || '' : '', obj:m ? m.obj || '' : (base.obj || ''), rateMin:m ? m.rateMin || '' : (base.rateMin || ''), rateMax:m ? m.rateMax || '' : (base.rateMax || ''), from:m ? m.from : TODAY(), kcal:m ? m.kcal || '' : '', ch:base.ch || '', p:base.p || '', g:base.g || '', reason:m ? m.reason || m.note || '' : ''},
       fields:[{key:'from', label:'Fecha de inicio', type:'date', required:true, half:true}, {key:'kcal', label:'Kcal (opcional)', type:'text', half:true, placeholder:'auto'},
         {key:'ch', label:'CH (g)', type:'text', third:true, placeholder:'250'}, {key:'p', label:'P (g)', type:'text', third:true, placeholder:'180'},
         {key:'g', label:'G (g)', type:'text', third:true, placeholder:'70'},
         {key:'reason', label:'Razón de subida', type:'textarea', placeholder:'p. ej. El peso no sube: +20 g de CH'},
+        {key:'obj', label:'Objetivo de la etapa', type:'select', options:[{v:'', l:'Sin objetivo'}, {v:'subir', l:'Subir de peso'}, {v:'mantener', l:'Mantener'}, {v:'bajar', l:'Bajar de peso'}]},
+        {key:'rateMin', label:'Ritmo mínimo (% al mes)', type:'text', half:true, placeholder:'p. ej. 0,8'}, {key:'rateMax', label:'Ritmo máximo (% al mes)', type:'text', half:true, placeholder:'p. ej. 1,2'},
         {key:'color', label:'Color de la etapa · si no eliges ninguno, azules automáticos', type:'color'}],
       preview: v => { const x = {ch:num(v.ch), p:num(v.p), g:num(v.g)}; const k = num(String(v.kcal).replace(/\./g, '')) || macroKcal(x);
         return `<div class="pv-card"><div class="pv-tag">Macros desde ${v.from ? fmtShort(v.from) : '—'}</div><div style="font-size:24px;font-weight:800;margin:2px 0 6px">${fmtNum(k)} kcal</div>${macroBar(x)}<div class="muted small" style="margin-top:6px">CH ${x.ch} g · P ${x.p} g · G ${x.g} g</div></div>`; },
       onSave: v => {
         const x = {from:v.from, ch:num(v.ch), p:num(v.p), g:num(v.g), reason:v.reason};
         if (v.color) x.color = v.color;
+        x.obj = v.obj || ''; x.rateMin = String(v.rateMin || '').trim(); x.rateMax = String(v.rateMax || '').trim();
         x.kcal = num(String(v.kcal).replace(/\./g, '')) || macroKcal(x);
         if (m){ Object.assign(m, x); delete m.note; } else S.health.macros.push({id:uid(), ...x});
         S.health.tab = 'macros'; toast(m ? 'Macros guardadas' : 'Cambio de macros guardado');
       },
       onDelete: m ? () => { S.health.macros = S.health.macros.filter(y => y !== m); toast('Cambio de macros borrado'); } : null});
+  },
+  macroColors(){
+    const c = Object.assign({}, MC_DEF, S.macroCols || {});
+    openForm({title:'Colores de CH, P y G', note:'Se usan en todas las barras, bidones y repartos de la app.',
+      values:{ch:c.ch, p:c.p, g:c.g},
+      fields:[{key:'ch', label:'Hidratos (CH)', type:'color'}, {key:'p', label:'Proteína (P)', type:'color'}, {key:'g', label:'Grasa (G)', type:'color'}],
+      onSave:v => { S.macroCols = {ch:v.ch || c.ch, p:v.p || c.p, g:v.g || c.g}; toast('Colores guardados'); }});
   },
   healthGoal(){
     const H = S.health, txt = x => x === '' || x == null ? '' : String(x).replace('.', ',');
