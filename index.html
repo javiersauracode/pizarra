@@ -715,6 +715,11 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 .nu-rows b{font-size:14px;text-align:right;font-variant-numeric:tabular-nums}
 .nu-rows small{grid-column:1 / -1;font-size:11.5px;color:var(--muted)}
 .mc-row .mc-nu{color:var(--muted)}
+.mc-eat{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:6px}
+.mc-eat-g{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mc-eat-g div{display:flex;flex-direction:column}
+.mc-eat-g b{font-size:14px;font-variant-numeric:tabular-nums}
+.mc-eat-g small{font-size:10.5px;color:var(--muted)}
 .mc-legend .hl-trd-l i{background:none;box-shadow:none;border-top:3px solid #2BB673;border-radius:2px;height:0;width:14px}
 .mc-legend .hl-exp-l i{background:none;box-shadow:none;border-top:2px dashed var(--hl-yel);border-radius:0;height:0;width:14px}
 .enter .hl-exp,.enter .hl-exp-band{animation:fade .8s .6s both}
@@ -1888,7 +1893,8 @@ function viewMacros(){
       <div class="mc-grid">${MC_PARTS.map(([k, l, f, c]) => `<div><i style="background:${c}"></i><b>${fmtNum(cur[k] || 0)} g</b><small>${l} · ${pct(Number(cur[k]) || 0, f, cur)} %</small></div>`).join('')}</div>
       ${macroBar(cur)}
       ${cur.kcal && Math.abs(cur.kcal - macroKcal(cur)) > 30 ? `<p class="muted small" style="margin:8px 0 0">Las macros suman ${fmtNum(macroKcal(cur))} kcal (CH×4 + P×4 + G×9).</p>` : ''}
-    </div>` : `<div class="empty" style="margin-top:6px"><b>Aún no has guardado macros</b>Pulsa + para apuntar tus CH, P y G. Cada vez que las cambies, añade una nueva con su fecha y su razón: la app calcula sola el ritmo de peso y tu media de pasos en cada periodo.</div>`}
+      ${cur.from <= TODAY() ? macroComidoHero(cur) : ''}
+    </div>` :`<div class="empty" style="margin-top:6px"><b>Aún no has guardado macros</b>Pulsa + para apuntar tus CH, P y G. Cada vez que las cambies, añade una nueva con su fecha y su razón: la app calcula sola el ritmo de peso y tu media de pasos en cada periodo.</div>`}
     ${ps.length ? `<div class="rm-sub" style="margin-top:22px">Historial de cambios</div>
     <div class="hl-list">${ps.slice().reverse().map(m => {
       const started = m.from <= TODAY(), end = m.to && m.to < TODAY() ? m.to : TODAY();
@@ -1899,7 +1905,7 @@ function viewMacros(){
         <div><b>${fmtShort(m.from)} → ${m.to ? fmtShort(m.to) : 'hoy'}</b>
           <small>${fmtNum(m.kcal || macroKcal(m))} kcal · CH ${fmtNum(m.ch || 0)} · P ${fmtNum(m.p || 0)} · G ${fmtNum(m.g || 0)}</small>
           <small>${started ? `${dur} día${dur === 1 ? '' : 's'} · ${st ? fmtSteps(st.avg) : '–'} pasos/día` : 'Empieza más adelante'}</small>
-          ${started && macroNutri(m.from, end) ? `<small class="mc-nu">Comido: ${macroNutri(m.from, end)}</small>` : ''}</div>
+          ${started ? macroComidoFila(m.from, end, dur) : ''}</div>
         <span class="mc-30"><b class="${w ? (w.pct30 > 0 ? 'up' : w.pct30 < 0 ? 'down' : '') : ''}">${w ? fmtPct(w.pct30, 2) : '–'}</b><small>a 30 días</small></span></button>`;
     }).join('')}</div>
     <p class="hint" style="padding-left:0">«A 30 días»: cuánto % de peso habrías subido en 30 días al ritmo de ese periodo (media de los 3 primeros días con pesada frente a la de los 3 últimos).</p>` : ''}`;
@@ -2156,6 +2162,23 @@ function nutriListSheet(){
 }
 /* Media de ingesta y balance de una etapa de macros (para el historial de Macros) */
 function macroNutri(from, to){ const p = nutriPeriod(from, to); return p ? `${fmtKcal(p.kin)} kcal de media${p.bal != null ? ` · balance ${fmtBal(p.bal)}/día` : ''}` : ''; }
+/* Lo comido de media en cada etapa de macros (días de Sparky que caen entre su fecha y la siguiente).
+   Informativo: se enseña al lado de lo planeado, sin colores de «cumple / no cumple». */
+function macroComidoFila(from, to, dur){
+  const p = nutriPeriod(from, to); if (!p) return '';
+  return `<small class="mc-nu">Comido de media (${p.days} de ${dur} día${dur === 1 ? '' : 's'}): ${fmtKcal(p.kin)} kcal · CH ${fmtNum(p.c)} · P ${fmtNum(p.p)} · G ${fmtNum(p.g)}</small>
+    ${p.bal != null ? `<small class="mc-nu">Gasto ${fmtKcal(p.kout)} · balance ${fmtBal(p.bal)} kcal/día</small>` : ''}`;
+}
+function macroComidoHero(m){
+  const end = m.to && m.to < TODAY() ? m.to : TODAY(), p = nutriPeriod(m.from, end); if (!p) return '';
+  const dur = daysBetween(m.from, end) + 1;
+  const cel = (v, plan, l) => `<div><b>${v == null ? '–' : fmtKcal(v)}${l === 'kcal' ? '' : ' g'}</b><small>${l}${plan ? ` · plan ${fmtKcal(Number(plan))}` : ''}</small></div>`;
+  return `<div class="mc-eat">
+    <div class="muted small">Comido de media en esta etapa · ${p.days} de ${dur} día${dur === 1 ? '' : 's'} con registro</div>
+    <div class="mc-eat-g">${cel(p.kin, m.kcal || macroKcal(m), 'kcal')}${cel(p.c, m.ch, 'CH')}${cel(p.p, m.p, 'P')}${cel(p.g, m.g, 'G')}</div>
+    ${p.bal != null ? `<div class="muted small">Gasto estimado ${fmtKcal(p.kout)} kcal · balance ${fmtBal(p.bal)} kcal/día</div>` : ''}
+  </div>`;
+}
 
 /* Android: la conexión con Sparky (la clave se guarda cifrada en el móvil; la web nunca la vuelve a ver) */
 let sparkyBusy = false;
