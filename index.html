@@ -5,13 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Pizarra">
+<meta name="apple-mobile-web-app-title" content="Axis">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#F6F5F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#F6F5F1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link rel="icon" type="image/png" href="icons/icon-192.png">
-<title>Pizarra</title>
+<link rel="icon" type="image/svg+xml" href="icons/axis.svg">
+<title>Axis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 :root{
   color-scheme: light dark;
@@ -936,9 +938,132 @@ body.nav-open #scrim{animation:fade .25s}
   .tapfx{display:none}
 }
 #toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* =========================================================
+   AXIS · capa de interfaz (Guía de interfaz UI)
+   Fondo cálido, tarjetas blancas, azul Axis para las acciones, Inter y cifras tabulares.
+   El holográfico solo en el logo y la pantalla de carga.
+   ========================================================= */
+:root{
+  --bg:#F6F5F1; --surface:#FFFFFF; --surface2:#EEEDE8; --surface-inverse:#161619; --line:#E2E1DB;
+  --text:#161619; --muted:#62626A; --text-inverse:#F6F5F1;
+  --brand:#1769FF; --brand-strong:#0847C9; --brand-night:#050B1F;
+  --holo:linear-gradient(135deg,#7CF7FF,#3D8BFF 40%,#B7A6FF 70%,#58E6FF);
+  --success:#17A857; --success-text:#0F7A3F; --warning:#D97706; --warning-text:#A35200;
+  --accent:var(--brand);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0B0D14; --surface:#151822; --surface2:#1F2330; --surface-inverse:#F6F5F1; --line:#262B3A; --text:#F2F3F7; --muted:#9AA0B2; --text-inverse:#0B0D14;
+    --brand:#3D8BFF; --brand-strong:#1769FF; --accent:var(--brand); }
+}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;font-feature-settings:"cv11","ss01";letter-spacing:-.005em}
+b,.hl-big,.hl-stats b,.et-tile b,.ci-cmp b,.nu-mr b,.hl-kg{font-variant-numeric:tabular-nums}
+/* Cabecera: fondo translúcido, título 18/700 */
+.topbar .t{font-size:18px;font-weight:700;letter-spacing:-.02em}
+/* Marca en el menú lateral: logo A · Eje */
+.brand .logo.ax{width:40px;height:40px;border-radius:11px;background:radial-gradient(circle at 30% 20%,#17408F 0%,#0A1A45 48%,#050B1F 100%);display:grid;place-items:center;box-shadow:0 4px 14px rgba(5,11,31,.25)}
+.brand .logo.ax svg{width:30px;height:30px;overflow:visible}
+.brand b{font-size:21px;font-weight:800;letter-spacing:-.04em}
+/* Pestañas segmentadas: contenedor gris, activa en blanco con sombra suave; radios 14 / 10 */
+.seg{border-radius:14px;padding:4px;background:var(--surface2)}
+.seg button{border-radius:10px;font-size:15px;font-weight:600;min-height:40px}
+.seg button.on{background:var(--surface);color:var(--text);box-shadow:0 1px 2px rgba(22,22,25,.08),0 4px 12px rgba(22,22,25,.08);font-weight:700}
+/* Filtros en píldora: activo oscuro con texto claro */
+.pill{min-height:36px;padding:0 14px;font-size:14px;font-weight:600}
+.pill.on{background:var(--surface-inverse);color:var(--text-inverse)}
+/* Botón flotante: azul Axis, 60 px, radio 20 */
+.fab{width:60px;height:60px;border-radius:20px;background:var(--brand);box-shadow:0 10px 26px color-mix(in srgb,var(--brand) 40%,transparent)}
+/* Tarjeta principal oscura: dato protagonista 44/800 */
+.hl-hero{border-radius:20px;padding:20px;background:#161619}
+.hl-big{font-weight:800;letter-spacing:-.03em}
+/* Tarjetas blancas: borde 1 px, radios 20 (grandes) y 14 (pequeñas), sin sombra */
+.hl-card,.ci-card,.et-card{border-radius:20px}
+.hl-stats div,.et-tile{border-radius:14px}
+/* Etiquetas de sección: 12/800, mayúsculas, +0,12 em */
+.rm-sub{font-size:12px;font-weight:800;letter-spacing:.12em}
+/* Botones principales en azul Axis */
+.btn:not(.ghost):not(.danger):not(.btn-danger){background:var(--brand);color:#fff}
+
+/* ---------- Animación de entrada ---------- */
+#axisSplash{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  background:radial-gradient(120% 90% at 30% 15%,#17408F 0%,#0A1A45 45%,#050B1F 100%);overflow:hidden;pointer-events:none}
+#axisSplash .ax-glow{position:absolute;width:340px;height:340px;border-radius:50%;opacity:0;
+  background:radial-gradient(circle,rgba(124,247,255,.35) 0%,rgba(61,139,255,.22) 35%,rgba(183,166,255,.10) 55%,transparent 70%);filter:blur(6px)}
+#axisSplash .ax-mark{width:132px;height:132px;overflow:visible;position:relative}
+#axisSplash .ax-word{display:flex;font:800 44px/1 Inter,-apple-system,system-ui,sans-serif;letter-spacing:-.06em;color:#EAF6FF;position:relative}
+#axisSplash .ax-word span{opacity:0;display:inline-block}
+
+/* Inter es algo más ancha: la columna del % de las tarjetas de macros necesita más sitio */
+.et-r{grid-template-columns:30px 1fr 42px}
 </style>
 </head>
 <body>
+<!-- ===== Axis · animación de entrada: el eje se traza sobre el azul noche y abre la app (≈1,6 s) ===== -->
+<div id="axisSplash" aria-hidden="true">
+  <div class="ax-glow"></div>
+  <svg class="ax-mark" viewBox="0 0 100 100">
+    <defs>
+      <linearGradient id="axHolo" gradientUnits="userSpaceOnUse" x1="14" y1="10" x2="86" y2="90">
+        <stop offset="0" stop-color="#7CF7FF"/><stop offset=".38" stop-color="#3D8BFF"/><stop offset=".7" stop-color="#B7A6FF"/><stop offset="1" stop-color="#58E6FF"/>
+        <animateTransform attributeName="gradientTransform" type="rotate" from="0 50 50" to="360 50 50" dur="2.4s" repeatCount="indefinite"/>
+      </linearGradient>
+      <filter id="axBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+    </defs>
+    <g class="ax-halo" filter="url(#axBlur)" opacity="0">
+      <path d="M22 80 L50 22 L78 80" stroke="url(#axHolo)" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M50 9 V91" stroke="url(#axHolo)" stroke-width="5" fill="none" stroke-linecap="round"/>
+    </g>
+    <path class="ax-a" d="M22 80 L50 22 L78 80" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke="url(#axHolo)" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path class="ax-eje" d="M50 91 V9" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" stroke="#E8FDFF" stroke-width="5" fill="none" stroke-linecap="round"/>
+  </svg>
+  <div class="ax-word"><span>a</span><span>x</span><span>i</span><span>s</span></div>
+</div>
+<script src="vendor/motion.js"></script>
+<script type="module">
+/* Se pinta encima de la app ya cargada: no retrasa nada. Usa Motion (motion.dev, copia local en vendor/motion.js: nada
+   de código de terceros desde internet); si faltara, las mismas animaciones con la Web Animations API del navegador.
+   Con «reducir movimiento», solo un fundido corto. */
+const sp = document.getElementById('axisSplash');
+const q = s => sp.querySelector(s), letras = [...sp.querySelectorAll('.ax-word span')];
+const fin = () => sp.remove();
+// ?intro=<ms> (solo para revisar el diseño) fuerza la animación completa y la congela en ese milisegundo
+const pausa = +new URLSearchParams(location.search).get('intro');
+if (matchMedia('(prefers-reduced-motion: reduce)').matches && !pausa){
+  sp.animate([{opacity:1}, {opacity:0}], {duration:300, delay:250, fill:'forwards'}).finished.then(fin);
+} else (async () => {
+  const motion = window.Motion || null;
+  const app = document.getElementById('app');
+  const pasos = [
+    [q('.ax-glow'), {opacity:[0, .9], transform:['scale(.6)', 'scale(1)']}, {duration:.7, at:0, ease:[.2, .8, .2, 1]}],
+    [q('.ax-a'), {strokeDashoffset:[1, 0]}, {duration:.55, at:.05, ease:[.65, 0, .35, 1]}],
+    [q('.ax-eje'), {strokeDashoffset:[1, 0]}, {duration:.42, at:.36, ease:[.2, .9, .1, 1]}],
+    [q('.ax-halo'), {opacity:[0, .85, .55]}, {duration:.6, at:.55}],
+    [q('.ax-mark'), {transform:['scale(.9)', 'scale(1.04)', 'scale(1)']}, {duration:.6, at:.5, ease:[.2, .8, .2, 1]}],
+    ...letras.map((l, i) => [l, {opacity:[0, 1], transform:['translateY(10px)', 'translateY(0)']}, {duration:.32, at:.62 + i * .05, ease:[.2, .8, .2, 1]}]),
+    // salida: el logo crece y se desvanece, el fondo se abre y la app aparece detrás
+    [q('.ax-mark'), {transform:['scale(1)', 'scale(1.35)'], opacity:[1, 0]}, {duration:.42, at:1.18, ease:[.4, 0, .2, 1]}],
+    [q('.ax-word'), {opacity:[1, 0], transform:['translateY(0)', 'translateY(-8px)']}, {duration:.3, at:1.15}],
+    [sp, {opacity:[1, 0]}, {duration:.42, at:1.26, ease:[.4, 0, .2, 1]}],
+    ...(app ? [[app, {opacity:[0, 1], transform:['scale(.985)', 'scale(1)'], filter:['blur(6px)', 'blur(0px)']}, {duration:.5, at:1.22, ease:[.2, .8, .2, 1]}]] : []),
+  ];
+  const waapi = () => Promise.all(pasos.map(([el, kf, o]) => { // sin Motion: lo mismo con la Web Animations API
+    const props = Object.keys(kf), n = Math.max(...props.map(p => kf[p].length));
+    const frames = Array.from({length:n}, (_, i) => Object.fromEntries(props.map(p => [p, kf[p][Math.min(i, kf[p].length - 1)]])));
+    const ease = Array.isArray(o.ease) ? `cubic-bezier(${o.ease.join(',')})` : 'ease-out';
+    return el.animate(frames, {duration:o.duration * 1000, delay:o.at * 1000, easing:ease, fill:'both'}).finished;
+  }));
+  let ctl = null;
+  try { if (motion && motion.animate) ctl = motion.animate(pasos); } catch (e) { ctl = null; }
+  const fin2 = ctl ? Promise.resolve(ctl) : waapi();
+  if (pausa){ await new Promise(r => requestAnimationFrame(r));
+    if (ctl && ctl.pause){ ctl.pause(); ctl.time = pausa / 1000; } else document.getAnimations().forEach(x => { x.pause(); x.currentTime = pausa; });
+    return; }
+  try { await fin2; } catch (e) {}
+  if (app){ app.style.opacity = ''; app.style.transform = ''; app.style.filter = ''; }
+  fin();
+})();
+</script>
+
 <div id="app">
   <aside id="side" aria-label="Navegación"></aside>
   <div id="scrim" data-act="scrim"></div>
@@ -1235,7 +1360,7 @@ function viewCuentaNube(){
   const st = PizarraNube.estado();
   if (!st.conectado) return `<div class="sec-h"><h1>Cuenta</h1></div>
     <div class="acc-card"><h3>Conecta tu Nextcloud</h3>
-      <p class="muted small" style="margin:0">Pizarra guarda tus datos en tu Nextcloud, en la carpeta <b>Pizarra</b>: los mismos que ves en la app Android. Al conectar se cargan los de Nextcloud y sustituyen a lo que hubiera en este navegador.</p>
+      <p class="muted small" style="margin:0">Axis guarda tus datos en tu Nextcloud, en la carpeta <b>Pizarra</b>: los mismos que ves en la app Android. Al conectar se cargan los de Nextcloud y sustituyen a lo que hubiera en este navegador.</p>
       ${st.login ? `<p class="small" style="margin:12px 0 0">Entra con tu cuenta en la página que se abre y pulsa <b>Conceder acceso</b>. Después vuelve aquí: se conecta solo.</p>
         <div class="row-btns" style="margin-top:10px"><a class="btn sm" href="${esc(st.login)}" target="_blank" rel="noopener">Abrir inicio de sesión</a><button class="btn ghost sm" data-act="nubeCancelar">Cancelar</button></div>`
       : `<div class="row-btns" style="margin-top:12px"><button class="btn sm" data-act="nubeConectar">Conectar con Nextcloud</button></div>`}
@@ -1249,7 +1374,7 @@ function viewCuentaNube(){
     <div class="acc-card"><div class="acc-top"><span class="avatar">${esc(initials(st.nombre || st.usuario || '?'))}</span><div style="flex:1;min-width:0"><b>${esc(st.nombre || st.usuario)}</b><div class="muted small">${esc(st.usuario)} · ${esc(location.host)}</div></div>
       <button class="btn ghost sm" data-act="nubeSync" ${st.ocupado ? 'disabled' : ''}>Sincronizar</button></div>
       <p class="small" style="margin:12px 0 0">${nubeLinea(st)}</p>
-      <p class="muted small" style="margin:10px 0 0">Tus datos están en tu Nextcloud (carpeta <b>Pizarra</b>) y en este navegador. Se sincroniza al abrir Pizarra, después de cada cambio y cada minuto con la app abierta. Sin conexión se guarda aquí y se envía al volver la red.</p>
+      <p class="muted small" style="margin:10px 0 0">Tus datos están en tu Nextcloud (carpeta <b>Pizarra</b>) y en este navegador. Se sincroniza al abrir Axis, después de cada cambio y cada minuto con la app abierta. Sin conexión se guarda aquí y se envía al volver la red.</p>
       <p class="muted small" style="margin:8px 0 0">Las copias diarias, el buzón de Claude y el calendario los lleva la app Android; aquí no hacen falta.</p>
       <div class="row-btns" style="margin-top:10px"><button class="btn ghost sm danger" data-act="nubeDesconectar">Desconectar cuenta</button></div></div>`;
 }
@@ -1295,7 +1420,7 @@ window.onPizarraAndroid = (ev, d = {}) => { // avisos de la app
   if (ev === 'auth') toast('Nextcloud ha rechazado la conexión: revisa tu cuenta en Configuración → Cuenta');
   if (ev === 'notif'){
     if (d.granted){ lastSent = ''; syncPush(true); toast('Avisos activados en este móvil'); }
-    else toast('Sin permiso para avisos: actívalo en Ajustes → Apps → Pizarra');
+    else toast('Sin permiso para avisos: actívalo en Ajustes → Apps → Axis');
     render();
   }
   if (ev === 'health'){
@@ -1430,7 +1555,7 @@ function sideHTML(){
     </div>`,
   };
   return `
-    <div class="brand"><span class="logo">P</span><div><b>Pizarra</b><small>Contenido y proyectos</small></div></div>
+    <div class="brand"><span class="logo ax"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="axSide" gradientUnits="userSpaceOnUse" x1="14" y1="10" x2="86" y2="90"><stop offset="0" stop-color="#7CF7FF"/><stop offset=".38" stop-color="#3D8BFF"/><stop offset=".7" stop-color="#B7A6FF"/><stop offset="1" stop-color="#58E6FF"/></linearGradient></defs><path d="M22 80 L50 22 L78 80" stroke="url(#axSide)" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 9 V91" stroke="#E8FDFF" stroke-width="5" fill="none" stroke-linecap="round"/></svg></span><div><b>axis</b></div></div>
     ${S.navCfg.filter(x => x.on).map(x => item[x.k]()).join('')}
     <button class="side-gear ${S.ui.view === 'ajustes' ? 'on' : ''}" data-act="go" data-v="ajustes" aria-label="Configuración" title="Configuración">${ic('gear')}</button>`;
 }
@@ -2188,10 +2313,10 @@ function stepsAndroidNote(){
   const imp = '<button class="btn ghost sm" data-act="stepsImport">Pegar o importar</button>';
   if (!h.available) return `<div class="note" style="margin-top:0"><b>Falta Health Connect</b>${h.needsUpdate ? 'Hay que instalarlo o actualizarlo desde Google Play.' : 'Este móvil no tiene Health Connect (hace falta Android 9 o superior).'}
     <div class="row-btns" style="margin-top:10px">${h.needsUpdate ? '<button class="btn sm" data-act="healthAndroid">Instalar Health Connect</button>' : ''}${imp}</div></div>`;
-  if (!h.steps) return `<div class="note" style="margin-top:0"><b>Falta el permiso de pasos</b>Pulsa aquí y permite a Pizarra leer «Pasos». En Android 14 o superior, Health Connect cuenta los pasos con el propio móvil en cuanto una app tiene ese permiso: no hace falta otra app. En móviles más antiguos, usa una app de pasos que escriba en Health Connect (p. ej. Google Fit o Samsung Health).
+  if (!h.steps) return `<div class="note" style="margin-top:0"><b>Falta el permiso de pasos</b>Pulsa aquí y permite a Axis leer «Pasos». En Android 14 o superior, Health Connect cuenta los pasos con el propio móvil en cuanto una app tiene ese permiso: no hace falta otra app. En móviles más antiguos, usa una app de pasos que escriba en Health Connect (p. ej. Google Fit o Samsung Health).
     <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="healthAndroid">Dar permiso de pasos</button>${imp}</div></div>`;
   const when = h.lastSync ? new Date(h.lastSync).toLocaleString('es-ES', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) : '';
-  return `<div class="note on" style="margin-top:0"><b>Pasos desde Health Connect</b>${when ? `Última lectura: ${when}${h.lastSteps ? ` (${h.lastSteps} día${h.lastSteps === 1 ? '' : 's'} actualizado${h.lastSteps === 1 ? '' : 's'})` : ''}. ` : ''}Se leen solos con el peso${h.background ? ', cada 15 minutos' : ' al abrir Pizarra'}.
+  return `<div class="note on" style="margin-top:0"><b>Pasos desde Health Connect</b>${when ? `Última lectura: ${when}${h.lastSteps ? ` (${h.lastSteps} día${h.lastSteps === 1 ? '' : 's'} actualizado${h.lastSteps === 1 ? '' : 's'})` : ''}. ` : ''}Se leen solos con el peso${h.background ? ', cada 15 minutos' : ' al abrir Axis'}.
     <br><span class="small">Si ves cifras distintas a las de otra app de pasos: en Health Connect → Fuentes de datos y prioridad → Actividad, pon primera la fuente que quieras (el propio móvil o esa app).</span>
     <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="healthAndroid">Sincronizar ahora</button>${h.historyOk ? '<button class="btn ghost sm" data-act="healthHistory">Traer histórico</button>' : ''}${imp}</div></div>`;
 }
@@ -2204,9 +2329,9 @@ function stepsIphoneNote(){
         <li>Añade <b>Repetir con cada</b> (sobre «Muestras de salud»). Dentro, una acción <b>Texto</b> con: la variable <b>Elemento de repetición → Fecha de inicio</b> (tócala → Formato de fecha: <b>Personalizado</b> → <code>yyyy-MM-dd</code>), un espacio y <b>Elemento de repetición → Valor</b>.</li>
         <li>Debajo de «Fin de repetir», añade <b>Combinar texto</b> («Resultados de repetir», con <b>Salto de línea</b>) y después <b>Copiar al portapapeles</b>.</li>
         <li>Llámalo «Pasos a Pizarra» y ejecútalo una vez: te pedirá permiso para leer Salud.</li>
-        <li>Abre Pizarra → Health → Pasos → <b>Pegar pasos de Salud</b>.</li>
+        <li>Abre Axis → Health → Pasos → <b>Pegar pasos de Salud</b>.</li>
       </ol>
-      <span class="small">Para no tener que acordarte: Atajos → <b>Automatización</b> → <b>Hora del día</b> (p. ej. 22:00, a diario) → <b>Ejecutar inmediatamente</b> → «Pasos a Pizarra». Así siempre tendrás los pasos copiados al abrir Pizarra. Cada vez se mandan 90 días: los repetidos no se duplican y el día de hoy se actualiza.</span>
+      <span class="small">Para no tener que acordarte: Atajos → <b>Automatización</b> → <b>Hora del día</b> (p. ej. 22:00, a diario) → <b>Ejecutar inmediatamente</b> → «Pasos a Pizarra». Así siempre tendrás los pasos copiados al abrir Axis. Cada vez se mandan 90 días: los repetidos no se duplican y el día de hoy se actualiza.</span>
     </details>
     <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="stepsPaste">Pegar pasos de Salud</button><button class="btn ghost sm" data-act="stepsImport">Pegar a mano o importar archivo</button></div></div>`;
 }
@@ -2467,7 +2592,7 @@ function macroNutri(from, to){ const p = nutriPeriod(from, to); return p ? `${fm
 let sparkyBusy = false;
 function sparkyAndroidNote(){
   const s = andJSON('sparkyStatus') || {};
-  if (!s.conectado) return `<div class="note" style="margin-top:0"><b>Conecta tu cuenta de SparkyFitness</b>Pizarra leerá sola lo que comes cada día (kcal, proteína, hidratos y grasa), el gasto que calcula Sparky y su objetivo. El gasto real lo calcula Pizarra con tu peso. Se actualiza al abrir la app y cada 15 minutos.
+  if (!s.conectado) return `<div class="note" style="margin-top:0"><b>Conecta tu cuenta de SparkyFitness</b>Axis leerá sola lo que comes cada día (kcal, proteína, hidratos y grasa), el gasto que calcula Sparky y su objetivo. El gasto real lo calcula Axis con tu peso. Se actualiza al abrir la app y cada 15 minutos.
     <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="sparkyForm">Conectar Sparky</button></div></div>`;
   const when = s.ultima ? new Date(s.ultima).toLocaleString('es-ES', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) : '';
   return `<div class="note ${s.error ? '' : 'on'}" style="margin-top:0"><b>SparkyFitness conectado</b>${esc(s.cuenta || '')}${s.servidor ? ` · ${esc(s.servidor.replace('https://', ''))}` : ''}<br>
@@ -2491,7 +2616,7 @@ function sparkyIphoneNote(){
             <li><b>Diccionario</b> con tres elementos de tipo Texto: <code>d</code> = <code>Dia</code>, <code>s</code> = <code>Resumen</code>, <code>n</code> = <code>Totales</code>. Debe ser la última acción dentro de la repetición.</li>
           </ol></li>
         <li>Debajo de «Fin de repetir»: <b>Combinar texto</b> («Resultados de repetir», con <b>Salto de línea</b>) y <b>Copiar al portapapeles</b>.</li>
-        <li>Llámalo «Sparky a Pizarra», ejecútalo y en Pizarra → Health → Nutrición pulsa <b>Pegar datos de Sparky</b>.</li>
+        <li>Llámalo «Sparky a Pizarra», ejecútalo y en Axis → Health → Nutrición pulsa <b>Pegar datos de Sparky</b>.</li>
       </ol>
       <span class="small">Para no tener que acordarte: Atajos → <b>Automatización</b> → <b>Hora del día</b> (p. ej. 22:30, a diario) → <b>Ejecutar inmediatamente</b> → «Sparky a Pizarra». Los días repetidos se actualizan, no se duplican.<br>
       <b>Histórico (una vez):</b> un atajo con una sola <b>Obtener contenido de URL</b> a <code>${srv}/api/reports/mini-nutrition-trends?startDate=2024-01-01&amp;endDate=2030-12-31</code> (misma cabecera) y <b>Copiar al portapapeles</b>: trae lo comido de todos los días (sin el gasto).</span>
@@ -2608,7 +2733,7 @@ function viewMetricas(){
     <button class="hl-entry" data-act="healthList">${ic('list')}<div><b>Historial de ${wk ? 'semanas' : 'pesadas'}</b><small>${ws.length ? `${ws.length} pesada${ws.length === 1 ? '' : 's'} · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>
     ${VIS ? '' : `<div class="rm-sub" style="margin-top:22px">Conexión con RENPHO</div>`}
     ${VIS ? '' : AND ? healthAndroidNote() : `<div class="note ${synced ? 'on' : ''}" style="margin-top:0"><b>La báscula se conecta desde la app Android</b>
-      Las pesadas pasan de RENPHO Health a Health Connect y la app de Pizarra las lee y las guarda en tu Nextcloud. Aquí puedes importar un CSV.
+      Las pesadas pasan de RENPHO Health a Health Connect y Axis las lee y las guarda en tu Nextcloud. Aquí puedes importar un CSV.
       <div class="row-btns" style="margin-top:10px"><button class="btn ghost sm" data-act="healthImport">Importar CSV</button></div>
     </div>`}`;
 }
@@ -2660,9 +2785,9 @@ function healthAndroidNote(){
   const when = h.lastSync ? new Date(h.lastSync).toLocaleString('es-ES', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) : '';
   if (!h.available) return `<div class="note" style="margin-top:0"><b>Falta Health Connect</b>${h.needsUpdate ? 'Hay que instalarlo o actualizarlo desde Google Play.' : 'Este móvil no tiene Health Connect (hace falta Android 9 o superior).'}
     <div class="row-btns" style="margin-top:10px">${h.needsUpdate ? '<button class="btn sm" data-act="healthAndroid">Instalar Health Connect</button>' : ''}<button class="btn ghost sm" data-act="healthImport">Importar CSV</button></div></div>`;
-  if (!h.granted) return `<div class="note" style="margin-top:0"><b>Sin conectar todavía</b>1) En RENPHO Health, activa Health Connect y deja que escriba «Peso» y «Grasa corporal». 2) Pulsa aquí y da permiso de lectura a Pizarra.
+  if (!h.granted) return `<div class="note" style="margin-top:0"><b>Sin conectar todavía</b>1) En RENPHO Health, activa Health Connect y deja que escriba «Peso» y «Grasa corporal». 2) Pulsa aquí y da permiso de lectura a Axis.
     <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="healthAndroid">Conectar Health Connect</button><button class="btn ghost sm" data-act="healthImport">Importar CSV</button></div></div>`;
-  return `<div class="note on" style="margin-top:0"><b>Conectado con Health Connect</b>${when ? `Última lectura: ${when}${h.lastSent != null ? ` (${h.lastSent} nueva${h.lastSent === 1 ? '' : 's'})` : ''}. ` : ''}${h.background ? 'Se actualiza sola cada 15 minutos, aunque no abras la app.' : 'Se actualiza cada vez que abres Pizarra (sin permiso para leer en segundo plano).'}${h.error ? `<br><span class="small">Último error: ${esc(h.error)}</span>` : ''}
+  return `<div class="note on" style="margin-top:0"><b>Conectado con Health Connect</b>${when ? `Última lectura: ${when}${h.lastSent != null ? ` (${h.lastSent} nueva${h.lastSent === 1 ? '' : 's'})` : ''}. ` : ''}${h.background ? 'Se actualiza sola cada 15 minutos, aunque no abras la app.' : 'Se actualiza cada vez que abres Axis (sin permiso para leer en segundo plano).'}${h.error ? `<br><span class="small">Último error: ${esc(h.error)}</span>` : ''}
     <br><span class="small">${h.history ? `Histórico completo permitido${h.since ? `: Health Connect tiene pesadas desde el ${new Date(h.since + 'T12:00').toLocaleDateString('es-ES', {day:'numeric', month:'short', year:'numeric'})}` : ''}.`
       : h.historyOk ? 'Sin permiso de histórico: solo se ven los 30 días anteriores a la conexión. Pulsa «Traer histórico».'
       : 'Este Health Connect no deja leer más de 30 días antes de la conexión: para lo anterior, importa un CSV exportado de RENPHO.'}</span>
@@ -2916,7 +3041,7 @@ function viewCuenta(){
       ${st.conflictos ? `<p class="small" style="margin:8px 0 0"><b>${st.conflictos} conflicto${st.conflictos === 1 ? '' : 's'}</b> resuelto${st.conflictos === 1 ? '' : 's'} automáticamente: puedes revisarlos en Datos.</p>` : ''}
       <p class="muted small" style="margin:10px 0 0">Tus datos están en tu Nextcloud (carpeta <b>Pizarra</b>) y en este móvil. Funciona sin conexión: lo que cambies se envía solo en cuanto haya red, también con la app cerrada.</p></div>
     <div class="acc-card"><h3>Compartir con tu administrador</h3>
-      <p class="muted small" style="margin:0">Por defecto nadie ve tus datos. Si lo activas, Pizarra deja en tu Nextcloud un resumen con <b>solo</b> lo que marques y lo comparte (en solo lectura) con esa persona. Puedes quitarlo cuando quieras.</p>
+      <p class="muted small" style="margin:0">Por defecto nadie ve tus datos. Si lo activas, Axis deja en tu Nextcloud un resumen con <b>solo</b> lo que marques y lo comparte (en solo lectura) con esa persona. Puedes quitarlo cuando quieras.</p>
       <label class="nfield" style="margin-top:12px"><span>Usuario de Nextcloud del administrador</span><input id="shareCon" value="${esc(cfg.con || '')}" placeholder="p. ej. javier o javier@otra-nube.com" autocomplete="off"></label>
       <div class="chkrow">${SHARE_OPTS.map(([k, l]) => `<label><input type="checkbox" class="shareQue" value="${k}" ${que.includes(k) ? 'checked' : ''}>${l}</label>`).join('')}</div>
       <div class="row-btns" style="margin-top:10px">${cfg.activo ? `<button class="btn sm" data-act="shareSave" ${shareBusy ? 'disabled' : ''}>Guardar cambios</button><button class="btn ghost sm danger" data-act="shareOff" ${shareBusy ? 'disabled' : ''}>Dejar de compartir</button>`
@@ -2935,19 +3060,19 @@ function viewCalAjustes(){
   const C = calListado(), cfg = S.calendario, vis = cfg.visibles ? new Set(cfg.visibles) : null, piz = cfg.pizarra || C.pizarra || '';
   const cals = C.calendarios || [], escribibles = cals.filter(c => c.escribible && c.eventos);
   return `<div class="sec-h"><h1>Calendario</h1><button class="btn ghost sm" data-act="calSyncNow">Sincronizar</button></div>
-    <p class="muted small">Pizarra usa los calendarios de tu Nextcloud: lo que crees aquí sale en Nextcloud (y en cualquier app de calendario conectada a él) y lo que cambies allí llega aquí en la siguiente sincronización.</p>
+    <p class="muted small">Axis usa los calendarios de tu Nextcloud: lo que crees aquí sale en Nextcloud (y en cualquier app de calendario conectada a él) y lo que cambies allí llega aquí en la siguiente sincronización.</p>
     <label class="trow"><div><b>Usar los calendarios de Nextcloud</b><div class="muted small">${C.error ? esc(C.error) : C.ultima ? 'Última sincronización: ' + fechaHora(C.ultima) : 'Aún no se ha sincronizado'}</div></div><input type="checkbox" class="switch" data-act="calActivo" ${cfg.activo !== false ? 'checked' : ''}></label>
     ${cfg.activo === false ? '' : `
-    <div class="rm-sub" style="margin-top:18px">Calendarios que se ven en Pizarra</div>
+    <div class="rm-sub" style="margin-top:18px">Calendarios que se ven en Axis</div>
     <div class="ncard" style="margin-top:0">${cals.map(c => `<label class="cal-row"><span class="dot" style="background:${esc(c.color)}"></span><b>${esc(c.nombre)}</b><span class="muted small">${c.escribible ? '' : 'solo lectura'}</span>
       <input type="checkbox" data-act="calVis" data-id="${esc(c.href)}" ${!vis || vis.has(c.href) || c.href === piz ? 'checked' : ''} ${c.href === piz ? 'disabled' : ''}></label>`).join('') || '<p class="muted small" style="padding:10px">Todavía no hay calendarios: se cargan al sincronizar.</p>'}</div>
     <div class="rm-sub" style="margin-top:18px">Llevar al calendario «${esc(calNombre(piz) || 'Pizarra')}»</div>
     <div class="ncard" style="margin-top:0">
       ${[['publicaciones', 'Publicaciones con fecha', 'Como eventos. Si las mueves en Nextcloud, cambian aquí.'], ['tareas', 'Tareas con fecha límite', 'Como tareas de Nextcloud: si las completas allí, se marcan aquí.'], ['hitos', 'Hitos de las hojas de ruta', 'Como eventos de día completo o con su hora.']]
         .map(([k, t, d]) => `<label class="trow"><div><b>${t}</b><div class="muted small">${d}</div></div><input type="checkbox" class="switch" data-act="calVinc" data-k="${k}" ${cfg.vincular[k] ? 'checked' : ''}></label>`).join('')}
-      ${escribibles.length > 1 ? `<label class="nfield" style="margin-top:6px"><span>Calendario de Pizarra</span><select data-act-change="calPiz">${escribibles.map(c => `<option value="${esc(c.href)}" ${c.href === piz ? 'selected' : ''}>${esc(c.nombre)}</option>`).join('')}</select></label>` : ''}
+      ${escribibles.length > 1 ? `<label class="nfield" style="margin-top:6px"><span>Calendario de Axis</span><select data-act-change="calPiz">${escribibles.map(c => `<option value="${esc(c.href)}" ${c.href === piz ? 'selected' : ''}>${esc(c.nombre)}</option>`).join('')}</select></label>` : ''}
     </div>
-    <p class="muted small">Los eventos que genera Pizarra no se duplican: en el calendario de Pizarra salen como publicación, tarea o hito. La descripción y las categorías del evento las pone Pizarra.</p>`}`;
+    <p class="muted small">Los eventos que genera Axis no se duplican: en el calendario de Pizarra salen como publicación, tarea o hito. La descripción y las categorías del evento las pone Axis.</p>`}`;
 }
 
 /* Compartido conmigo: resúmenes que otras personas comparten contigo desde su Nextcloud */
@@ -2955,7 +3080,7 @@ function viewUsuarios(){
   if (!compartidos){ andCall('sharedWithMe'); compartidos = {cargando:true, lista:[]}; }
   const C = compartidos;
   return `<div class="sec-h"><h1>Compartido</h1><button class="btn ghost sm" data-act="shReload">Actualizar</button></div>
-    <p class="muted small">Personas que comparten contigo su resumen de Pizarra (cada una lo activa en su Cuenta, poniendo tu usuario de Nextcloud). Solo ves lo que cada una ha marcado.</p>
+    <p class="muted small">Personas que comparten contigo su resumen de Axis (cada una lo activa en su Cuenta, poniendo tu usuario de Nextcloud). Solo ves lo que cada una ha marcado.</p>
     ${C.cargando ? '<p class="muted">Cargando…</p>' : C.error ? `<div class="note"><b>No se pudo cargar</b>${esc(C.error)}</div>`
       : `<div class="ncard" style="margin-top:12px">${C.lista.map((s, i) => s.pendiente
         ? `<div class="u-row"><span class="avatar" style="background:var(--surface2);color:var(--text)">${esc(initials(s.nombre || s.propietario))}</span><div><b>${esc(s.nombre || s.propietario)}</b><small>${esc(s.propietario)} · desde otro Nextcloud, pendiente de aceptar</small></div><button class="btn sm" data-act="shAccept" data-id="${esc(s.id)}">Aceptar</button></div>`
@@ -2989,7 +3114,7 @@ function viewDatos(){
     const titulo = c => { const d = c.mia || c.otra || {}; return d.title || d.name || (d.valor !== undefined ? c.id : '') || c.id; };
     return `
     <div class="sec-h"><h1>Datos</h1></div>
-    <p class="muted small">Tus datos se guardan en este móvil y en tu Nextcloud, en la carpeta <b>Pizarra</b> (un archivo por publicación, tarea, proyecto…). Si usas Pizarra en varios móviles con la misma cuenta, se sincronizan solos.</p>
+    <p class="muted small">Tus datos se guardan en este móvil y en tu Nextcloud, en la carpeta <b>Pizarra</b> (un archivo por publicación, tarea, proyecto…). Si usas Axis en varios móviles con la misma cuenta, se sincronizan solos.</p>
     <p class="small">${syncLinea()}</p>
     <div class="row-btns" style="margin-top:10px">
       <button class="btn ghost sm" data-act="exportData">Exportar copia</button>
@@ -3383,7 +3508,7 @@ function computeEvents(){
     if (pubs.length) parts.push(pubs.slice(0, 3).map(c => (c.time ? c.time + ' ' : '') + c.title).join(' · ') + (pubs.length > 3 ? ` (+${pubs.length - 3})` : ''));
     if (tks.length) parts.push(`${tks.length} ${tks.length === 1 ? 'tarea vence' : 'tareas vencen'} hoy o antes`);
     ev.push({id:`d:${k}:${t}`, at:t,
-      title: pubs.length ? `Hoy: ${pubs.length} ${pubs.length === 1 ? 'publicación' : 'publicaciones'}` : 'Tu día en Pizarra',
+      title: pubs.length ? `Hoy: ${pubs.length} ${pubs.length === 1 ? 'publicación' : 'publicaciones'}` : 'Tu día en Axis',
       body: parts.join(' — ') || 'Día libre: nada programado ni tareas urgentes.'});
   }
   if (N.tasks.on) S.tasks.forEach(x => {
@@ -3426,7 +3551,7 @@ function viewAvisos(){
   const next = computeEvents().slice(0, 6);
   return `
     <div class="sec-h"><h1>Avisos</h1></div>
-    <p class="muted">Elige qué te avisa Pizarra y cuándo. Los cambios se guardan solos.</p>
+    <p class="muted">Elige qué te avisa Axis y cuándo. Los cambios se guardan solos.</p>
     ${box}
     <div class="ncard">${toggleRow('pub.on', 'Publicaciones', 'Antes de cada publicación con fecha')}
       ${N.pub.on ? `<div class="nopts">${selectOpt('pub.before', 'Avisar', BEFORE_OPTS, N.pub.before)}<p class="muted small" style="align-self:end;margin:0 0 10px">Si no tiene hora, cuenta como las 09:00.</p></div>` : ''}</div>
@@ -4378,7 +4503,7 @@ const actions = {
   },
   sparkyForm(){
     openForm({title:'Conectar SparkyFitness', saveLabel:'Conectar', values:{srv:'', key:''},
-      note:'La clave se guarda cifrada solo en este móvil. No se sube a Nextcloud, no va en las copias ni al administrador, y Pizarra solo la usa para leer.',
+      note:'La clave se guarda cifrada solo en este móvil. No se sube a Nextcloud, no va en las copias ni al administrador, y Axis solo la usa para leer.',
       fields:[{key:'srv', label:'Dirección de tu Sparky (la que abres en el navegador)', required:true, placeholder:'https://sparky.tu-dominio…'},
         {key:'key', label:'Clave de API (Sparky → Settings → Developer & Integrations → API Key Management, con «Read-only»)', type:'password', required:true, placeholder:'Pega aquí la clave'}],
       onSave:v => { sparkyBusy = true; andCall('sparkyConnect', v.srv, v.key); toast('Comprobando la clave con Sparky…'); }});
@@ -4703,7 +4828,7 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape'){ closeSheet(); closeNav(); } });
 document.addEventListener('change', e => {
-  if (e.target.dataset && e.target.dataset.actChange === 'calPiz'){ S.calendario.pizarra = e.target.value; render(); andCall('syncNow'); toast('Pizarra usará ese calendario'); return; }
+  if (e.target.dataset && e.target.dataset.actChange === 'calPiz'){ S.calendario.pizarra = e.target.value; render(); andCall('syncNow'); toast('Axis usará ese calendario'); return; }
   if (e.target.id !== 'updChannel') return;
   toast(andCall('setUpdateChannel', e.target.value.trim()) ? 'Enlace guardado' : 'Ese enlace no parece un enlace público de Nextcloud (…/s/…)');
 });
@@ -4716,7 +4841,7 @@ $('#importFile').addEventListener('change', e => {
       if (!['profiles', 'contents', 'projects', 'tasks'].every(k => Array.isArray(d[k]))) throw new Error('formato');
       d.device = S.device; d.notif = S.notif; // los avisos son de este dispositivo
       S = ensureDefaults(d); render(); toast('Copia importada');
-    } catch (err) { alert('Ese archivo no es una copia válida de Pizarra.'); }
+    } catch (err) { alert('Ese archivo no es una copia válida de Axis.'); }
     e.target.value = '';
   };
   r.readAsText(file);
@@ -4745,7 +4870,7 @@ $('#visorFile').addEventListener('change', e => {
   r.onload = () => {
     e.target.value = '';
     let d; try { d = JSON.parse(r.result); } catch (err) { d = null; }
-    if (!d || typeof d.health !== 'object' || !d.health){ alert(d && d.peso ? 'Ese metricas.json es de una versión antigua de la app: que esa persona actualice Pizarra en su Android y abra la app una vez.' : 'Ese archivo no es una copia de Pizarra con datos de Health.'); return; }
+    if (!d || typeof d.health !== 'object' || !d.health){ alert(d && d.peso ? 'Ese metricas.json es de una versión antigua de la app: que esa persona actualice Axis en su Android y abra la app una vez.' : 'Ese archivo no es una copia de Axis con datos de Health.'); return; }
     const l = visList(), old = l.find(x => x.id === visTarget);
     const suyo = d.user && d.user.name ? String(d.user.name) : '';   // metricas.json de su carpeta compartida
     const nombre = old ? old.nombre : (prompt('¿De quién es esta copia?', suyo) || '').trim();
