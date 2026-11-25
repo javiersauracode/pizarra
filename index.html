@@ -703,12 +703,43 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 @media (prefers-color-scheme: dark){.nu-sparky{stroke:#FFC39A}}
 .mc-legend .nu-sparky-l i{background:none;box-shadow:none;border-top:2px dashed #B4541C;border-radius:0;height:0;width:14px}
 .hl-delta.nu-sp{opacity:.6}
+/* kcal planificadas (pestaña Macros): amarillo discontinuo, como el progreso esperado */
+.nu-plan{fill:none;stroke:var(--hl-yel);stroke-width:2;stroke-dasharray:6 4;stroke-linecap:round}
+.mc-legend .nu-plan-l i{background:none;box-shadow:none;border-top:2px dashed var(--hl-yel);border-radius:0;height:0;width:14px}
+/* Resumen del periodo (estilo portada de hoja de ruta) */
+.nu-hero{margin-top:14px}
+.nu-hero h2{font-size:21px}
+.nu-hero .count-big b{font-size:34px}
+.nu-cmp{display:flex;flex-direction:column;gap:7px;margin-top:16px;position:relative;z-index:1}
+.nu-cmp > div{display:grid;grid-template-columns:88px 1fr auto;align-items:center;gap:10px;font-size:12.5px}
+.nu-cmp span{color:#B9B8BE}
+.nu-cmp i{height:8px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
+.nu-cmp em{display:block;height:100%;border-radius:99px}
+.nu-cmp b{font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
+.nu-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;position:relative;z-index:1}
+.nu-chips span{display:inline-flex;align-items:baseline;gap:5px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.08);font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
+.nu-chips small{font-weight:500;color:#B9B8BE;font-size:11px}
+/* Etapas de macros: tarjetas que se deslizan */
+.nu-swipe{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(-1 * var(--gx,16px));padding:0 var(--gx,16px) 6px;scrollbar-width:none;scroll-padding:0 var(--gx,16px)}
+.nu-swipe::-webkit-scrollbar{display:none}
+.nu-et{flex:0 0 min(86%,420px);scroll-snap-align:start;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--bc);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:9px}
+.nu-et-h{display:flex;align-items:flex-start;gap:8px}
+.nu-et-h .mc-dot{width:12px;height:12px;border-radius:4px;flex-shrink:0;margin-top:4px;background:var(--bc)}
+.nu-et-h small{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+.nu-mr{display:grid;grid-template-columns:34px 1fr auto 38px;align-items:center;gap:8px}
+.nu-mr > span{font-size:12px;font-weight:700;color:var(--muted)}
+.nu-tr{position:relative;height:8px;border-radius:99px;background:var(--surface2)}
+.nu-tr i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--bc)}
+.nu-tr em{position:absolute;left:80%;top:-3px;bottom:-3px;width:2px;border-radius:2px;background:var(--text);opacity:.55}
+.nu-mr b{font-size:13.5px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.nu-mr b small{font-weight:500;color:var(--muted);font-size:11px}
+.nu-pc{font-size:11px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.nu-et-f{font-size:11.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+.nu-como{margin-top:10px}
 #nuChart .hl-cur circle{fill:#5B8DEF;stroke:#5B8DEF}
-.nu-obj{fill:none;stroke:var(--muted);stroke-width:1.25;stroke-dasharray:3 3;opacity:.7}
 .enter .nu-gasto{animation:draw 1.1s .2s cubic-bezier(.4,0,.2,1) both}
 .enter .nu-bar{animation:fade .5s both;animation-delay:calc(var(--i) * 12ms)}
 .mc-legend .nu-gasto-l i{background:none;box-shadow:none;border-top:2.5px solid #F08A4B;border-radius:2px;height:0;width:14px}
-.mc-legend .nu-obj-l i{background:none;box-shadow:none;border-top:1.5px dashed var(--muted);border-radius:0;height:0;width:14px}
 .hl-tip .nu-t{display:block;font-size:10.5px;font-weight:700;color:#FFB47E}
 .hl-tip .nu-t2{display:block;font-size:10px;opacity:.8}
 @media (prefers-color-scheme: dark){.hl-tip .nu-t{color:#A04E14}}
@@ -2063,10 +2094,10 @@ function importSteps(txt, src){
    S.health.nutri = [{d, kcal, p, c, g, fib?, bmr?, burned?, ok?, op?, oc?, og?, src:'sparky'|'atajo'}]
    Información, no control: el objetivo se enseña solo como referencia y en gris; nada en rojo ni avisos de «no cumples». */
 const NU_COL = {in:'#5B8DEF', gasto:'#F08A4B'};
-/* Gasto real (por tu peso): en un periodo, lo comido de media menos lo que ha cambiado el peso, pasado a kcal.
-     gasto ≈ ingesta media − (peso de la última semana − peso de la primera) × 7.700 / días entre ambas
+/* Gasto real (por tu peso): en un periodo, lo comido de media menos lo que cambia el peso (tendencia), pasado a kcal.
+     gasto ≈ ingesta media − pendiente del peso (kg/día) × 7.700
    No hace falta estimar basal, ejercicio, sueño ni actividad: se mide el resultado. Solo se da con datos suficientes:
-   al menos 14 días, 3 de cada 4 días con comidas registradas y 2 pesadas en la primera y en la última semana.
+   al menos 14 días, 3 de cada 4 días con comidas registradas y 6 pesadas (alguna en la primera y en la última semana).
    El gasto de cada día es el de sus 28 días anteriores (incluido él). El de Sparky (basal + quemado) queda como referencia. */
 const KCAL_KG = 7700, G_VENTANA = 28, G_MIN = 14;
 let gCache = null;
@@ -2076,18 +2107,21 @@ function gBase(){ // pesos por día y comida por día, calculados una vez por ca
   const kc = new Map((H.nutri || []).filter(n => n.kcal > 0).map(n => [n.d, n.kcal]));
   return gCache = {w:H.weight, wl:H.weight.length, n:H.nutri, nl:(H.nutri || []).length, del:H.del, dw:dayWeights(), kc, dia:new Map()};
 }
+/* Tendencia del peso del periodo = pendiente de la recta que mejor se ajusta a TODAS sus pesadas (mínimos cuadrados,
+   un valor por día). Es mucho más estable que comparar dos semanas: una pesada con agua o sal apenas la mueve.
+   Requisitos: 6 pesadas o más, con al menos una en la primera semana y otra en la última. */
 function gastoPeriodo(from, to){
   const L = daysBetween(from, to) + 1; if (L < G_MIN) return null;
   const B = gBase();
-  const f1 = iso(addDays(parseISO(from), 6)), t0 = iso(addDays(parseISO(to), -6));
-  const ini = B.dw.filter(p => p.d >= from && p.d <= f1), fin = B.dw.filter(p => p.d >= t0 && p.d <= to);
-  if (ini.length < 2 || fin.length < 2) return null;
+  const ps = B.dw.filter(p => p.d >= from && p.d <= to);
+  if (ps.length < 6 || ps[0].d > iso(addDays(parseISO(from), 6)) || ps[ps.length - 1].d < iso(addDays(parseISO(to), -6))) return null;
   let sum = 0, cnt = 0; for (const [d, k] of B.kc) if (d >= from && d <= to){ sum += k; cnt++; }
   if (cnt < L * .75) return null;
-  const centro = l => l.reduce((s, p) => s + daysBetween(from, p.d), 0) / l.length, media = l => l.reduce((s, p) => s + p.kg, 0) / l.length;
-  const span = centro(fin) - centro(ini); if (span < 7) return null;
-  const kin = sum / cnt, dkg = media(fin) - media(ini);
-  return {kcal:kin - dkg * KCAL_KG / span, kin, dkg, span, dias:cnt, L};
+  const xs = ps.map(p => daysBetween(from, p.d)), mx = xs.reduce((s, x) => s + x, 0) / xs.length, my = ps.reduce((s, p) => s + p.kg, 0) / ps.length;
+  const sxx = xs.reduce((s, x) => s + (x - mx) ** 2, 0); if (!sxx) return null;
+  const pend = xs.reduce((s, x, i) => s + (x - mx) * (ps[i].kg - my), 0) / sxx;    // kg por día
+  const kin = sum / cnt;
+  return {kcal:kin - pend * KCAL_KG, kin, pend, kgSemana:pend * 7, dkg:pend * (L - 1), pesadas:ps.length, dias:cnt, L};
 }
 function gastoDia(d){ // gasto real de los 28 días que acaban en d (memorizado)
   const B = gBase(); if (B.dia.has(d)) return B.dia.get(d);
@@ -2119,36 +2153,112 @@ function nutriPeriod(a, b){
     p:avgOf(com, n => n.p), c:avgOf(com, n => n.c), g:avgOf(com, n => n.g),
     op:avgOf(com, n => n.op), oc:avgOf(com, n => n.oc), og:avgOf(com, n => n.og), ok:avgOf(com, n => n.ok), dw, dwFrom:tr[0], dwTo:tr[tr.length - 1]};
 }
+/* Kcal planificadas de un día: las de la etapa de macros en la que cae (pestaña Macros) */
+function planDia(d){ const m = macroPeriods().filter(x => x.from <= d).pop(); return m ? (Number(m.kcal) || macroKcal(m)) : null; }
 function nutriChart(list, a, b){
   if (!list.length) return `<div class="hl-chart empty-chart">${empty('Sin datos de nutrición en este periodo', AND ? 'Conecta Sparky abajo o cambia el intervalo.' : 'Pega los datos del atajo de Sparky abajo o cambia el intervalo.')}</div>`;
+  const Hh = S.health, onReal = Hh.nuReal !== false, onSp = Hh.nuSparky !== false, onBands = !!Hh.nuBands;
   const W = Math.max(300, Math.min(1100, ($('#view') ? $('#view').clientWidth : 360) - 2 * 16 - 2)), H = 220;
   const L = 44, R = 14, T = 16, B = 28;
   const days = daysBetween(a, b) + 1, slot = (W - L - R) / days, bw = Math.max(1.5, Math.min(22, slot * .62));
-  const mx = Math.max(...list.map(n => Math.max(n.kcal || 0, nuGasto(n) || 0, nuGastoSparky(n) || 0, n.ok || 0)));
+  const etapas = macroPeriods().filter(m => m.from <= b && (!m.to || m.to >= a));
+  const mx = Math.max(...list.map(n => Math.max(n.kcal || 0, onReal ? nuGasto(n) || 0 : 0, onSp ? nuGastoSparky(n) || 0 : 0)), ...etapas.map(m => Number(m.kcal) || macroKcal(m)));
   const top = Math.max(1000, Math.ceil(mx * 1.32 / 500) * 500);   // aire arriba: ahí cabe el cuadro sin tapar barras
   const x = d => L + (daysBetween(a, d) + .5) * slot, y = v => T + (top - v) / top * (H - T - B);
+  const xl = d => L + Math.max(0, Math.min(days, daysBetween(a, d))) * slot;   // borde izquierdo del día d (recortado al intervalo)
   const grid = Array.from({length:5}, (_, i) => top * i / 4);
   const every = Math.max(1, Math.round(days / 5)), ticks = []; for (let i = 0; i < days; i += every) ticks.push(iso(addDays(parseISO(a), i)));
-  const P = list.map((n, i) => ({x:+x(n.d).toFixed(1), y:+y(n.kcal || 0).toFixed(1), d:n.d, kcal:n.kcal || 0, gasto:nuGasto(n), gs:nuGastoSparky(n), bal:nuBal(n), p:n.p, c:n.c, g:n.g, i}));
-  const gs = list.filter(n => nuGasto(n) != null);
+  const P = list.map((n, i) => ({x:+x(n.d).toFixed(1), y:+y(n.kcal || 0).toFixed(1), d:n.d, kcal:n.kcal || 0, gasto:onReal ? nuGasto(n) : null, gs:onSp ? nuGastoSparky(n) : null, bal:nuBal(n), plan:planDia(n.d), p:n.p, c:n.c, g:n.g, i}));
+  const gs = onReal ? list.filter(n => nuGasto(n) != null) : [];
   const gLine = gs.map((n, i) => (i ? 'L' : 'M') + x(n.d).toFixed(1) + ' ' + y(nuGasto(n)).toFixed(1)).join(' ');
-  const ss = list.filter(n => nuGastoSparky(n) != null);
+  const ss = onSp ? list.filter(n => nuGastoSparky(n) != null) : [];
   const sLine = ss.map((n, i) => (i ? 'L' : 'M') + x(n.d).toFixed(1) + ' ' + y(nuGastoSparky(n)).toFixed(1)).join(' ');
-  const os = list.filter(n => n.ok > 0);
-  const oLine = os.map((n, i) => (i ? 'L' : 'M') + (x(n.d) - slot / 2).toFixed(1) + ' ' + y(n.ok).toFixed(1) + ' H' + (x(n.d) + slot / 2).toFixed(1)).join(' ');
-  return `<div class="hl-chart" id="nuChart" data-kind="nutri" data-pts='${esc(JSON.stringify(P.map(p => ({x:p.x, y:p.y, d:p.d, kcal:p.kcal, gasto:p.gasto, gs:p.gs, bal:p.bal, p:p.p, c:p.c, g:p.g}))))}'>
+  // kcal planificadas: un tramo horizontal por etapa de macros
+  const plan = etapas.map(m => { const k = Number(m.kcal) || macroKcal(m), x1 = xl(m.from), x2 = m.next ? xl(m.next) : W - R;
+    return x2 > x1 && k ? `M${x1.toFixed(1)} ${y(k).toFixed(1)} H${x2.toFixed(1)}` : ''; }).join(' ');
+  // fondo por macros: una franja de color por etapa, como en Métricas
+  const bands = onBands ? etapas.map(m => { const x1 = Math.max(L, xl(m.from)), x2 = Math.min(W - R, m.next ? xl(m.next) : W - R);
+    return x2 > x1 ? `<rect class="hl-band" x="${x1.toFixed(1)}" y="${T}" width="${(x2 - x1).toFixed(1)}" height="${H - T - B}" style="--bc:${m.color}"/>
+      <line class="hl-band-edge" x1="${x1.toFixed(1)}" x2="${x1.toFixed(1)}" y1="${T}" y2="${H - B}" style="--bc:${m.color}"/>` : ''; }).join('') : '';
+  return `<div class="hl-chart" id="nuChart" data-kind="nutri" data-pts='${esc(JSON.stringify(P.map(p => ({x:p.x, y:p.y, d:p.d, kcal:p.kcal, gasto:p.gasto, gs:p.gs, bal:p.bal, plan:p.plan, p:p.p, c:p.c, g:p.g}))))}'>
     <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Ingesta y gasto de cada día">
+      ${bands}
       ${grid.map(v => `<line class="hl-grid" x1="${L}" x2="${W - R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text class="hl-ax" x="${L - 6}" y="${(y(v) + 4).toFixed(1)}" text-anchor="end">${v >= 1000 ? (v / 1000).toLocaleString('es-ES', {maximumFractionDigits:1}) + 'k' : v}</text>`).join('')}
       ${ticks.map(d => `<text class="hl-ax" x="${x(d).toFixed(1)}" y="${H - 8}" text-anchor="middle">${parseISO(d).getDate()} ${parseISO(d).toLocaleDateString('es-ES', {month:'short'}).replace('.', '')}</text>`).join('')}
       ${P.map(p => `<rect class="nu-bar" x="${(p.x - bw / 2).toFixed(1)}" y="${p.y}" width="${bw.toFixed(1)}" height="${Math.max(0, H - B - p.y).toFixed(1)}" rx="${Math.min(4, bw / 3).toFixed(1)}" style="--i:${p.i}"/>`).join('')}
-      ${os.length ? `<path class="nu-obj" d="${oLine}"/>` : ''}
+      ${plan.trim() ? `<path class="nu-plan" d="${plan}"/>` : ''}
       ${ss.length > 1 ? `<path class="nu-sparky" d="${sLine}"/>` : ''}
-      ${gs.length > 1 ?`<path class="nu-gasto" d="${gLine}" pathLength="1"/>` : ''}
+      ${gs.length > 1 ? `<path class="nu-gasto" d="${gLine}" pathLength="1"/>` : ''}
       ${gs.map(n => `<circle class="nu-gasto-p" cx="${x(n.d).toFixed(1)}" cy="${y(nuGasto(n)).toFixed(1)}" r="${slot > 9 ? 2.6 : 1.6}"/>`).join('')}
       <g class="hl-cur" style="display:none"><line y1="${T}" y2="${H - B}"/><circle r="5"/></g>
     </svg>
     <div class="hl-tip"></div>
   </div>`;
+}
+/* Resumen del periodo, al estilo de la portada de las hojas de ruta: titular, anillo de días registrados,
+   balance acumulado en grande, barras de comido frente a los dos gastos y fichas con peso, ritmo y pasos */
+function nutriResumen(per, a, b, days){
+  const bal = per.bal, gp = gastoPeriodo(a, b < TODAY() ? b : TODAY());
+  const tit = bal == null ? 'Faltan datos para el gasto real' : Math.abs(bal) <= 100 ? 'En mantenimiento'
+    : bal > 0 ? `Superávit de ${fmtKcal(bal)} kcal/día` : `Déficit de ${fmtKcal(-bal)} kcal/día`;
+  const sub = per.kout != null ? `Comes ${fmtKcal(per.kin)} kcal al día y tu peso dice que gastas ${fmtKcal(per.kout)}.`
+    : `Comes ${fmtKcal(per.kin)} kcal al día. Para el gasto real hacen falta 14 días con comidas y pesadas.`;
+  const pct = Math.round(per.days / days * 100);
+  const vals = [['Comido', per.kin, '#5B8DEF'], ['Gasto real', per.kout, '#F08A4B'], ['Según Sparky', per.ks, '#C9773F']].filter(v => v[1] != null);
+  const mx = Math.max(...vals.map(v => v[1]));
+  const st = periodSteps(a, b);
+  const chips = [per.dw != null ? `<span>Peso ${fmtDiff(per.dw)}<small>tendencia</small></span>` : '',
+    gp ? `<span>${gp.kgSemana >= 0 ? '+' : '−'}${Math.abs(gp.kgSemana).toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2})} kg/sem<small>${gp.pesadas} pesadas</small></span>` : '',
+    st ? `<span>${fmtSteps(st.avg)}<small>pasos/día</small></span>` : ''].filter(Boolean).join('');
+  return `<div class="rm-hero nu-hero" style="--rc:#5B8DEF">
+    <div class="eyebrow">En este periodo · ${fmtShort(a)} – ${fmtShort(b)}</div>
+    <h2>${tit}</h2>
+    <div class="goal">${sub}</div>
+    <div class="rm-stats">
+      <div class="ring" style="--p:${pct}"><span>${per.days}/${days}</span></div>
+      <div class="count-big">${per.balDays ? `<b>${fmtBal(per.balSum)}</b><small>kcal de balance acumulado · ≈ ${fmtDiff(per.balSum / KCAL_KG)}</small>` : `<b>${fmtKcal(per.kin)}</b><small>kcal comidas de media</small>`}</div>
+    </div>
+    <div class="nu-cmp">${vals.map(([l, v, c]) => `<div><span>${l}</span><i><em style="width:${(v / mx * 100).toFixed(1)}%;background:${c}"></em></i><b>${fmtKcal(v)}</b></div>`).join('')}</div>
+    ${chips ? `<div class="nu-chips">${chips}</div>` : ''}
+  </div>`;
+}
+/* Etapas de macros: planificado frente a comido de media, una tarjeta por etapa (se desliza a izquierda y derecha) */
+function nutriEtapas(){
+  const ps = macroPeriods().filter(m => m.from <= TODAY());
+  const cards = ps.map(m => {
+    const end = m.to && m.to < TODAY() ? m.to : TODAY(), p = nutriPeriod(m.from, end); if (!p) return '';
+    const dur = daysBetween(m.from, end) + 1, w = period30(m.from, end);
+    const fila = (l, v, plan, u) => {
+      const r = plan ? v / plan : null, ancho = r == null ? 0 : Math.min(100, r * 80);
+      return `<div class="nu-mr"><span>${l}</span><div class="nu-tr"><i style="width:${ancho.toFixed(1)}%"></i>${plan ? '<em></em>' : ''}</div>
+        <b>${fmtKcal(v)}<small>${plan ? ' / ' + fmtKcal(plan) : ''}${u ? ' ' + u : ''}</small></b><small class="nu-pc">${r == null ? '' : Math.round(r * 100) + ' %'}</small></div>`;
+    };
+    const razon = m.reason || m.note;
+    return `<div class="nu-et" style="--bc:${m.color}">
+      <div class="nu-et-h"><span class="mc-dot"></span><div><b>${fmtShort(m.from)} → ${m.to ? fmtShort(m.to) : 'hoy'}</b><small>${p.days} de ${dur} día${dur === 1 ? '' : 's'} con registro${razon ? ' · ' + esc(razon) : ''}</small></div></div>
+      ${fila('kcal', p.kin, Number(m.kcal) || macroKcal(m), '')}${fila('CH', p.c, Number(m.ch), 'g')}${fila('P', p.p, Number(m.p), 'g')}${fila('G', p.g, Number(m.g), 'g')}
+      <div class="nu-et-f">${p.kout != null ? `Gasto real ${fmtKcal(p.kout)} · balance ${fmtBal(p.bal)}/día` : 'Gasto real: faltan datos'}${p.ks != null ? ` · Sparky ${fmtKcal(p.ks)}` : ''}${w ? ` · peso ${fmtPct(w.pct30, 2)} a 30 días` : ''}</div>
+    </div>`;
+  }).filter(Boolean);
+  if (!cards.length) return '';
+  return `<div class="rm-sub" style="margin-top:22px">Macros: planificado y comido</div>
+    <div class="nu-swipe">${cards.join('')}</div>
+    ${cards.length > 1 ? '<p class="hint" style="padding-left:0;margin-top:2px">Desliza a izquierda o derecha para ver cada etapa de macros. La barra llega a la marca cuando lo comido coincide con lo planificado.</p>' : ''}`;
+}
+function paintNutriTools(open){
+  const sh = $('#sheet'), H = S.health;
+  if (!open && !(sh.classList.contains('open') && sh.querySelector('.nu-tools'))) return;
+  const tg = (on, act, t, d) => `<button class="mc-toggle ${on ? 'on' : ''}" data-act="${act}" role="switch" aria-checked="${!!on}"><span class="mc-sw"></span><span>${t}<small>${d}</small></span></button>`;
+  const body = tg(H.nuReal !== false, 'nuTogReal', 'Gasto real (por tu peso)', 'Lo comido menos lo que cambia tu peso, en las 4 semanas anteriores a cada día')
+    + tg(H.nuSparky !== false, 'nuTogSparky', 'Gasto según Sparky', 'Basal por fórmula + lo quemado que registra Sparky')
+    + (H.macros.length ? tg(H.nuBands, 'nuTogBands', 'Fondo por macros', 'Una franja de color por cada etapa de macros') : '');
+  const box = sh.querySelector('.nu-tools');
+  if (box && sh.classList.contains('open')){ box.innerHTML = body; return; }
+  delete sh.dataset.day; sh.classList.remove('has-pv');
+  sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
+    <div class="sheet-h"><h2>Herramientas</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+    <div class="hl-tools nu-tools">${body}</div></div>`;
+  sh.classList.add('open'); document.body.classList.add('locked');
 }
 function viewNutricion(){
   const H = S.health, [a, b] = nutriRange(), list = nutriIn(a, b);
@@ -2156,7 +2266,10 @@ function viewNutricion(){
   const per = nutriPeriod(a, b), days = daysBetween(a, b) + 1;
   const pcg = n => `P ${fmtNum(n.p || 0)} · C ${fmtNum(n.c || 0)} · G ${fmtNum(n.g || 0)}`;
   const g = last ? nuGasto(last) : null, gsp = last ? nuGastoSparky(last) : null, bal = last ? nuBal(last) : null;
-  const legend = `<div class="mc-legend row"><span style="--bc:${NU_COL.in}"><i></i>Ingesta</span>${list.some(n => nuGasto(n) != null) ? `<span class="nu-gasto-l"><i></i>Gasto real (por tu peso)</span>` : ''}${list.some(n => nuGastoSparky(n) != null) ? `<span class="nu-sparky-l"><i></i>Gasto según Sparky</span>` : ''}${list.some(n => n.ok > 0) ? `<span class="nu-obj-l"><i></i>Objetivo de Sparky</span>` : ''}</div>`;
+  const onReal = H.nuReal !== false, onSp = H.nuSparky !== false;
+  const hayPlan = macroPeriods().some(m => m.from <= b && (!m.to || m.to >= a));
+  const legend = `<div class="mc-legend row"><span style="--bc:${NU_COL.in}"><i></i>Ingesta</span>${onReal && list.some(n => nuGasto(n) != null) ? '<span class="nu-gasto-l"><i></i>Gasto real</span>' : ''}${onSp && list.some(n => nuGastoSparky(n) != null) ? '<span class="nu-sparky-l"><i></i>Según Sparky</span>' : ''}${hayPlan ? '<span class="nu-plan-l"><i></i>Kcal planificadas</span>' : ''}</div>`;
+  const nTools = (onReal ? 1 : 0) + (onSp ? 1 : 0) + (H.nuBands && H.macros.length ? 1 : 0);
   return `
     <div class="hl-hero">
       ${last ? `<div><div class="muted small">${last.d === TODAY() ? 'Hoy, de momento' : 'Último día con registro · ' + fmtShort(last.d)}</div><div class="hl-big">${fmtKcal(last.kcal)} <small>kcal</small></div><div class="muted small">${pcg(last)}</div></div>
@@ -2166,29 +2279,16 @@ function viewNutricion(){
     <div class="pills" style="padding-top:12px">${[['7', 'Últimos 7 días'], ['30', 'Últimos 30 días'], ['90', 'Últimos 90 días'], ['custom', 'Personalizado']].map(([k, l]) => `<button class="pill ${(H.nutriRange || '30') === k ? 'on' : ''}" data-act="nutriRange" data-v="${k}">${l}</button>`).join('')}</div>
     ${H.nutriRange === 'custom' ? `<div class="hl-custom"><label>Desde<input type="date" id="nuFrom" value="${esc(H.nutriFrom || a)}" max="${TODAY()}"></label><label>Hasta<input type="date" id="nuTo" value="${esc(H.nutriTo || b)}" max="${TODAY()}"></label></div>` : ''}
     <div class="hl-card">
-      <div class="hl-card-h"><b>Ingesta y gasto</b><span class="muted small">${fmtShort(a)} – ${fmtShort(b)}</span></div>
+      <div class="hl-card-h"><b>Ingesta y gasto</b><span class="muted small">${fmtShort(a)} – ${fmtShort(b)}</span>
+        <button class="btn ghost sm hl-tools-btn" data-act="nutriTools" aria-label="Filtros de la gráfica">${ic('sliders')}${nTools ? `<b>${nTools}</b>` : ''}</button></div>
       ${nutriChart(list, a, b)}
       ${list.length ? legend : ''}
     </div>
-    <div class="hl-stats">
-      <div><small>Ingesta media</small><b>${per ? fmtKcal(per.kin) : '–'}</b></div>
-      <div><small>Gasto real</small><b>${per && per.kout != null ? fmtKcal(per.kout) : '–'}</b></div>
-      <div><small>Según Sparky</small><b>${per && per.ks != null ? fmtKcal(per.ks) : '–'}</b></div>
-      <div><small>Balance medio</small><b>${per && per.bal != null ? fmtBal(per.bal) : '–'}</b></div>
-    </div>
-    ${per ? `<div class="nu-card">
-      <div class="rm-sub" style="margin:0 0 8px">En este periodo</div>
-      <div class="nu-rows">
-        <div><span>Días con comidas registradas</span><b>${per.days} de ${days}</b></div>
-        ${per.kout != null && per.ks != null ? `<div><span>Diferencia entre gastos</span><b>${fmtBal(per.kout - per.ks)} kcal/día</b><small>lo que tu peso dice que gastas frente a lo que calcula Sparky (basal por fórmula + lo quemado que registra)</small></div>` : ''}
-        <div><span>Macros medias al día</span><b>P ${fmtNum(per.p)} · C ${fmtNum(per.c)} · G ${fmtNum(per.g)} g</b>${per.op ? `<small>objetivo de Sparky: P ${fmtNum(per.op)} · C ${fmtNum(per.oc)} · G ${fmtNum(per.og)} g</small>` : ''}</div>
-        ${per.balDays ? `<div><span>Balance acumulado</span><b>${fmtBal(per.balSum)} kcal</b><small>en ${per.balDays} día${per.balDays === 1 ? '' : 's'} con gasto · equivale a ≈ ${fmtDiff(per.balSum / 7700)} (7.700 kcal ≈ 1 kg, orientativo)</small></div>` : ''}
-        ${per.dw != null ? `<div><span>Peso (tendencia de 7 días)</span><b>${fmtDiff(per.dw)}</b><small>${fmtKg(per.dwFrom.kg, 1)} → ${fmtKg(per.dwTo.kg, 1)}</small></div>` : ''}
-        ${(() => { const st = periodSteps(a, b); return st ? `<div><span>Pasos de media</span><b>${fmtSteps(st.avg)}</b></div>` : ''; })()}
-      </div>
-      <p class="hint" style="padding-left:0;margin:8px 0 0"><b>Gasto real (por tu peso):</b> lo que comes de media menos lo que cambia tu peso, pasado a kcal (7.700 kcal ≈ 1 kg), con las 4 semanas anteriores a cada día${per.gPropio ? '; la media del periodo usa el periodo entero' : ''}. Hace falta comer registrado 3 de cada 4 días y pesarse al menos 2 veces la primera y la última semana. El balance se calcula con este gasto.<br>
-        <b>Según Sparky:</b> metabolismo basal por fórmula + lo quemado con ejercicio y actividad que registra Sparky. Suele quedarse corto (no cuenta la digestión ni toda la actividad diaria).</p>
-    </div>` : ''}
+    ${per ? nutriResumen(per, a, b, days) : ''}
+    ${nutriEtapas()}
+    ${per ? `<details class="st-guide nu-como"><summary>¿Cómo se calculan los gastos?</summary>
+      <p class="hint" style="padding-left:0"><b>Gasto real (por tu peso):</b> lo que comes de media menos lo que cambia tu peso, pasado a kcal (7.700 kcal ≈ 1 kg). El cambio de peso es la pendiente de la recta que mejor encaja con todas tus pesadas de las 4 semanas anteriores a cada día: una pesada suelta con agua o sal apenas lo mueve. Hace falta comer registrado 3 de cada 4 días y 6 pesadas (alguna en la primera y en la última semana). El balance se calcula con este gasto.<br>
+      <b>Según Sparky:</b> metabolismo basal por fórmula + lo quemado con ejercicio y actividad que registra Sparky. Suele quedarse corto (no cuenta la digestión ni toda la actividad diaria).</p></details>` : ''}
     <button class="hl-entry" data-act="nutriList">${ic('list')}<div><b>Historial de días</b><small>${list.length ? `${list.length} día${list.length === 1 ? '' : 's'} · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>
     ${VIS ? '' : `<div class="rm-sub" style="margin-top:22px">De dónde salen los datos</div>${AND ? sparkyAndroidNote() : sparkyIphoneNote()}`}`;
 }
@@ -2455,6 +2555,7 @@ function healthPointer(e){
   tip.innerHTML = box.dataset.kind === 'nutri' ? `<b>${fmtKcal(best.kcal)} kcal</b> <small>${corta(best.d)}</small>`
       + (best.gasto != null ? `<span class="nu-t">Gasto real ${fmtKcal(best.gasto)} · balance ${fmtBal(best.bal)}</span>` : '')
       + (best.gs != null ? `<span class="nu-t2">Sparky: gasto ${fmtKcal(best.gs)}</span>` : '')
+      + (best.plan ? `<span class="exp">Planificadas ${fmtKcal(best.plan)} kcal</span>` : '')
       + (best.kcal ? `<span class="nu-t2">P ${fmtNum(best.p || 0)} · C ${fmtNum(best.c || 0)} · G ${fmtNum(best.g || 0)}</span>` : '')
     : box.dataset.kind === 'steps' ? `<b>${fmtSteps(best.n)} pasos</b> <small>${corta(best.d)}</small>`
     : `<b>${fmtKg(best.kg, wk ? 2 : 1)}</b> <small>${wk ? 'sem. ' : ''}${corta(best.d)}${best.n > 1 ? ` · ${best.n}` : ''}</small>${exp}`;
@@ -2471,7 +2572,7 @@ function chartObstacles(box, svg){
   const sr = svg.getBoundingClientRect(), br = box.getBoundingClientRect(), vb = svg.viewBox.baseVal, k = sr.width / vb.width;
   const ox = sr.left - br.left, oy = sr.top - br.top, pts = [], rects = [];
   const R = b => ({x:ox + b.x * k, y:oy + b.y * k, w:b.width * k, h:b.height * k});
-  svg.querySelectorAll('.hl-line, .hl-trend, .hl-exp, .hl-goal, .st-avg, .hl-exp-band, .nu-gasto, .nu-sparky, .nu-obj').forEach(el => {
+  svg.querySelectorAll('.hl-line, .hl-trend, .hl-exp, .hl-goal, .st-avg, .hl-exp-band, .nu-gasto, .nu-sparky, .nu-plan').forEach(el => {
     try { const L = el.getTotalLength(); for (let s = 0; s <= L; s += 3){ const p = el.getPointAtLength(s); pts.push([ox + p.x * k, oy + p.y * k]); } } catch (e) {}
   });
   svg.querySelectorAll('.st-bar, .nu-bar, .hl-goal-t, .hl-exp-t, .st-avg-t, .hl-band-t').forEach(el => { try { const b = el.getBBox(); if (b.width && b.height) rects.push(R(b)); } catch (e) {} });
@@ -3250,6 +3351,7 @@ function render(){
   $('#view').dataset.v = S.ui.view; // permite anchos distintos por vista
   $('#fab').style.display = VIS || S.ui.view === 'ajustes' &&!['perfiles', 'hojas'].includes(S.ui.setTab) ? 'none' : ''; // el + solo donde crea algo
   $('#view').innerHTML = html;
+  document.querySelectorAll('.nu-swipe').forEach(sw => { sw.scrollLeft = sw.scrollWidth; }); // etapa de macros actual a la vista
   enterAnim();
   document.documentElement.style.setProperty('--tb', $('.topbar').offsetHeight + 'px');
   const tt = $('.tl-today'); // centra la línea de tiempo en HOY
@@ -4093,6 +4195,10 @@ const actions = {
     render();
   },
   nutriList(){ nutriListSheet(); },
+  nutriTools(){ paintNutriTools(true); },
+  nuTogReal(){ S.health.nuReal = S.health.nuReal === false; render(); paintNutriTools(); },
+  nuTogSparky(){ S.health.nuSparky = S.health.nuSparky === false; render(); paintNutriTools(); },
+  nuTogBands(){ S.health.nuBands = !S.health.nuBands; render(); paintNutriTools(); },
   async nutriPaste(){
     let txt = '';
     try { txt = await navigator.clipboard.readText(); } catch (e) {}
