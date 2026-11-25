@@ -697,6 +697,31 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 .mc-legend.row span{gap:5px;flex-wrap:nowrap;font-variant-numeric:tabular-nums}
 /* Nutrición: ingesta en barras azules, gasto estimado en naranja, objetivo de Sparky en gris (solo referencia) */
 .nu-bar{fill:#5B8DEF;opacity:.85}
+.nu-bar.in{fill:#2348A8;opacity:1}
+@media (prefers-color-scheme: dark){.nu-bar.in{fill:#8FB2FF}}
+/* Resumen del ciclo (Nutrición): claro, con el color del ciclo, como las tarjetas de macros */
+.ci-card{margin-top:14px;background:var(--surface);border:1px solid color-mix(in srgb,var(--bc) 40%,var(--line));border-radius:18px;padding:14px;
+  box-shadow:inset 5px 0 0 var(--bc);background-image:linear-gradient(135deg,color-mix(in srgb,var(--bc) 16%,transparent),transparent 60%)}
+.ci-h{display:flex;align-items:flex-start;gap:9px;padding-left:4px}
+.ci-t{flex:1;min-width:0}
+.ci-t small{display:block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--bc)}
+.ci-t b{display:block;font-size:24px;letter-spacing:-.02em;line-height:1.15;margin-top:2px}
+.ci-obj{font-size:11px;font-weight:750;padding:5px 9px;border-radius:999px;background:color-mix(in srgb,var(--bc) 15%,var(--surface2));color:var(--text);white-space:nowrap}
+.ci-nota{font-size:12px;color:var(--muted);margin:8px 0 0 4px}
+.ci-cmp{display:flex;flex-direction:column;gap:7px;margin:14px 0 0 4px}
+.ci-cmp > div{display:grid;grid-template-columns:88px 1fr auto;align-items:center;gap:10px;font-size:12.5px}
+.ci-cmp span{color:var(--muted)}
+.ci-cmp i{height:9px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.ci-cmp em{display:block;height:100%;border-radius:99px}
+.ci-cmp b{font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
+.ci-cmp > small{font-size:11px;color:var(--muted)}
+.ci-tiles .et-tile b{font-size:18px}
+/* Macros: etapas agrupadas por ciclo */
+.ci-grupo{margin-top:10px}
+.ci-gh{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px;margin:6px 0 8px}
+.ci-gh .et-dot{align-self:center;margin-top:0}
+.ci-gh b{font-size:15px;color:var(--bc);text-transform:uppercase;letter-spacing:.06em}
+.ci-gh small{font-size:12px;color:var(--muted)}
 .nu-gasto{fill:none;stroke:#F08A4B;stroke-width:2.25;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0}
 .nu-gasto-p{fill:#F08A4B}
 .nu-sparky{fill:none;stroke:#B4541C;stroke-width:1.75;stroke-dasharray:4 3;opacity:.9;stroke-linejoin:round}
@@ -706,19 +731,6 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 /* kcal planificadas (pestaña Macros): amarillo discontinuo, como el progreso esperado */
 .nu-plan{fill:none;stroke:var(--hl-yel);stroke-width:2;stroke-dasharray:6 4;stroke-linecap:round}
 .mc-legend .nu-plan-l i{background:none;box-shadow:none;border-top:2px dashed var(--hl-yel);border-radius:0;height:0;width:14px}
-/* Resumen del periodo (estilo portada de hoja de ruta) */
-.nu-hero{margin-top:14px}
-.nu-hero h2{font-size:21px}
-.nu-hero .count-big b{font-size:34px}
-.nu-cmp{display:flex;flex-direction:column;gap:7px;margin-top:16px;position:relative;z-index:1}
-.nu-cmp > div{display:grid;grid-template-columns:88px 1fr auto;align-items:center;gap:10px;font-size:12.5px}
-.nu-cmp span{color:#B9B8BE}
-.nu-cmp i{height:8px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
-.nu-cmp em{display:block;height:100%;border-radius:99px}
-.nu-cmp b{font-variant-numeric:tabular-nums;min-width:44px;text-align:right}
-.nu-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;position:relative;z-index:1}
-.nu-chips span{display:inline-flex;align-items:baseline;gap:5px;padding:6px 11px;border-radius:999px;background:rgba(255,255,255,.08);font-size:13px;font-weight:700;font-variant-numeric:tabular-nums}
-.nu-chips small{font-weight:500;color:#B9B8BE;font-size:11px}
 .nu-swipe{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(-1 * var(--gx,16px));padding:0 var(--gx,16px) 6px;scrollbar-width:none;scroll-padding:0 var(--gx,16px)}
 .nu-swipe::-webkit-scrollbar{display:none}
 .nu-swipe > .et-card{flex:0 0 min(86%,460px);scroll-snap-align:start}
@@ -1969,29 +1981,50 @@ function txtSobre(c){
   const n = parseInt(m[1], 16), r = n >> 16 & 255, g = n >> 8 & 255, b = n & 255;
   return (0.299 * r + 0.587 * g + 0.114 * b) > 160 ? '#14141A' : '#fff';
 }
-/* Objetivo de una etapa: subir, mantener o bajar, con su rango de ritmo en % al mes (si no se pone, el de Objetivo de
-   Métricas para subir y bajar, y ±0,5 % para mantener). Sirve para pintar el cambio de peso: verde si cae dentro del
-   rango y amarillo si no. */
-function objetivoEtapa(m){
-  const H = S.health, obj = m.obj || '';
-  let lo = numES(m.rateMin), hi = numES(m.rateMax);
-  if (lo == null && hi == null){
-    if (obj === 'mantener'){ lo = -0.5; hi = 0.5; }
-    else if (obj === 'subir' || obj === 'bajar'){ const r = rateTarget(); if (r){ lo = r.min; hi = r.max; } }
-  }
-  if (lo == null) lo = hi; if (hi == null) hi = lo; if (lo != null && lo > hi) [lo, hi] = [hi, lo];
-  return {obj, lo, hi};
+/* ---------- Ciclos: volumen, mantenimiento o definición (Métricas → Objetivo) ----------
+   S.health.ciclos = [{id, tipo:'volumen'|'mantenimiento'|'definicion', desde:'AAAA-MM-DD', rateMin, rateMax}]
+   Cada etapa de macros pertenece al ciclo en el que empieza y toma de él su objetivo y su ritmo (% al mes). */
+const CICLO = {volumen:{l:'Volumen', obj:'subir', c:'#18A957'}, mantenimiento:{l:'Mantenimiento', obj:'mantener', c:'#2F80ED'}, definicion:{l:'Definición', obj:'bajar', c:'#FF8A3D'}};
+const ciclos = () => (S.health.ciclos || []).filter(c => c && CICLO[c.tipo] && c.desde).slice().sort((x, y) => x.desde.localeCompare(y.desde));
+function cicloDe(d){ return ciclos().filter(c => c.desde <= d).pop() || null; }
+const cicloActual = () => cicloDe(TODAY());
+function rangoCiclo(c){ // ritmo objetivo del ciclo en % al mes: el suyo, o ±0,5 % si es mantenimiento
+  if (!c) return null;
+  let lo = numES(c.rateMin), hi = numES(c.rateMax);
+  if (lo == null && hi == null && c.tipo === 'mantenimiento'){ lo = -0.5; hi = 0.5; }
+  if (lo == null && hi == null) return null;
+  if (lo == null) lo = hi; if (hi == null) hi = lo; if (lo > hi) [lo, hi] = [hi, lo];
+  return {lo, hi};
 }
-/* Color del cambio de peso de una etapa: 'ok' (verde) dentro del rango objetivo, 'off' (amarillo) fuera. Sin rango,
-   según la dirección del objetivo; sin objetivo, neutro. */
-function colorPeso(m, pct){
-  const o = objetivoEtapa(m);
-  if (o.lo != null) return pct >= o.lo - 1e-9 && pct <= o.hi + 1e-9 ? 'ok' : 'off';
-  if (o.obj === 'subir') return pct > 0 ? 'ok' : 'off';
-  if (o.obj === 'bajar') return pct < 0 ? 'ok' : 'off';
+const txtRango = r => r ? (Math.abs(r.lo - r.hi) < 1e-9 ? fmtPct(r.lo) : `${fmtPct(r.lo).replace(' %', '')} a ${fmtPct(r.hi)}`) + '/mes' : '';
+function mesesDias(desde, hasta){ // «2 meses y 24 días»
+  let a = parseISO(desde), meses = 0;
+  while (true){ const n = new Date(a); n.setMonth(n.getMonth() + 1); if (iso(n) > hasta) break; a = n; meses++; }
+  const dias = daysBetween(iso(a), hasta);
+  const t = [meses ? `${meses} ${meses === 1 ? 'mes' : 'meses'}` : '', dias || !meses ? `${dias} día${dias === 1 ? '' : 's'}` : ''].filter(Boolean);
+  return t.join(' y ');
+}
+/* Objetivo de una etapa: el de su ciclo. Verde si el cambio de peso cae en el rango del ciclo; amarillo si no.
+   Sin rango, según la dirección (subir/bajar); sin ciclo, neutro. */
+function objetivoEtapa(m){
+  const c = cicloDe(m.from), r = rangoCiclo(c);
+  return {ciclo:c, obj:c ? CICLO[c.tipo].obj : '', lo:r ? r.lo : null, hi:r ? r.hi : null};
+}
+function colorPesoCiclo(c, pct){
+  const r = rangoCiclo(c);
+  if (r) return pct >= r.lo - 1e-9 && pct <= r.hi + 1e-9 ? 'ok' : 'off';
+  if (c && c.tipo === 'volumen') return pct > 0 ? 'ok' : 'off';
+  if (c && c.tipo === 'definicion') return pct < 0 ? 'ok' : 'off';
   return '';
 }
-const OBJ_TXT = {subir:'Subir de peso', mantener:'Mantener', bajar:'Bajar de peso'};
+const colorPeso = (m, pct) => colorPesoCiclo(cicloDe(m.from), pct);
+/* Pendiente del peso (kg/día) por mínimos cuadrados entre dos fechas; null con menos de 4 pesadas */
+function pendientePeso(from, to){
+  const ps = dayWeights().filter(p => p.d >= from && p.d <= to); if (ps.length < 4) return null;
+  const xs = ps.map(p => daysBetween(from, p.d)), mx = xs.reduce((s, x) => s + x, 0) / xs.length, my = ps.reduce((s, p) => s + p.kg, 0) / ps.length;
+  const sxx = xs.reduce((s, x) => s + (x - mx) ** 2, 0); if (!sxx) return null;
+  return {kgDia:xs.reduce((s, x, i) => s + (x - mx) * (ps[i].kg - my), 0) / sxx, kgMedio:my, n:ps.length};
+}
 function bidonMacros(m, id){
   const kc = mcParts().map(([k, l, f, c]) => ({l, c, k:(Number(m[k]) || 0) * f}));
   const tot = kc.reduce((s, x) => s + x.k, 0);
@@ -2032,7 +2065,7 @@ function etapaCard(m, ctx){
   const kgMedio = pesos.length ? pesos.reduce((s, x) => s + x.kg, 0) / pesos.length : null;
   const kg30 = w && kgMedio ? w.pct30 / 100 * kgMedio : null;
   const cp = w ? colorPeso(m, w.pct30) : '', o = objetivoEtapa(m);
-  const rango = o.lo != null ? (Math.abs(o.lo - o.hi) < 1e-9 ? fmtPct(o.lo) : `${fmtPct(o.lo).replace(' %', '')} a ${fmtPct(o.hi)}`) : '';
+  const rango = o.lo != null ? txtRango({lo:o.lo, hi:o.hi}) : '';
   const balW = p && p.bal != null ? Math.min(50, Math.abs(p.bal) / 500 * 50) : 0;   // ±500 kcal = media barra
   const tiles = [
     p && p.kout != null ? `<div class="et-tile"><small>Gasto real</small><b>${fmtKcal(p.kout)}</b><em>kcal/día${p.ks != null ? ` · Sparky ${fmtKcal(p.ks)}` : ''}</em></div>`
@@ -2046,7 +2079,7 @@ function etapaCard(m, ctx){
   return `<div class="et-card ${cur ? 'cur' : ''}" data-act="macroEdit" data-id="${esc(m.id)}" style="--bc:${m.color}">
     <div class="et-h"><span class="et-dot"></span>
       <div class="et-t"><b>${fmtShort(m.from)} → ${m.to ? fmtShort(m.to) : 'hoy'}</b>
-        <small>${o.obj ? OBJ_TXT[o.obj] + ' · ' : ''}${!empezada ? 'Empieza más adelante' : `${dur} día${dur === 1 ? '' : 's'}${p ? ` · ${p.days} con comidas registradas` : ''}`}${razon ? ' · ' + esc(razon) : ''}</small></div>
+        <small>${o.ciclo && ctx === 'nu' ? CICLO[o.ciclo.tipo].l + ' · ' : ''}${!empezada ? 'Empieza más adelante' : `${dur} día${dur === 1 ? '' : 's'}${p ? ` · ${p.days} con comidas registradas` : ''}`}${razon ? ' · ' + esc(razon) : ''}</small></div>
       ${cur ? '<span class="et-badge">Actual</span>' : ''}</div>
     <div class="et-body">
       <div class="et-rows">
@@ -2058,12 +2091,23 @@ function etapaCard(m, ctx){
     ${empezada ? `<div class="et-tiles">${tiles.join('')}</div>` : ''}
   </div>`;
 }
+function macrosPorCiclo(ps){
+  const grupos = new Map();
+  for (const m of ps.slice().reverse()){ const c = cicloDe(m.from), k = c ? c.id : ''; if (!grupos.has(k)) grupos.set(k, {c, l:[]}); grupos.get(k).l.push(m); }
+  return [...grupos.values()].map(({c, l}) => {
+    const C = c ? CICLO[c.tipo] : null, sig = c ? ciclos().find(x => x.desde > c.desde) : null;
+    const hasta = sig ? iso(addDays(parseISO(sig.desde), -1)) : TODAY(), r = rangoCiclo(c);
+    return `<div class="ci-grupo" style="--bc:${C ? C.c : '#6B7280'}">
+      <div class="ci-gh"><span class="et-dot"></span><b>${C ? C.l : 'Sin ciclo'}</b><small>${c ? `desde ${fmtShort(c.desde)} · ${mesesDias(c.desde, hasta)}${r ? ' · objetivo ' + txtRango(r) : ''}` : 'Fija tu ciclo en Métricas → Objetivo'}</small></div>
+      <div class="et-list">${l.map(m => etapaCard(m, 'mc')).join('')}</div></div>`;
+  }).join('');
+}
 function viewMacros(){
   const ps = macroPeriods();
   if (!ps.length) return `<div class="empty" style="margin-top:6px"><b>Aún no has guardado macros</b>Pulsa + para apuntar tus CH, P y G. Cada vez que las cambies, añade una nueva con su fecha y su razón: la app calcula sola el ritmo de peso y tu media de pasos en cada periodo.</div>`;
   return `<div class="mc-tools"><button class="btn ghost sm" data-act="macroColors">${mcParts().map(([k, l, f, c]) => `<i style="background:${c}"></i>`).join('')} Colores de CH, P y G</button></div>
-    <div class="et-list">${ps.slice().reverse().map(m => etapaCard(m, 'mc')).join('')}</div>
-    <p class="hint" style="padding-left:0">Toca una etapa para editarla o cambiar su color. «Peso a 30 días»: cuánto habría cambiado tu peso en 30 días si se hubiera mantenido el ritmo de esa etapa (media de los 3 primeros días con pesada frente a la de los 3 últimos). El gasto real y el balance salen de lo comido (Sparky) y de tus pesadas.</p>`;
+    ${macrosPorCiclo(ps)}
+    <p class="hint" style="padding-left:0">Toca una etapa para editarla o cambiar su color. «Peso a 30 días»: cuánto habría cambiado tu peso en 30 días si se hubiera mantenido el ritmo de esa etapa; en verde si cae en el ritmo objetivo de su ciclo y en amarillo si no. El gasto real y el balance salen de lo comido (Sparky) y de tus pesadas.</p>`;
 }
 function viewHealth(){
   const t = S.health.tab;
@@ -2305,7 +2349,7 @@ function nutriChart(list, a, b){
       ${bands}
       ${grid.map(v => `<line class="hl-grid" x1="${L}" x2="${W - R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text class="hl-ax" x="${L - 6}" y="${(y(v) + 4).toFixed(1)}" text-anchor="end">${v >= 1000 ? (v / 1000).toLocaleString('es-ES', {maximumFractionDigits:1}) + 'k' : v}</text>`).join('')}
       ${ticks.map(d => `<text class="hl-ax" x="${x(d).toFixed(1)}" y="${H - 8}" text-anchor="middle">${parseISO(d).getDate()} ${parseISO(d).toLocaleDateString('es-ES', {month:'short'}).replace('.', '')}</text>`).join('')}
-      ${P.map(p => `<rect class="nu-bar" x="${(p.x - bw / 2).toFixed(1)}" y="${p.y}" width="${bw.toFixed(1)}" height="${Math.max(0, H - B - p.y).toFixed(1)}" rx="${Math.min(4, bw / 3).toFixed(1)}" style="--i:${p.i}"/>`).join('')}
+      ${P.map(p => `<rect class="nu-bar${p.plan && p.kcal && Math.abs(p.kcal / p.plan - 1) <= .05 ? ' in' : ''}" x="${(p.x - bw / 2).toFixed(1)}" y="${p.y}" width="${bw.toFixed(1)}" height="${Math.max(0, H - B - p.y).toFixed(1)}" rx="${Math.min(4, bw / 3).toFixed(1)}" style="--i:${p.i}"/>`).join('')}
       ${plan.trim() ? `<path class="nu-plan" d="${plan}"/>` : ''}
       ${ss.length > 1 ? `<path class="nu-sparky" d="${sLine}"/>` : ''}
       ${gs.length > 1 ? `<path class="nu-gasto" d="${gLine}" pathLength="1"/>` : ''}
@@ -2315,31 +2359,36 @@ function nutriChart(list, a, b){
     <div class="hl-tip"></div>
   </div>`;
 }
-/* Resumen del periodo, al estilo de la portada de las hojas de ruta: titular, anillo de días registrados,
-   balance acumulado en grande, barras de comido frente a los dos gastos y fichas con peso, ritmo y pasos */
+/* Resumen del ciclo actual (volumen, mantenimiento o definición), siempre desde su inicio hasta hoy, con los colores
+   del ciclo y el mismo estilo claro que las tarjetas de macros. Sin ciclo fijado, resume el intervalo de la gráfica. */
 function nutriResumen(per, a, b, days){
-  const bal = per.bal, gp = gastoPeriodo(a, b < TODAY() ? b : TODAY());
-  const tit = bal == null ? 'Faltan datos para el gasto real' : Math.abs(bal) <= 100 ? 'En mantenimiento'
-    : bal > 0 ? `Superávit de ${fmtKcal(bal)} kcal/día` : `Déficit de ${fmtKcal(-bal)} kcal/día`;
-  const sub = per.kout != null ? `Comes ${fmtKcal(per.kin)} kcal al día y tu peso dice que gastas ${fmtKcal(per.kout)}.`
-    : `Comes ${fmtKcal(per.kin)} kcal al día. Para el gasto real hacen falta 14 días con comidas y pesadas.`;
-  const pct = Math.round(per.days / days * 100);
-  const vals = [['Comido', per.kin, '#5B8DEF'], ['Gasto real', per.kout, '#F08A4B'], ['Según Sparky', per.ks, '#C9773F']].filter(v => v[1] != null);
+  const c = cicloActual(), C = c ? CICLO[c.tipo] : null;
+  const desde = c ? c.desde : a, hasta = c ? TODAY() : (b < TODAY() ? b : TODAY());
+  const P = c ? nutriPeriod(desde, hasta) : per; if (!P) return '';
+  const total = daysBetween(desde, hasta) + 1, r = rangoCiclo(c);
+  // Un único cambio de peso para todo el resumen: el de la tendencia de 7 días del primer día al último del ciclo.
+  // De él salen la media semanal, el % al mes y el gasto real del ciclo (así balance, peso y gasto cuadran entre sí).
+  const dd = P.dwFrom && P.dwTo ? daysBetween(P.dwFrom.d, P.dwTo.d) : 0, kgDia = dd >= 7 && P.dw != null ? P.dw / dd : null;
+  const kgMedio = P.dwFrom && P.dwTo ? (P.dwFrom.kg + P.dwTo.kg) / 2 : null;
+  const kgSem = kgDia != null ? kgDia * 7 : null, pctMes = kgDia != null && kgMedio ? kgDia * 30 / kgMedio * 100 : null;
+  if (c && kgDia != null){ P.kout = P.kin - kgDia * KCAL_KG; P.bal = P.kin - P.kout; }
+  const cp = pctMes != null ? colorPesoCiclo(c, pctMes) : '';
+  const vals = [['Comido', P.kin, '#5B8DEF'], ['Gasto real', P.kout, '#F08A4B'], ['Según Sparky', P.ks, '#C9773F']].filter(v => v[1] != null);
   const mx = Math.max(...vals.map(v => v[1]));
-  const st = periodSteps(a, b);
-  const chips = [per.dw != null ? `<span>Peso ${fmtDiff(per.dw)}<small>tendencia</small></span>` : '',
-    gp ? `<span>${gp.kgSemana >= 0 ? '+' : '−'}${Math.abs(gp.kgSemana).toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2})} kg/sem<small>${gp.pesadas} pesadas</small></span>` : '',
-    st ? `<span>${fmtSteps(st.avg)}<small>pasos/día</small></span>` : ''].filter(Boolean).join('');
-  return `<div class="rm-hero nu-hero" style="--rc:#5B8DEF">
-    <div class="eyebrow">En este periodo · ${fmtShort(a)} – ${fmtShort(b)}</div>
-    <h2>${tit}</h2>
-    <div class="goal">${sub}</div>
-    <div class="rm-stats">
-      <div class="ring" style="--p:${pct}"><span>${per.days}/${days}</span></div>
-      <div class="count-big">${per.balDays ? `<b>${fmtBal(per.balSum)}</b><small>kcal de balance acumulado · ≈ ${fmtDiff(per.balSum / KCAL_KG)}</small>` : `<b>${fmtKcal(per.kin)}</b><small>kcal comidas de media</small>`}</div>
+  const balTot = P.bal != null ? P.bal * total : null;
+  return `<div class="ci-card" style="--bc:${C ? C.c : '#6B7280'}">
+    <div class="ci-h"><span class="et-dot"></span>
+      <div class="ci-t"><small>${C ? C.l : 'Sin ciclo fijado'}${c ? ' · desde ' + fmtShort(desde) : ' · ' + fmtShort(a) + ' – ' + fmtShort(b)}</small>
+        <b>${mesesDias(desde, hasta)}</b></div>
+      ${r ? `<span class="ci-obj">Objetivo ${txtRango(r)}</span>` : ''}</div>
+    ${!c ? `<p class="ci-nota">Fija tu ciclo (volumen, mantenimiento o definición) en Métricas → Objetivo y este resumen contará desde su inicio.</p>` : ''}
+    <div class="ci-cmp">${vals.map(([l, v, col]) => `<div><span>${l}</span><i><em style="width:${(v / mx * 100).toFixed(1)}%;background:${col}"></em></i><b>${fmtKcal(v)}</b></div>`).join('')}
+      <small>kcal al día de media · ${P.days} de ${total} días con comidas registradas</small></div>
+    <div class="et-tiles ci-tiles">
+      <div class="et-tile"><small>Balance acumulado</small><b>${balTot != null ? fmtBal(balTot) : '–'}</b><em>${balTot != null ? 'kcal · ≈ ' + fmtDiff(balTot / KCAL_KG) : 'falta el gasto real'}</em></div>
+      <div class="et-tile et-peso ${cp}"><small>Peso en el ciclo</small><b>${P.dw != null ? fmtDiff(P.dw) : '–'}</b><em>${P.dwFrom && P.dwTo ? `${fmtKg(P.dwFrom.kg, 1)} → ${fmtKg(P.dwTo.kg, 1)}` : 'tendencia de 7 días'}</em></div>
+      <div class="et-tile et-peso ${cp}"><small>Media por semana</small><b>${kgSem != null ? (kgSem >= 0 ? '+' : '−') + Math.abs(kgSem).toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' kg' : '–'}</b><em>${pctMes != null ? fmtPct(pctMes, 2) + ' al mes' : 'faltan pesadas'}</em></div>
     </div>
-    <div class="nu-cmp">${vals.map(([l, v, c]) => `<div><span>${l}</span><i><em style="width:${(v / mx * 100).toFixed(1)}%;background:${c}"></em></i><b>${fmtKcal(v)}</b></div>`).join('')}</div>
-    ${chips ? `<div class="nu-chips">${chips}</div>` : ''}
   </div>`;
 }
 /* Etapas de macros en Nutrición: las mismas tarjetas que en Macros, deslizables, abiertas en la actual */
@@ -2373,7 +2422,7 @@ function viewNutricion(){
   const g = last ? nuGasto(last) : null, gsp = last ? nuGastoSparky(last) : null, bal = last ? nuBal(last) : null;
   const onReal = H.nuReal !== false, onSp = H.nuSparky !== false;
   const hayPlan = macroPeriods().some(m => m.from <= b && (!m.to || m.to >= a));
-  const legend = `<div class="mc-legend row"><span style="--bc:${NU_COL.in}"><i></i>Ingesta</span>${onReal && list.some(n => nuGasto(n) != null) ? '<span class="nu-gasto-l"><i></i>Gasto real</span>' : ''}${onSp && list.some(n => nuGastoSparky(n) != null) ? '<span class="nu-sparky-l"><i></i>Según Sparky</span>' : ''}${hayPlan ? '<span class="nu-plan-l"><i></i>Kcal planificadas</span>' : ''}</div>`;
+  const legend = `<div class="mc-legend row"><span style="--bc:${NU_COL.in}"><i></i>Ingesta</span>${hayPlan ? '<span style="--bc:#2348A8"><i></i>Dentro del plan (±5 %)</span>' : ''}${onReal && list.some(n => nuGasto(n) != null) ? '<span class="nu-gasto-l"><i></i>Gasto real</span>' : ''}${onSp && list.some(n => nuGastoSparky(n) != null) ? '<span class="nu-sparky-l"><i></i>Según Sparky</span>' : ''}${hayPlan ? '<span class="nu-plan-l"><i></i>Kcal planificadas</span>' : ''}</div>`;
   const nTools = (onReal ? 1 : 0) + (onSp ? 1 : 0) + (H.nuBands && H.macros.length ? 1 : 0);
   return `
     <div class="hl-hero">
@@ -4242,21 +4291,19 @@ const actions = {
     const base = m || macroPeriods().pop() || {};
     const num = v => { const n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? 0 : Math.round(n); };
     openForm({title:m ? 'Macros' : 'Nuevo cambio de macros',
-      note:'Rigen desde la fecha de cambio hasta el siguiente cambio. Si dejas las kcal vacías, se calculan: CH×4 + P×4 + G×9.<br><b>Objetivo y ritmo:</b> el cambio de peso de la etapa sale en verde si cae dentro del rango (en % al mes; en negativo para bajar) y en amarillo si no. Si no pones ritmo: el de Objetivo en Métricas, o ±0,5 % para mantener.',
-      values:{color:m ? m.color || '' : '', obj:m ? m.obj || '' : (base.obj || ''), rateMin:m ? m.rateMin || '' : (base.rateMin || ''), rateMax:m ? m.rateMax || '' : (base.rateMax || ''), from:m ? m.from : TODAY(), kcal:m ? m.kcal || '' : '', ch:base.ch || '', p:base.p || '', g:base.g || '', reason:m ? m.reason || m.note || '' : ''},
+      note:'Rigen desde la fecha de cambio hasta el siguiente cambio. Si dejas las kcal vacías, se calculan: CH×4 + P×4 + G×9.<br>El objetivo (volumen, mantenimiento o definición) y su ritmo son los del ciclo en el que empieza la etapa: se fijan en Métricas → Objetivo.',
+      values:{color:m ? m.color || '' : '', from:m ? m.from : TODAY(), kcal:m ? m.kcal || '' : '', ch:base.ch || '', p:base.p || '', g:base.g || '', reason:m ? m.reason || m.note || '' : ''},
       fields:[{key:'from', label:'Fecha de inicio', type:'date', required:true, half:true}, {key:'kcal', label:'Kcal (opcional)', type:'text', half:true, placeholder:'auto'},
         {key:'ch', label:'CH (g)', type:'text', third:true, placeholder:'250'}, {key:'p', label:'P (g)', type:'text', third:true, placeholder:'180'},
         {key:'g', label:'G (g)', type:'text', third:true, placeholder:'70'},
         {key:'reason', label:'Razón de subida', type:'textarea', placeholder:'p. ej. El peso no sube: +20 g de CH'},
-        {key:'obj', label:'Objetivo de la etapa', type:'select', options:[{v:'', l:'Sin objetivo'}, {v:'subir', l:'Subir de peso'}, {v:'mantener', l:'Mantener'}, {v:'bajar', l:'Bajar de peso'}]},
-        {key:'rateMin', label:'Ritmo mínimo (% al mes)', type:'text', half:true, placeholder:'p. ej. 0,8'}, {key:'rateMax', label:'Ritmo máximo (% al mes)', type:'text', half:true, placeholder:'p. ej. 1,2'},
         {key:'color', label:'Color de la etapa · si no eliges ninguno, azules automáticos', type:'color'}],
       preview: v => { const x = {ch:num(v.ch), p:num(v.p), g:num(v.g)}; const k = num(String(v.kcal).replace(/\./g, '')) || macroKcal(x);
         return `<div class="pv-card"><div class="pv-tag">Macros desde ${v.from ? fmtShort(v.from) : '—'}</div><div style="font-size:24px;font-weight:800;margin:2px 0 6px">${fmtNum(k)} kcal</div>${macroBar(x)}<div class="muted small" style="margin-top:6px">CH ${x.ch} g · P ${x.p} g · G ${x.g} g</div></div>`; },
       onSave: v => {
         const x = {from:v.from, ch:num(v.ch), p:num(v.p), g:num(v.g), reason:v.reason};
         if (v.color) x.color = v.color;
-        x.obj = v.obj || ''; x.rateMin = String(v.rateMin || '').trim(); x.rateMax = String(v.rateMax || '').trim();
+        delete x.obj; if (m){ delete m.obj; delete m.rateMin; delete m.rateMax; }
         x.kcal = num(String(v.kcal).replace(/\./g, '')) || macroKcal(x);
         if (m){ Object.assign(m, x); delete m.note; } else S.health.macros.push({id:uid(), ...x});
         S.health.tab = 'macros'; toast(m ? 'Macros guardadas' : 'Cambio de macros guardado');
@@ -4271,16 +4318,25 @@ const actions = {
       onSave:v => { S.macroCols = {ch:v.ch || c.ch, p:v.p || c.p, g:v.g || c.g}; toast('Colores guardados'); }});
   },
   healthGoal(){
-    const H = S.health, txt = x => x === '' || x == null ? '' : String(x).replace('.', ',');
-    openForm({title:'Objetivo', values:{goal:txt(H.goal), rateMin:txt(H.rateMin), rateMax:txt(H.rateMax)},
-      note:'<b>Peso objetivo:</b> una línea discontinua horizontal en la gráfica.<br><b>Ritmo:</b> cuánto quieres que cambie tu peso al mes, en %. Por ejemplo, de 0,8 a 1,2 para subir entre un 0,8 % y un 1,2 % al mes (en negativo para bajar). Con «Progreso esperado» la gráfica traza la recta desde el peso de hace 30 días. Deja vacío lo que no quieras usar.',
-      fields:[{key:'goal', label:'Peso objetivo (kg)', type:'text', placeholder:'p. ej. 75,0'},
-        {key:'rateMin', label:'Ritmo mínimo (% al mes)', type:'text', half:true, placeholder:'0,8'}, {key:'rateMax', label:'Ritmo máximo (% al mes)', type:'text', half:true, placeholder:'1,2'}],
+    const H = S.health, txt = x => x === '' || x == null ? '' : String(x).replace('.', ','), c = cicloActual();
+    openForm({title:'Objetivo', values:{tipo:c ? c.tipo : '', desde:c ? c.desde : TODAY(), goal:txt(H.goal), rateMin:txt(c ? c.rateMin : H.rateMin), rateMax:txt(c ? c.rateMax : H.rateMax)},
+      note:'<b>Ciclo:</b> volumen, mantenimiento o definición, desde su fecha de inicio. Las etapas de macros que empiecen en él toman su objetivo y su ritmo, y el resumen de Nutrición cuenta desde ese día. Si cambias de tipo con una fecha posterior, empieza un ciclo nuevo y el anterior se guarda.<br><b>Ritmo:</b> cuánto quieres que cambie tu peso al mes, en %. Por ejemplo, de 0,8 a 1,2 en volumen o de −1 a −0,5 en definición. En mantenimiento, si lo dejas vacío, ±0,5 %.<br><b>Peso objetivo:</b> una línea discontinua en la gráfica.',
+      fields:[{key:'tipo', label:'Ciclo', type:'select', options:[{v:'', l:'Sin ciclo'}, {v:'volumen', l:'Volumen (subir de peso)'}, {v:'mantenimiento', l:'Mantenimiento'}, {v:'definicion', l:'Definición (bajar de peso)'}], half:true},
+        {key:'desde', label:'Inicio del ciclo', type:'date', half:true},
+        {key:'rateMin', label:'Ritmo mínimo (% al mes)', type:'text', half:true, placeholder:'0,8'}, {key:'rateMax', label:'Ritmo máximo (% al mes)', type:'text', half:true, placeholder:'1,2'},
+        {key:'goal', label:'Peso objetivo (kg)', type:'text', placeholder:'p. ej. 75,0'}],
       onSave: v => {
         const n = numES(v.goal); H.goal = n == null ? '' : String(n);
         const a = numES(v.rateMin), b = numES(v.rateMax);
         if ((a != null && Math.abs(a) > 20) || (b != null && Math.abs(b) > 20)){ toast('Ritmo no válido: es un % al mes (p. ej. 1,0)'); return; }
-        H.rateMin = a == null ? '' : String(a); H.rateMax = b == null ? '' : String(b);
+        const rMin = a == null ? '' : String(a), rMax = b == null ? '' : String(b);
+        H.rateMin = rMin; H.rateMax = rMax;   // el ritmo del ciclo actual es el de la recta de progreso esperado
+        if (v.tipo){
+          if (!Array.isArray(H.ciclos)) H.ciclos = [];
+          const desde = v.desde || TODAY();
+          if (c && (c.tipo === v.tipo || desde <= c.desde)) Object.assign(H.ciclos.find(x => x.id === c.id), {tipo:v.tipo, desde, rateMin:rMin, rateMax:rMax});
+          else H.ciclos.push({id:uid(), tipo:v.tipo, desde, rateMin:rMin, rateMax:rMax});
+        } else if (c) H.ciclos = H.ciclos.filter(x => x.id !== c.id);
         if (a == null && b == null) H.expected = false;
       }});
   },
