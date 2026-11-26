@@ -7,8 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Axis">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#F6F5F1" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0E0E10" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0B0D14"> <!-- modo oscuro fijo (Axis): el claro está desactivado -->
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/svg+xml" href="icons/axis.svg">
 <title>Axis</title>
@@ -16,11 +15,11 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
 :root{
-  color-scheme: light dark;
+  color-scheme: dark; /* oscuro fijo (Axis). Para reactivar el claro: «light dark» aquí y (prefers-color-scheme: dark) donde pone «@media all» con la marca oscuro */
   --bg:#F6F5F2; --surface:#FFFFFF; --surface2:#EEECE7; --text:#16161A; --muted:#6B6A70; --line:#E3E1DB;
   --accent:#FF5A36; --danger:#E5484D;
 }
-@media (prefers-color-scheme: dark){
+@media all/*oscuro*/{
   :root{ --bg:#0E0E10; --surface:#17171A; --surface2:#222226; --text:#F2F1EE; --muted:#9A99A0; --line:#2B2B30; }
 }
 *{box-sizing:border-box}
@@ -598,13 +597,13 @@ h3.sec{display:flex;align-items:center;gap:8px;font-size:14px;margin:20px 0 8px}
 .hl-line{fill:none;stroke:var(--hl);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0}
 /* Tendencia de 7 días: se queda con el verde; los datos diarios pasan a un verde grisáceo apagado */
 :root{--hl-muted:#A9BDB2}
-@media (prefers-color-scheme: dark){:root{--hl-muted:#56695E}}
+@media all/*oscuro*/{:root{--hl-muted:#56695E}}
 .hl-trend{fill:none;stroke:var(--hl);stroke-width:2.75;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0}
 .has-trend .hl-line{stroke:var(--hl-muted);stroke-width:1.75}
 .has-trend .hl-area{opacity:.45}
 .has-trend .hl-cur circle{fill:var(--hl-muted);stroke:var(--hl-muted)}
 .hl-tip .trd{display:block;font-size:10.5px;font-weight:700;color:#3FD68A}
-@media (prefers-color-scheme: dark){.hl-tip .trd{color:#13834D}}
+@media all/*oscuro*/{.hl-tip .trd{color:#13834D}}
 :root{--hl-yel:#E0A800}
 .hl-goal{stroke:var(--hl-yel);stroke-width:1.5;stroke-dasharray:5 5}
 .hl-goal-t{fill:var(--hl-yel);font-size:10.5px;font-weight:700;paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round}
@@ -617,7 +616,7 @@ h3.sec{display:flex;align-items:center;gap:8px;font-size:14px;margin:20px 0 8px}
 .hl-tip b{font-size:12.5px}
 .hl-tip small{font-size:10px;opacity:.75}
 .hl-tip .exp{display:block;font-size:10.5px;font-weight:700;color:#FFC93C}
-@media (prefers-color-scheme: dark){.hl-tip .exp{color:#8A6400}}
+@media all/*oscuro*/{.hl-tip .exp{color:#8A6400}}
 .enter .hl-line,.enter .hl-trend{animation:draw 1.3s cubic-bezier(.4,0,.2,1) both}
 .enter .hl-area{animation:fade .9s .5s both}
 @keyframes draw{from{stroke-dashoffset:1}}
@@ -700,7 +699,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 /* Nutrición: ingesta en barras azules, gasto estimado en naranja, objetivo de Sparky en gris (solo referencia) */
 .nu-bar{fill:#5B8DEF;opacity:.85}
 .nu-bar.in{fill:#2348A8;opacity:1}
-@media (prefers-color-scheme: dark){.nu-bar.in{fill:#8FB2FF}}
+@media all/*oscuro*/{.nu-bar.in{fill:#8FB2FF}}
 /* Resumen del ciclo (Nutrición): claro, con el color del ciclo, como las tarjetas de macros */
 .ci-card{margin-top:14px;background:var(--surface);border:1px solid color-mix(in srgb,var(--bc) 40%,var(--line));border-radius:18px;padding:14px;
   box-shadow:inset 5px 0 0 var(--bc);background-image:linear-gradient(135deg,color-mix(in srgb,var(--bc) 16%,transparent),transparent 60%)}
@@ -727,7 +726,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 .nu-gasto{fill:none;stroke:#F08A4B;stroke-width:2.25;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0}
 .nu-gasto-p{fill:#F08A4B}
 .nu-sparky{fill:none;stroke:#B4541C;stroke-width:1.75;stroke-dasharray:4 3;opacity:.9;stroke-linejoin:round}
-@media (prefers-color-scheme: dark){.nu-sparky{stroke:#FFC39A}}
+@media all/*oscuro*/{.nu-sparky{stroke:#FFC39A}}
 .mc-legend .nu-sparky-l i{background:none;box-shadow:none;border-top:2px dashed #B4541C;border-radius:0;height:0;width:14px}
 .hl-delta.nu-sp{opacity:.6}
 /* kcal planificadas (pestaña Macros): amarillo discontinuo, como el progreso esperado */
@@ -800,7 +799,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
 .mc-legend .nu-gasto-l i{background:none;box-shadow:none;border-top:2.5px solid #F08A4B;border-radius:2px;height:0;width:14px}
 .hl-tip .nu-t{display:block;font-size:10.5px;font-weight:700;color:#FFB47E}
 .hl-tip .nu-t2{display:block;font-size:10px;opacity:.8}
-@media (prefers-color-scheme: dark){.hl-tip .nu-t{color:#A04E14}}
+@media all/*oscuro*/{.hl-tip .nu-t{color:#A04E14}}
 .nu-card{margin-top:12px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
 .nu-rows{display:flex;flex-direction:column;gap:10px}
 .nu-rows > div{display:grid;grid-template-columns:1fr auto;gap:0 10px;align-items:baseline}
@@ -952,7 +951,7 @@ body.nav-open #scrim{animation:fade .25s}
   --success:#17A857; --success-text:#0F7A3F; --warning:#D97706; --warning-text:#A35200;
   --accent:var(--brand);
 }
-@media (prefers-color-scheme: dark){
+@media all/*oscuro*/{
   :root{ --bg:#0B0D14; --surface:#151822; --surface2:#1F2330; --surface-inverse:#F6F5F1; --line:#262B3A; --text:#F2F3F7; --muted:#9AA0B2; --text-inverse:#0B0D14;
     --brand:#3D8BFF; --brand-strong:#1769FF; --accent:var(--brand); }
 }
@@ -995,6 +994,112 @@ b,.hl-big,.hl-stats b,.et-tile b,.ci-cmp b,.nu-mr b,.hl-kg{font-variant-numeric:
 
 /* Inter es algo más ancha: la columna del % de las tarjetas de macros necesita más sitio */
 .et-r{grid-template-columns:30px 1fr 42px}
+
+/* =========================================================
+   AXIS · Health en modo oscuro (26-11-2026)
+   Azul de marca y holográfico para la estructura y los detalles.
+   Verde (--ok): datos de la gráfica y valores que van hacia el objetivo.
+   Amarillo (--off / --hl-yel): objetivos, tendencias, datos auxiliares y valores que no van hacia el objetivo.
+   ========================================================= */
+:root{ --ok:#2BD47D; --off:#F2C94C; --hl-yel:#F2C94C; --hl-muted:#2F6A50; --nu-in:#2F6BFF; --nu-out:#8DB4FF;
+  --holo-line:linear-gradient(90deg,#7CF7FF,#3D8BFF 40%,#B7A6FF 70%,#58E6FF); }
+/* detalles en azul: interruptores, contadores, filtros activos y pestañas */
+.switch:checked,.mc-toggle.on .mc-sw{background:var(--brand)}
+.hl-tools-btn b{background:var(--brand)}
+.pill.on{background:var(--brand);color:#fff}
+.seg button.on{background:#232A3E;box-shadow:inset 0 0 0 1px rgba(61,139,255,.38),0 4px 14px rgba(5,11,31,.45)}
+.note.on{border-color:color-mix(in srgb,var(--brand) 45%,var(--line))}
+.hl-card{background:linear-gradient(180deg,rgba(61,139,255,.07),transparent 46%),var(--surface)}
+/* cabecera de Health: Objetivo · importar · Pegar */
+.hl-acts{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.hl-hbtn{width:36px;height:36px;border-radius:11px;border:1px solid var(--line);background:var(--surface);color:var(--text)}
+.hl-hbtn .i{width:17px;height:17px}
+.hl-paste{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 13px;border-radius:11px;box-shadow:0 6px 18px color-mix(in srgb,var(--brand) 35%,transparent)}
+.hl-paste .i{width:16px;height:16px}
+/* tarjeta superior: azul noche con filo holográfico */
+.hl-hero.ax-hero{position:relative;overflow:hidden;background:radial-gradient(130% 150% at 0% 0%,#17408F 0%,#0A1A45 46%,#050B1F 100%);
+  border:1px solid rgba(124,247,255,.16);color:#EAF2FF;padding:16px 16px 14px;align-items:flex-end;box-shadow:0 10px 30px rgba(5,11,31,.45)}
+.ax-hero::before{content:"";position:absolute;left:0;right:0;top:0;height:1.5px;background:var(--holo-line);opacity:.85}
+.ax-hero > div{position:relative;z-index:1}
+.ax-hero .muted{color:#A9BBDD}
+.ax-k{font-size:10.5px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:#8FB0E8}
+.ax-sub{font-size:12.5px;color:#A9BBDD}
+.ax-hero .hl-big{font-size:40px;margin:1px 0 2px}
+.ax-hero .hl-big small,.st-hero .hl-big small{font-size:17px;font-weight:700;color:#8FB0E8;letter-spacing:0}
+.ax-spark{position:absolute;left:0;bottom:0;width:100%;height:52%;opacity:.75;pointer-events:none}
+.ax-30{text-align:right;background:rgba(5,11,31,.55);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(124,247,255,.16);border-radius:14px;padding:8px 12px;flex-shrink:0}
+.ax-30 b{display:block;font-size:22px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin-top:2px}
+.ax-30 em{display:block;font-style:normal;font-size:12px;color:#A9BBDD;font-variant-numeric:tabular-nums}
+.ax-30.ok b,.ax-30.ok em{color:var(--ok)} .ax-30.off b,.ax-30.off em{color:var(--off)}
+/* Nutrición: tarjeta superior compacta (la gráfica sube) */
+.nu-hero{padding:12px 14px;align-items:center}
+.nu-hero .hl-big{font-size:30px;margin:0}
+.nu-chips{display:flex;flex-direction:column;gap:4px;min-width:118px}
+.nu-chips span{display:flex;justify-content:space-between;align-items:baseline;gap:8px;background:rgba(5,11,31,.5);border:1px solid rgba(124,247,255,.14);border-radius:9px;padding:3px 8px}
+.nu-chips small{font-size:10.5px;font-weight:700;color:#8FB0E8}
+.nu-chips b{font-size:13.5px;font-variant-numeric:tabular-nums}
+.nu-chips .ok b{color:var(--ok)} .nu-chips .off b{color:var(--off)} .nu-chips .aux b{color:#A9BBDD}
+/* gráfica de peso: línea de datos en verde; tendencia, objetivo y esperado en amarillo */
+.hl-trend{stroke:var(--hl-yel)}
+.hl-cur circle{fill:var(--ok);stroke:var(--ok)}
+.has-trend .hl-cur circle{fill:var(--hl-yel);stroke:var(--hl-yel)}
+.hl-tip{background:rgba(9,15,33,.96);color:#EAF2FF;border:1px solid rgba(61,139,255,.5);box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.hl-tip.show{opacity:1}
+.hl-tip .trd,.hl-tip .exp,.hl-tip .nu-t{color:var(--hl-yel)}
+.hl-tip .okt{font-style:normal;color:var(--ok)}
+/* verde = va hacia el objetivo · amarillo = no */
+b.ok,.hl-d.ok{color:var(--ok)} b.off,.hl-d.off{color:var(--off)}
+.et-peso.ok b,.et-peso.ok em,.et-tile.ok b,.et-tile.ok em{color:var(--ok)}
+.et-peso.off b,.et-peso.off em,.et-tile.off b,.et-tile.off em{color:var(--off)}
+.et-peso.ok,.et-tile.ok{background:color-mix(in srgb,var(--ok) 12%,var(--surface2))}
+.et-peso.off,.et-tile.off{background:color-mix(in srgb,var(--off) 12%,var(--surface2))}
+.hl-rate b.ok{color:var(--ok)} .hl-rate b.off{color:var(--off)}
+/* Nutrición: dentro del ±5 % azul oscuro con marca verde; fuera, azul claro. Gastos y plan en amarillo */
+.nu-bar{fill:var(--nu-out);opacity:.8}
+.nu-bar.in{fill:var(--nu-in);opacity:1}
+.nu-ok{fill:var(--ok)}
+.enter .nu-ok{animation:fade .5s both;animation-delay:calc(.25s + var(--i) * 12ms)}
+.nu-gasto{stroke:var(--hl-yel)} .nu-gasto-p{fill:var(--hl-yel)}
+.nu-sparky{stroke:color-mix(in srgb,var(--hl-yel) 60%,transparent);stroke-dasharray:1.5 3.5;stroke-linecap:round;stroke-width:2}
+.nu-plan{stroke:var(--hl-yel);stroke-dasharray:7 4}
+#nuChart .hl-cur circle{fill:var(--nu-in);stroke:var(--nu-in)}
+/* Pasos: azul (por encima de la media, el de marca); la media en amarillo */
+.st-bar{fill:var(--nu-out);opacity:.7}
+.st-bar.hi{fill:var(--brand);opacity:1}
+.st-avg{stroke:var(--hl-yel);opacity:.9}
+.st-avg-t{fill:var(--hl-yel)}
+#stChart .hl-cur circle{fill:var(--brand);stroke:var(--brand)}
+/* Nutrición: cabecera de las tarjetas de macros con «colores» y «+» */
+.et-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 0 8px}
+.et-head .rm-sub{margin:0}
+.et-acts{display:flex;gap:6px}
+.et-acts .icon-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--surface)}
+.et-add{color:#fff;background:var(--brand)!important;border-color:transparent!important;box-shadow:0 4px 14px color-mix(in srgb,var(--brand) 35%,transparent)}
+.et-add .i{width:18px;height:18px;stroke-width:2.4}
+.et-colbtn{display:flex!important;gap:2px;align-items:center;justify-content:center}
+.et-colbtn i{width:7px;height:12px;border-radius:2px}
+/* «?» de la barra superior y hoja de ayuda */
+.tb-help{position:relative;color:var(--muted);width:38px;height:38px}
+.tb-help .i{width:21px;height:21px}
+.tb-help.pend::after{content:"";position:absolute;top:8px;right:7px;width:8px;height:8px;border-radius:50%;background:var(--off);box-shadow:0 0 0 2px var(--bg)}
+.hp-body{display:flex;flex-direction:column;gap:18px;padding-bottom:8px}
+.hp-sec .rm-sub{margin:0 0 8px}
+.hp-sec .hint{padding-left:0;margin:0}
+.hp-sec .note{margin-top:0}
+.note b{display:inline;font-size:inherit;margin:0} .note > b:first-child{display:block;font-size:15px;margin-bottom:2px}
+.hint b.ok{color:var(--ok)} .hint b.off{color:var(--off)}
+/* hojas de filtros: muestra del color de cada cosa (sustituye a las leyendas bajo las gráficas) */
+.tg-t{display:flex;align-items:center;gap:8px}
+.sw-line{display:inline-block;width:22px;height:0;border-top:3px solid var(--hl-yel);border-radius:2px;flex-shrink:0}
+.sw-line.sw-dash{border-top:2px dashed var(--hl-yel)}
+.sw-line.sw-dot{border-top:3px dotted color-mix(in srgb,var(--hl-yel) 70%,transparent)}
+.hl-tools .mc-toggle span.sw-dots{display:inline-flex;flex-direction:row;gap:3px;flex-shrink:0}
+.sw-dots i{width:9px;height:9px;border-radius:3px}
+.sw-leg{display:flex;flex-direction:column;gap:9px;padding:12px 2px 4px;border-top:1px solid var(--line);font-size:13.5px;font-weight:600}
+.sw-leg span{display:flex;align-items:center;gap:9px}
+.sw-bar{display:inline-block;width:10px;height:16px;border-radius:3px;background:var(--nu-out);opacity:.8;flex-shrink:0}
+.sw-bar.in{background:var(--nu-in);opacity:1}
+.sw-leg b.ok{color:var(--ok)}
 </style>
 </head>
 <body>
@@ -1071,6 +1176,7 @@ if (matchMedia('(prefers-reduced-motion: reduce)').matches && !pausa){
     <header class="topbar">
       <button class="icon-btn menu-btn" data-act="menu" aria-label="Abrir menú" id="menuBtn"></button>
       <div class="t" id="title"></div>
+      <div id="tbActs"></div>
     </header>
     <main id="view"></main>
   </div>
@@ -1152,6 +1258,9 @@ ICONS.heart = '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 
 ICONS.user = '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>';
 ICONS.shield = '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/>';
 ICONS.flag ='<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>';
+ICONS.help = '<circle cx="12" cy="12" r="9.5"/><path d="M9.4 9.2a2.7 2.7 0 0 1 5.2.9c0 1.8-2.6 2.3-2.6 3.9"/><path d="M12 17.3h.01"/>';
+ICONS.paste = '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14l2 2 4-4"/>';
+ICONS.upload = '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 18v-6M9.5 14.5 12 12l2.5 2.5"/>';
 ICONS.trash = '<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/>';
 ICONS.sidebar = '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/>';
 ICONS.scale = '<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 9a5 5 0 0 1 8 0"/><path d="M12 9l1.5-2"/>';
@@ -1310,7 +1419,7 @@ const visStore = l => { try { localStorage.setItem(VIS_KEY, JSON.stringify(l)); 
 const visHealth = h => ensureDefaults({health:JSON.parse(JSON.stringify(h || {})), device:{id:'visor'}}).health;
 const VIS_RO = new Set(['healthGoal', 'healthEdit', 'stepsEdit', 'macroEdit', 'healthDelRange', 'stepsDelRange', 'healthImport', 'stepsImport',
   'stepsPaste', 'healthAndroid', 'healthHistory', 'exportData', 'importData', 'resetData',
-  'nutriPaste', 'nutriImport', 'nutriImportGo', 'sparkyForm', 'sparkySync', 'sparkyOff']);
+  'nutriPaste', 'nutriImport', 'nutriImportGo', 'healthPaste', 'sparkyForm', 'sparkySync', 'sparkyOff']);
 function visLastDate(h){
   const ds = (h.weight || []).map(w => (w.t || '').slice(0, 10)).concat((h.steps || []).map(s => s.d)).filter(Boolean).sort();
   return ds[ds.length - 1] || '';
@@ -2037,14 +2146,29 @@ function expectedFrom(){ // recta esperada: arranca en el punto de hace 30 días
   return {r, d0:w.p0.d, kg0:w.p0.kg, at:(rate, d) => w.p0.kg * (1 + rate / 100 * daysBetween(w.p0.d, d) / 30)};
 }
 const rateTxt = r => Math.abs(r.min - r.max) < 1e-9 ? fmtPct(r.min) : `${fmtPct(r.min).replace(' %', '')} a ${fmtPct(r.max)}`;
-function rateCard(){
-  const w = weight30(), r = rateTarget(), ex = expectedFrom();
-  if (!w && !r) return '';
-  const st = w && r ? (w.month < r.min - 1e-9 ? ['off', 'Por debajo del ritmo'] : w.month > r.max + 1e-9 ? ['off', 'Por encima del ritmo'] : ['ok', 'Dentro del ritmo ✓']) : null;
-  return `<div class="hl-rate">
-    <div><small>Últimos 30 días</small><b class="${st ? st[0] : ''}">${w ? fmtPct(w.pct, 2) : '–'}</b><small>${w ? `${fmtDiff(w.kg)} · desde el ${fmtShort(w.p0.d)}${w.days !== 30 ? ` (${w.days} días)` : ''}` : 'Faltan pesadas'}</small></div>
-    <div><small>Ritmo objetivo</small><b>${r ? rateTxt(r) : '–'}</b><small>${r ? (st ? st[1] : 'al mes') : `<button class="btn ghost sm" data-act="healthGoal" style="margin-top:4px">Fijar ritmo</button>`}</small></div>
-    ${ex ? `<div><small>Esperado hoy</small><b>${fmtKg(ex.at(ex.r.mid, TODAY()))}</b><small>${Math.abs(ex.r.min - ex.r.max) < 1e-9 ? 'al ritmo objetivo' : `${fmtKg(ex.at(ex.r.min, TODAY()))} – ${fmtKg(ex.at(ex.r.max, TODAY()))}`}</small></div>` : ''}
+/* Resumen de Métricas: último peso y su tendencia en los últimos 30 días (verde si va hacia el objetivo, amarillo si no),
+   con una minigráfica de esos 30 días al fondo. Sin comparar con la pesada anterior ni ritmo objetivo ni esperado. */
+function healthHero(last){
+  if (!last) return `<div class="hl-hero ax-hero"><div><div class="ax-k">Último peso</div><div class="hl-big">— <small>kg</small></div>
+    <div class="ax-sub">Aún no hay pesadas. Conéctala con RENPHO (en el ? de arriba), importa un CSV o añade una con el +.</div></div></div>`;
+  const w = weight30(), c = cicloActual();
+  const cls = w ? (c ? colorPesoCiclo(c, w.month) : clsObj(w.kg, null, .3)) : '';
+  const ds = dayWeights().filter(p => p.d >= iso(addDays(new Date(), -30)));
+  let spark = '';
+  if (ds.length > 1){
+    const lo = Math.min(...ds.map(p => p.kg)), hi = Math.max(...ds.map(p => p.kg)), t0 = parseISO(ds[0].d).getTime(), t1 = Math.max(parseISO(ds[ds.length - 1].d).getTime(), t0 + 864e5);
+    const X = d => ((parseISO(d).getTime() - t0) / (t1 - t0) * 100).toFixed(2), Y = v => (4 + (hi - v) / Math.max(hi - lo, .4) * 30).toFixed(2);
+    const dl = ds.map((p, i) => (i ? 'L' : 'M') + X(p.d) + ' ' + Y(p.kg)).join(' ');
+    spark = `<svg class="ax-spark" viewBox="0 0 100 38" preserveAspectRatio="none" aria-hidden="true">
+      <defs><linearGradient id="axSparkG" x1="0" x2="1"><stop offset="0" stop-color="#7CF7FF"/><stop offset=".45" stop-color="#3D8BFF"/><stop offset=".8" stop-color="#B7A6FF"/><stop offset="1" stop-color="#58E6FF"/></linearGradient>
+        <linearGradient id="axSparkF" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#3D8BFF" stop-opacity=".32"/><stop offset="1" stop-color="#3D8BFF" stop-opacity="0"/></linearGradient></defs>
+      <path d="${dl} L100 38 L0 38 Z" fill="url(#axSparkF)"/><path d="${dl}" fill="none" stroke="url(#axSparkG)" stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>`;
+  }
+  const kg = fmtKg(last.kg).replace(' kg', '');
+  return `<div class="hl-hero ax-hero">${spark}
+    <div class="ax-main"><div class="ax-k">Último peso</div><div class="hl-big">${kg} <small>kg</small></div>
+      <div class="ax-sub cap">${fmtShort(last.t.slice(0, 10))} · ${last.t.slice(11, 16)} · ${last.src === 'renpho' ? 'RENPHO' : 'a mano'}</div></div>
+    <div class="ax-30 ${cls}"><div class="ax-k">Últimos 30 días</div><b>${w ? fmtPct(w.pct, 2) : '–'}</b><em>${w ? fmtDiff(w.kg) : 'faltan pesadas'}</em></div>
   </div>`;
 }
 /* ---------- Macros: cambios de kcal, CH, P y G a lo largo del tiempo ---------- */
@@ -2109,7 +2233,8 @@ function txtSobre(c){
 /* ---------- Ciclos: volumen, mantenimiento o definición (Métricas → Objetivo) ----------
    S.health.ciclos = [{id, tipo:'volumen'|'mantenimiento'|'definicion', desde:'AAAA-MM-DD', rateMin, rateMax}]
    Cada etapa de macros pertenece al ciclo en el que empieza y toma de él su objetivo y su ritmo (% al mes). */
-const CICLO = {volumen:{l:'Volumen', obj:'subir', c:'#18A957'}, mantenimiento:{l:'Mantenimiento', obj:'mantener', c:'#2F80ED'}, definicion:{l:'Definición', obj:'bajar', c:'#FF8A3D'}};
+// Colores de identidad de cada ciclo: la gama holográfica de Axis (el verde y el amarillo quedan para «va bien» / «no va»)
+const CICLO = {volumen:{l:'Volumen', obj:'subir', c:'#5CE1FF'}, mantenimiento:{l:'Mantenimiento', obj:'mantener', c:'#3D8BFF'}, definicion:{l:'Definición', obj:'bajar', c:'#A99BFF'}};
 const ciclos = () => (S.health.ciclos || []).filter(c => c && CICLO[c.tipo] && c.desde).slice().sort((x, y) => x.desde.localeCompare(y.desde));
 function cicloDe(d){ return ciclos().filter(c => c.desde <= d).pop() || null; }
 const cicloActual = () => cicloDe(TODAY());
@@ -2129,18 +2254,36 @@ function mesesDias(desde, hasta){ // «2 meses y 24 días»
   const t = [meses ? `${meses} ${meses === 1 ? 'mes' : 'meses'}` : '', dias || !meses ? `${dias} día${dias === 1 ? '' : 's'}` : ''].filter(Boolean);
   return t.join(' y ');
 }
-/* Objetivo de una etapa: el de su ciclo. Verde si el cambio de peso cae en el rango del ciclo; amarillo si no.
-   Sin rango, según la dirección (subir/bajar); sin ciclo, neutro. */
+/* Objetivo de una etapa: el de su ciclo. Verde si el dato va hacia el objetivo; amarillo si no; sin objetivo, neutro.
+   Volumen: subir de peso es ir bien (verde), aunque aún no se llegue al ritmo mínimo. Definición: bajar.
+   Mantenimiento: quedarse dentro de su rango (±0,5 %/mes si no se fijó otro). */
 function objetivoEtapa(m){
   const c = cicloDe(m.from), r = rangoCiclo(c);
   return {ciclo:c, obj:c ? CICLO[c.tipo].obj : '', lo:r ? r.lo : null, hi:r ? r.hi : null};
 }
 function colorPesoCiclo(c, pct){
-  const r = rangoCiclo(c);
-  if (r) return pct >= r.lo - 1e-9 && pct <= r.hi + 1e-9 ? 'ok' : 'off';
+  if (pct == null || isNaN(pct)) return '';
   if (c && c.tipo === 'volumen') return pct > 0 ? 'ok' : 'off';
   if (c && c.tipo === 'definicion') return pct < 0 ? 'ok' : 'off';
+  const r = rangoCiclo(c);
+  if (r) return pct >= r.lo - 1e-9 && pct <= r.hi + 1e-9 ? 'ok' : 'off';
   return '';
+}
+/* Hacia dónde tiene que ir el peso en una fecha: +1 subir, −1 bajar, 0 mantener, null sin objetivo.
+   Manda el ciclo; sin ciclo, el peso objetivo de Métricas frente a la última pesada. */
+function objDir(d){
+  const c = d ? cicloDe(d) : cicloActual();
+  if (c) return c.tipo === 'volumen' ? 1 : c.tipo === 'definicion' ? -1 : 0;
+  const g = numES(S.health.goal), l = lastWeight();
+  if (g == null || !l) return null;
+  return l.kg < g - .05 ? 1 : l.kg > g + .05 ? -1 : 0;
+}
+/* Clase de color de cualquier dato comparativo (cambio de peso en kg, balance en kcal…): 'ok' verde si va en el
+   sentido del objetivo, 'off' amarillo si va en contra; en mantenimiento, 'ok' si |v| ≤ tol. */
+function clsObj(v, d, tol){
+  const o = objDir(d); if (o == null || v == null || isNaN(v)) return '';
+  if (o === 0) return Math.abs(v) <= tol ? 'ok' : 'off';
+  return v * o > 0 ? 'ok' : 'off';
 }
 const colorPeso = (m, pct) => colorPesoCiclo(cicloDe(m.from), pct);
 /* Pendiente del peso (kg/día) por mínimos cuadrados entre dos fechas; null con menos de 4 pesadas */
@@ -2195,7 +2338,7 @@ function etapaCard(m, ctx){
   const tiles = [
     p && p.kout != null ? `<div class="et-tile"><small>Gasto real</small><b>${fmtKcal(p.kout)}</b><em>kcal/día${p.ks != null ? ` · Sparky ${fmtKcal(p.ks)}` : ''}</em></div>`
       : `<div class="et-tile off"><small>Gasto real</small><b>–</b><em>${p ? 'faltan datos' : 'sin comidas'}</em></div>`,
-    p && p.bal != null ? `<div class="et-tile"><small>Balance diario</small><b>${fmtBal(p.bal)}</b><em>kcal/día</em>
+    p && p.bal != null ? `<div class="et-tile ${clsObj(p.bal, m.from, 100)}"><small>Balance diario</small><b>${fmtBal(p.bal)}</b><em>kcal/día</em>
       <span class="et-bal"><i class="${p.bal >= 0 ? 'mas' : 'menos'}" style="width:${balW.toFixed(1)}%"></i></span></div>`
       : `<div class="et-tile off"><small>Balance diario</small><b>–</b><em>&nbsp;</em></div>`,
     w ? `<div class="et-tile et-peso ${cp}"><small>Peso a 30 días</small><b>${fmtPct(w.pct30, 2)}</b><em>${kg30 != null ? fmtDiff(kg30) : ''}${rango ? ` · obj. ${rango}` : ''}</em></div>`
@@ -2216,25 +2359,8 @@ function etapaCard(m, ctx){
     ${empezada ? `<div class="et-tiles">${tiles.join('')}</div>` : ''}
   </div>`;
 }
-function macrosPorCiclo(ps){
-  const grupos = new Map();
-  for (const m of ps.slice().reverse()){ const c = cicloDe(m.from), k = c ? c.id : ''; if (!grupos.has(k)) grupos.set(k, {c, l:[]}); grupos.get(k).l.push(m); }
-  return [...grupos.values()].map(({c, l}) => {
-    const C = c ? CICLO[c.tipo] : null, sig = c ? ciclos().find(x => x.desde > c.desde) : null;
-    const hasta = sig ? iso(addDays(parseISO(sig.desde), -1)) : TODAY(), r = rangoCiclo(c);
-    return `<div class="ci-grupo" style="--bc:${C ? C.c : '#6B7280'}">
-      <div class="ci-gh"><span class="et-dot"></span><b>${C ? C.l : 'Sin ciclo'}</b><small>${c ? `desde ${fmtShort(c.desde)} · ${mesesDias(c.desde, hasta)}${r ? ' · objetivo ' + txtRango(r) : ''}` : 'Fija tu ciclo en Métricas → Objetivo'}</small></div>
-      <div class="et-list">${l.map(m => etapaCard(m, 'mc')).join('')}</div></div>`;
-  }).join('');
-}
-function viewMacros(){
-  const ps = macroPeriods();
-  if (!ps.length) return `<div class="empty" style="margin-top:6px"><b>Aún no has guardado macros</b>Pulsa + para apuntar tus CH, P y G. Cada vez que las cambies, añade una nueva con su fecha y su razón: la app calcula sola el ritmo de peso y tu media de pasos en cada periodo.</div>`;
-  return `<div class="mc-tools"><button class="btn ghost sm" data-act="macroColors">${mcParts().map(([k, l, f, c]) => `<i style="background:${c}"></i>`).join('')} Colores de CH, P y G</button></div>
-    ${macrosPorCiclo(ps)}
-    <p class="hint" style="padding-left:0">Toca una etapa para editarla o cambiar su color. «Peso a 30 días»: cuánto habría cambiado tu peso en 30 días si se hubiera mantenido el ritmo de esa etapa; en verde si cae en el ritmo objetivo de su ciclo y en amarillo si no. El gasto real y el balance salen de lo comido (Sparky) y de tus pesadas.</p>`;
-}
 function viewHealth(){
+  if (S.health.tab === 'macros') S.health.tab = 'nutricion';   // la pestaña Macros ya no existe: sus tarjetas están en Nutrición
   const t = S.health.tab;
   const vl = NC ? [] : visList();
   const who = NC ? '' : `<div class="pills vis-pills" style="padding-top:4px;padding-bottom:0">
@@ -2245,9 +2371,14 @@ function viewHealth(){
       return `<div class="note on vis-note" style="margin:10px 0 4px"><b>Viendo el Health de ${esc(p.nombre)} · solo lectura</b>
         Copia importada: ${fmtShort((p.importada || '').slice(0, 10) || TODAY())}${u ? ` · último dato: ${fmtShort(u)}` : ''}. Su app la sube sola a Nextcloud: para ver lo último, pulsa «Actualizar copia» y elige <b>metricas.json</b> en su carpeta compartida.
         <div class="row-btns" style="margin-top:10px"><button class="btn ghost sm" data-act="visorImportar" data-id="${esc(p.id)}">Actualizar copia</button><button class="btn ghost sm danger" data-act="visorQuitar" data-id="${esc(p.id)}">Quitar</button></div></div>`; })() : ''}`;
-  const head = `<div class="sec-h"><h1>Health</h1>${t === 'metricas' && !VIS ? `<button class="btn ghost sm" data-act="healthGoal">${ic('flag')} Objetivo</button>` : ''}</div>
-    <div class="seg" role="tablist" style="margin-top:8px">${[['metricas', 'Métricas'], ['pasos', 'Pasos'], ['macros', 'Macros'], ['nutricion', 'Nutrición']].map(([k, l]) => `<button class="${t === k ? 'on' : ''}" data-act="healthTab" data-t="${k}" role="tab">${l}</button>`).join('')}</div>`.replace('</div>', () => '</div>' + who); // quién: justo bajo el título
-  if (t === 'macros') return head + viewMacros();
+  // Arriba a la derecha, en cada pestaña con datos que llegan de fuera: «Pegar» (lee el portapapeles y lo importa
+  // directamente) y el botón de importar (despliega la hoja para elegir un archivo o pegar el texto a mano)
+  const imp = VIS ? null : {metricas:['healthPaste', 'healthImport', 'pesadas (CSV)'], pasos:['stepsPaste', 'stepsImport', 'pasos'], nutricion:['nutriPaste', 'nutriImport', 'datos de Sparky']}[t];
+  const acts = (t === 'metricas' && !VIS ? `<button class="btn ghost sm" data-act="healthGoal">${ic('flag')} Objetivo</button>` : '')
+    + (imp ? `<button class="icon-btn hl-hbtn" data-act="${imp[1]}" aria-label="Importar ${imp[2]} desde un archivo o texto" title="Importar archivo o texto">${ic('upload')}</button>
+      <button class="btn sm hl-paste" data-act="${imp[0]}" aria-label="Pegar ${imp[2]} del portapapeles">${ic('paste')} Pegar</button>` : '');
+  const head = `<div class="sec-h"><h1>Health</h1>${acts ? `<div class="hl-acts">${acts}</div>` : ''}</div>${who}
+    <div class="seg" role="tablist" style="margin-top:8px">${[['metricas', 'Métricas'], ['pasos', 'Pasos'], ['nutricion', 'Nutrición']].map(([k, l]) => `<button class="${t === k ? 'on' : ''}" data-act="healthTab" data-t="${k}" role="tab">${l}</button>`).join('')}</div>`; // quién: justo bajo el título (va en ${who})
   if (t === 'nutricion') return head + viewNutricion();
   if (t === 'pasos') return head + viewPasos();
   return head + viewMetricas();
@@ -2261,7 +2392,7 @@ function stepsRange(){
   return [iso(addDays(new Date(), -(H.stepsRange === '90' ? 89 : 29))), t];
 }
 function stepsChart(list, a, b, avg){
-  if (!list.length) return `<div class="hl-chart empty-chart">${empty('Sin pasos en este periodo', AND ? 'Conecta Health Connect abajo o cambia el intervalo.' : 'Pega los pasos de Salud abajo o cambia el intervalo.')}</div>`;
+  if (!list.length) return `<div class="hl-chart empty-chart">${empty('Sin pasos en este periodo', AND ? 'Conecta Health Connect (en el ? de arriba) o cambia el intervalo.' : 'Pulsa «Pegar» arriba con los pasos de Salud copiados, o cambia el intervalo.')}</div>`;
   const W = Math.max(300, Math.min(1100, ($('#view') ? $('#view').clientWidth : 360) - 2 * 16 - 2)), H = 220;
   const L = 44, R = 14, T = 16, B = 28;
   const days = daysBetween(a, b) + 1, slot = (W - L - R) / days, bw = Math.max(1.5, Math.min(22, slot * .68));
@@ -2287,7 +2418,7 @@ function viewPasos(){
   const ns = list.map(s => s.n), total = ns.reduce((s, v) => s + v, 0), avg = ns.length ? total / ns.length : null;
   const days = daysBetween(a, b) + 1, last = H.steps.filter(s => s.n > 0).pop();
   return `
-    <div class="hl-hero st-hero">
+    <div class="hl-hero ax-hero st-hero">
       <div><div class="muted small">Media diaria · ${fmtShort(a)} – ${fmtShort(b)}</div><div class="hl-big">${fmtSteps(avg)} <small>pasos</small></div>
         <div class="muted small">${ns.length ? `${ns.length} de ${days} días con datos` : 'Sin pasos en este periodo'}</div></div>
       ${last ? `<div class="hl-side"><div class="hl-delta">${fmtSteps(last.n)}<small>${last.d === TODAY() ? 'hoy, de momento' : fmtShort(last.d)}</small></div></div>` : ''}
@@ -2304,24 +2435,21 @@ function viewPasos(){
       <div><small>Mejor día</small><b>${ns.length ? fmtSteps(Math.max(...ns)) : '–'}</b></div>
       <div><small>Peor día</small><b>${ns.length ? fmtSteps(Math.min(...ns)) : '–'}</b></div>
     </div>
-    <button class="hl-entry" data-act="stepsList">${ic('list')}<div><b>Historial de días</b><small>${list.length ? `${list.length} día${list.length === 1 ? '' : 's'} con pasos · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>
-    ${VIS ? '' : `<div class="rm-sub" style="margin-top:22px">De dónde salen los pasos</div>
-    ${AND ? stepsAndroidNote() : stepsIphoneNote()}`}`;
+    <button class="hl-entry" data-act="stepsList">${ic('list')}<div><b>Historial de días</b><small>${list.length ? `${list.length} día${list.length === 1 ? '' : 's'} con pasos · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>`;
 }
 function stepsAndroidNote(){
   const h = andJSON('healthStatus') || {};
-  const imp = '<button class="btn ghost sm" data-act="stepsImport">Pegar o importar</button>';
   if (!h.available) return `<div class="note" style="margin-top:0"><b>Falta Health Connect</b>${h.needsUpdate ? 'Hay que instalarlo o actualizarlo desde Google Play.' : 'Este móvil no tiene Health Connect (hace falta Android 9 o superior).'}
-    <div class="row-btns" style="margin-top:10px">${h.needsUpdate ? '<button class="btn sm" data-act="healthAndroid">Instalar Health Connect</button>' : ''}${imp}</div></div>`;
+    <div class="row-btns" style="margin-top:10px">${h.needsUpdate ? '<button class="btn sm" data-act="healthAndroid">Instalar Health Connect</button>' : ''}</div></div>`;
   if (!h.steps) return `<div class="note" style="margin-top:0"><b>Falta el permiso de pasos</b>Pulsa aquí y permite a Axis leer «Pasos». En Android 14 o superior, Health Connect cuenta los pasos con el propio móvil en cuanto una app tiene ese permiso: no hace falta otra app. En móviles más antiguos, usa una app de pasos que escriba en Health Connect (p. ej. Google Fit o Samsung Health).
-    <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="healthAndroid">Dar permiso de pasos</button>${imp}</div></div>`;
+    <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="healthAndroid">Dar permiso de pasos</button></div></div>`;
   const when = h.lastSync ? new Date(h.lastSync).toLocaleString('es-ES', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) : '';
   return `<div class="note on" style="margin-top:0"><b>Pasos desde Health Connect</b>${when ? `Última lectura: ${when}${h.lastSteps ? ` (${h.lastSteps} día${h.lastSteps === 1 ? '' : 's'} actualizado${h.lastSteps === 1 ? '' : 's'})` : ''}. ` : ''}Se leen solos con el peso${h.background ? ', cada 15 minutos' : ' al abrir Axis'}.
     <br><span class="small">Si ves cifras distintas a las de otra app de pasos: en Health Connect → Fuentes de datos y prioridad → Actividad, pon primera la fuente que quieras (el propio móvil o esa app).</span>
-    <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="healthAndroid">Sincronizar ahora</button>${h.historyOk ? '<button class="btn ghost sm" data-act="healthHistory">Traer histórico</button>' : ''}${imp}</div></div>`;
+    <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="healthAndroid">Sincronizar ahora</button>${h.historyOk ? '<button class="btn ghost sm" data-act="healthHistory">Traer histórico</button>' : ''}</div></div>`;
 }
 function stepsIphoneNote(){
-  return `<div class="note" style="margin-top:0"><b>Pasos desde la app Salud del iPhone</b>Una web no puede leer Salud directamente, así que se hace con un atajo de la app <b>Atajos</b>: lo ejecutas (o se ejecuta solo cada noche), copia tus pasos y aquí pulsas «Pegar pasos de Salud».
+  return `<div class="note" style="margin-top:0"><b>Pasos desde la app Salud del iPhone</b>Una web no puede leer Salud directamente, así que se hace con un atajo de la app <b>Atajos</b>: lo ejecutas (o se ejecuta solo cada noche), copia tus pasos y aquí pulsas <b>Pegar</b>, arriba a la derecha.
     <details class="st-guide"><summary>Cómo crear el atajo «Pasos a Pizarra» (una sola vez)</summary>
       <ol class="hl-steps">
         <li>Abre <b>Atajos</b> → <b>+</b> → Añadir acción → busca <b>Buscar muestras de salud</b>.</li>
@@ -2329,11 +2457,10 @@ function stepsIphoneNote(){
         <li>Añade <b>Repetir con cada</b> (sobre «Muestras de salud»). Dentro, una acción <b>Texto</b> con: la variable <b>Elemento de repetición → Fecha de inicio</b> (tócala → Formato de fecha: <b>Personalizado</b> → <code>yyyy-MM-dd</code>), un espacio y <b>Elemento de repetición → Valor</b>.</li>
         <li>Debajo de «Fin de repetir», añade <b>Combinar texto</b> («Resultados de repetir», con <b>Salto de línea</b>) y después <b>Copiar al portapapeles</b>.</li>
         <li>Llámalo «Pasos a Pizarra» y ejecútalo una vez: te pedirá permiso para leer Salud.</li>
-        <li>Abre Axis → Health → Pasos → <b>Pegar pasos de Salud</b>.</li>
+        <li>Abre Axis → Health → Pasos → <b>Pegar</b> (arriba a la derecha).</li>
       </ol>
       <span class="small">Para no tener que acordarte: Atajos → <b>Automatización</b> → <b>Hora del día</b> (p. ej. 22:00, a diario) → <b>Ejecutar inmediatamente</b> → «Pasos a Pizarra». Así siempre tendrás los pasos copiados al abrir Axis. Cada vez se mandan 90 días: los repetidos no se duplican y el día de hoy se actualiza.</span>
-    </details>
-    <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="stepsPaste">Pegar pasos de Salud</button><button class="btn ghost sm" data-act="stepsImport">Pegar a mano o importar archivo</button></div></div>`;
+    </details></div>`;
 }
 /* Texto con una fecha y un número de pasos por línea: el del atajo de Salud («2026-11-20 8421»), un CSV o similar */
 const MESES_TXT = {ene:1, jan:1, feb:2, mar:3, abr:4, apr:4, may:5, jun:6, jul:7, ago:8, aug:8, sep:9, set:9, oct:10, nov:11, dic:12, dec:12};
@@ -2382,7 +2509,7 @@ function importSteps(txt, src){
 /* ---------- Nutrición: ingesta, gasto y balance de cada día (de SparkyFitness) ----------
    S.health.nutri = [{d, kcal, p, c, g, fib?, bmr?, burned?, ok?, op?, oc?, og?, src:'sparky'|'atajo'}]
    Información, no control: el objetivo se enseña solo como referencia y en gris; nada en rojo ni avisos de «no cumples». */
-const NU_COL = {in:'#5B8DEF', gasto:'#F08A4B'};
+const NU_COL = {in:'#5B8DEF', gasto:'#F2C94C'};
 /* Gasto real (por tu peso): en un periodo, lo comido de media menos lo que cambia el peso (tendencia), pasado a kcal.
      gasto ≈ ingesta media − pendiente del peso (kg/día) × 7.700
    No hace falta estimar basal, ejercicio, sueño ni actividad: se mide el resultado. Solo se da con datos suficientes:
@@ -2445,7 +2572,7 @@ function nutriPeriod(a, b){
 /* Kcal planificadas de un día: las de la etapa de macros en la que cae (pestaña Macros) */
 function planDia(d){ const m = macroPeriods().filter(x => x.from <= d).pop(); return m ? (Number(m.kcal) || macroKcal(m)) : null; }
 function nutriChart(list, a, b){
-  if (!list.length) return `<div class="hl-chart empty-chart">${empty('Sin datos de nutrición en este periodo', AND ? 'Conecta Sparky abajo o cambia el intervalo.' : 'Pega los datos del atajo de Sparky abajo o cambia el intervalo.')}</div>`;
+  if (!list.length) return `<div class="hl-chart empty-chart">${empty('Sin datos de nutrición en este periodo', AND ? 'Conecta Sparky (en el ? de arriba) o cambia el intervalo.' : 'Pulsa «Pegar» arriba con lo que copia el atajo de Sparky, o cambia el intervalo.')}</div>`;
   const Hh = S.health, onReal = Hh.nuReal !== false, onSp = Hh.nuSparky !== false, onBands = !!Hh.nuBands;
   const W = Math.max(300, Math.min(1100, ($('#view') ? $('#view').clientWidth : 360) - 2 * 16 - 2)), H = 220;
   const L = 44, R = 14, T = 16, B = 28;
@@ -2474,7 +2601,9 @@ function nutriChart(list, a, b){
       ${bands}
       ${grid.map(v => `<line class="hl-grid" x1="${L}" x2="${W - R}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text class="hl-ax" x="${L - 6}" y="${(y(v) + 4).toFixed(1)}" text-anchor="end">${v >= 1000 ? (v / 1000).toLocaleString('es-ES', {maximumFractionDigits:1}) + 'k' : v}</text>`).join('')}
       ${ticks.map(d => `<text class="hl-ax" x="${x(d).toFixed(1)}" y="${H - 8}" text-anchor="middle">${parseISO(d).getDate()} ${parseISO(d).toLocaleDateString('es-ES', {month:'short'}).replace('.', '')}</text>`).join('')}
-      ${P.map(p => `<rect class="nu-bar${p.plan && p.kcal && Math.abs(p.kcal / p.plan - 1) <= .05 ? ' in' : ''}" x="${(p.x - bw / 2).toFixed(1)}" y="${p.y}" width="${bw.toFixed(1)}" height="${Math.max(0, H - B - p.y).toFixed(1)}" rx="${Math.min(4, bw / 3).toFixed(1)}" style="--i:${p.i}"/>`).join('')}
+      ${P.map(p => { const dentro = p.plan && p.kcal && Math.abs(p.kcal / p.plan - 1) <= .05;
+        return `<rect class="nu-bar${dentro ? ' in' : ''}" x="${(p.x - bw / 2).toFixed(1)}" y="${p.y}" width="${bw.toFixed(1)}" height="${Math.max(0, H - B - p.y).toFixed(1)}" rx="${Math.min(4, bw / 3).toFixed(1)}" style="--i:${p.i}"/>`
+          + (dentro ? `<circle class="nu-ok" cx="${p.x}" cy="${(p.y - Math.max(3.5, Math.min(5, bw / 2)) - 2.5).toFixed(1)}" r="${Math.max(1.8, Math.min(3, bw / 3)).toFixed(1)}" style="--i:${p.i}"/>` : ''); }).join('')}
       ${plan.trim() ? `<path class="nu-plan" d="${plan}"/>` : ''}
       ${ss.length > 1 ? `<path class="nu-sparky" d="${sLine}"/>` : ''}
       ${gs.length > 1 ? `<path class="nu-gasto" d="${gLine}" pathLength="1"/>` : ''}
@@ -2498,7 +2627,7 @@ function nutriResumen(per, a, b, days){
   const kgSem = kgDia != null ? kgDia * 7 : null, pctMes = kgDia != null && kgMedio ? kgDia * 30 / kgMedio * 100 : null;
   if (c && kgDia != null){ P.kout = P.kin - kgDia * KCAL_KG; P.bal = P.kin - P.kout; }
   const cp = pctMes != null ? colorPesoCiclo(c, pctMes) : '';
-  const vals = [['Comido', P.kin, '#5B8DEF'], ['Gasto real', P.kout, '#F08A4B'], ['Según Sparky', P.ks, '#C9773F']].filter(v => v[1] != null);
+  const vals = [['Comido', P.kin, 'var(--nu-in)'], ['Gasto real', P.kout, 'var(--hl-yel)'], ['Según Sparky', P.ks, 'color-mix(in srgb,var(--hl-yel) 45%,var(--surface2))']].filter(v => v[1] != null);
   const mx = Math.max(...vals.map(v => v[1]));
   const balTot = P.bal != null ? P.bal * total : null;
   return `<div class="ci-card" style="--bc:${C ? C.c : '#6B7280'}">
@@ -2510,27 +2639,29 @@ function nutriResumen(per, a, b, days){
     <div class="ci-cmp">${vals.map(([l, v, col]) => `<div><span>${l}</span><i><em style="width:${(v / mx * 100).toFixed(1)}%;background:${col}"></em></i><b>${fmtKcal(v)}</b></div>`).join('')}
       <small>kcal al día de media · ${P.days} de ${total} días con comidas registradas</small></div>
     <div class="et-tiles ci-tiles">
-      <div class="et-tile"><small>Balance acumulado</small><b>${balTot != null ? fmtBal(balTot) : '–'}</b><em>${balTot != null ? 'kcal · ≈ ' + fmtDiff(balTot / KCAL_KG) : 'falta el gasto real'}</em></div>
+      <div class="et-tile ${clsObj(P.bal, hasta, 100)}"><small>Balance acumulado</small><b>${balTot != null ? fmtBal(balTot) : '–'}</b><em>${balTot != null ? 'kcal · ≈ ' + fmtDiff(balTot / KCAL_KG) : 'falta el gasto real'}</em></div>
       <div class="et-tile et-peso ${cp}"><small>Peso en el ciclo</small><b>${P.dw != null ? fmtDiff(P.dw) : '–'}</b><em>${P.dwFrom && P.dwTo ? `${fmtKg(P.dwFrom.kg, 1)} → ${fmtKg(P.dwTo.kg, 1)}` : 'tendencia de 7 días'}</em></div>
       <div class="et-tile et-peso ${cp}"><small>Media por semana</small><b>${kgSem != null ? (kgSem >= 0 ? '+' : '−') + Math.abs(kgSem).toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' kg' : '–'}</b><em>${pctMes != null ? fmtPct(pctMes, 2) + ' al mes' : 'faltan pesadas'}</em></div>
     </div>
   </div>`;
 }
-/* Etapas de macros en Nutrición: las mismas tarjetas que en Macros, deslizables, abiertas en la actual */
+/* Planes (etapas) de macros en Nutrición: tarjetas deslizables, abiertas en la actual. Aquí se añaden (+) y se editan
+   (tocando la tarjeta); la antigua pestaña Macros se quitó el 26-11-2026. */
 function nutriEtapas(){
-  const ps = macroPeriods().filter(m => m.from <= TODAY());
-  if (!ps.length) return '';
-  return `<div class="rm-sub" style="margin-top:22px">Macros: planificado y comido</div>
-    <div class="nu-swipe">${ps.map(m => etapaCard(m, 'nu')).join('<span class="et-flecha" aria-hidden="true">' + ic('chev') + '</span>')}</div>
-    ${ps.length > 1 ? '<p class="hint" style="padding-left:0;margin-top:2px">Desliza a izquierda o derecha para ver cada etapa de macros.</p>' : ''}`;
+  const ps = macroPeriods();
+  const btns = VIS ? '' : `<div class="et-acts">${ps.length ? `<button class="icon-btn et-colbtn" data-act="macroColors" aria-label="Colores de CH, P y G" title="Colores de CH, P y G">${mcParts().map(([k, l, f, c]) => `<i style="background:${c}"></i>`).join('')}</button>` : ''}
+      <button class="icon-btn et-add" data-act="macroEdit" aria-label="Nuevo plan de macros" title="Nuevo plan de macros">${ic('plus')}</button></div>`;
+  return `<div class="et-head"><div class="rm-sub">Macros: planificado y comido</div>${btns}</div>
+    ${ps.length ? `<div class="nu-swipe">${ps.map(m => etapaCard(m, 'nu')).join('<span class="et-flecha" aria-hidden="true">' + ic('chev') + '</span>')}</div>`
+      : `<div class="empty" style="margin-top:4px"><b>Aún no hay plan de macros</b>Pulsa + para apuntar tus kcal, CH, P y G. Cada vez que las cambies, añade un plan nuevo con su fecha y su razón.</div>`}`;
 }
 function paintNutriTools(open){
   const sh = $('#sheet'), H = S.health;
   if (!open && !(sh.classList.contains('open') && sh.querySelector('.nu-tools'))) return;
-  const tg = (on, act, t, d) => `<button class="mc-toggle ${on ? 'on' : ''}" data-act="${act}" role="switch" aria-checked="${!!on}"><span class="mc-sw"></span><span>${t}<small>${d}</small></span></button>`;
-  const body = tg(H.nuReal !== false, 'nuTogReal', 'Gasto real (por tu peso)', 'Lo comido menos lo que cambia tu peso, en las 4 semanas anteriores a cada día')
-    + tg(H.nuSparky !== false, 'nuTogSparky', 'Gasto según Sparky', 'Basal por fórmula + lo quemado que registra Sparky')
-    + (H.macros.length ? tg(H.nuBands, 'nuTogBands', 'Fondo por macros', 'Una franja de color por cada etapa de macros') : '');
+  const body = toolTg(H.nuReal !== false, 'nuTogReal', 'Gasto real (por tu peso)', 'Lo comido menos lo que cambia tu peso, en las 4 semanas anteriores a cada día', '<i class="sw-line sw-yel"></i>')
+    + toolTg(H.nuSparky !== false, 'nuTogSparky', 'Gasto según Sparky', 'Basal por fórmula + lo quemado que registra Sparky', '<i class="sw-line sw-yel sw-dot"></i>')
+    + (H.macros.length ? toolTg(H.nuBands, 'nuTogBands', 'Fondo por macros', 'Una franja de color por cada etapa de macros', swMacros()) : '')
+    + `<div class="sw-leg"><span><i class="sw-bar in"></i>Ingesta dentro del plan (±5 %) <b class="ok">✓</b></span><span><i class="sw-bar"></i>Ingesta fuera del plan</span>${H.macros.length ? '<span><i class="sw-line sw-yel sw-dash"></i>Kcal planificadas</span>' : ''}</div>`;
   const box = sh.querySelector('.nu-tools');
   if (box && sh.classList.contains('open')){ box.innerHTML = body; return; }
   delete sh.dataset.day; sh.classList.remove('has-pv');
@@ -2546,14 +2677,12 @@ function viewNutricion(){
   const pcg = n => `P ${fmtNum(n.p || 0)} · C ${fmtNum(n.c || 0)} · G ${fmtNum(n.g || 0)}`;
   const g = last ? nuGasto(last) : null, gsp = last ? nuGastoSparky(last) : null, bal = last ? nuBal(last) : null;
   const onReal = H.nuReal !== false, onSp = H.nuSparky !== false;
-  const hayPlan = macroPeriods().some(m => m.from <= b && (!m.to || m.to >= a));
-  const legend = `<div class="mc-legend row"><span style="--bc:${NU_COL.in}"><i></i>Ingesta</span>${hayPlan ? '<span style="--bc:#2348A8"><i></i>Dentro del plan (±5 %)</span>' : ''}${onReal && list.some(n => nuGasto(n) != null) ? '<span class="nu-gasto-l"><i></i>Gasto real</span>' : ''}${onSp && list.some(n => nuGastoSparky(n) != null) ? '<span class="nu-sparky-l"><i></i>Según Sparky</span>' : ''}${hayPlan ? '<span class="nu-plan-l"><i></i>Kcal planificadas</span>' : ''}</div>`;
   const nTools = (onReal ? 1 : 0) + (onSp ? 1 : 0) + (H.nuBands && H.macros.length ? 1 : 0);
   return `
-    <div class="hl-hero">
-      ${last ? `<div><div class="muted small">${last.d === TODAY() ? 'Hoy, de momento' : 'Último día con registro · ' + fmtShort(last.d)}</div><div class="hl-big">${fmtKcal(last.kcal)} <small>kcal</small></div><div class="muted small">${pcg(last)}</div></div>
-      <div class="hl-side">${g != null ? `<div class="hl-delta">${fmtKcal(g)}<small>gasto real</small></div>` : ''}${gsp != null ? `<div class="hl-delta nu-sp">${fmtKcal(gsp)}<small>según Sparky</small></div>` : ''}${bal != null ? `<div class="hl-delta">${fmtBal(bal)}<small>balance</small></div>` : ''}</div>`
-      : `<div><div class="hl-big">— kcal</div><div class="muted small">Aún no hay datos de nutrición. ${AND ? 'Conecta tu cuenta de Sparky abajo.' : 'Usa el atajo de Sparky que se explica abajo.'}</div></div>`}
+    <div class="hl-hero ax-hero nu-hero">
+      ${last ? `<div class="ax-main"><div class="ax-k">${last.d === TODAY() ? 'Hoy, de momento' : 'Último día · ' + fmtShort(last.d)}</div><div class="hl-big">${fmtKcal(last.kcal)} <small>kcal</small></div><div class="ax-sub">${pcg(last)}</div></div>
+      <div class="nu-chips">${g != null ? `<span><small>Gasto real</small><b>${fmtKcal(g)}</b></span>` : ''}${bal != null ? `<span class="${clsObj(bal, last.d, 100)}"><small>Balance</small><b>${fmtBal(bal)}</b></span>` : ''}${gsp != null ? `<span class="aux"><small>Sparky</small><b>${fmtKcal(gsp)}</b></span>` : ''}</div>`
+      : `<div class="ax-main"><div class="hl-big">— <small>kcal</small></div><div class="ax-sub">Aún no hay datos de nutrición. ${AND ? 'Conecta tu cuenta de Sparky en el ? de arriba.' : 'Crea el atajo de Sparky (se explica en el ? de arriba) y pulsa «Pegar».'}</div></div>`}
     </div>
     <div class="pills" style="padding-top:12px">${[['7', 'Últimos 7 días'], ['30', 'Últimos 30 días'], ['90', 'Últimos 90 días'], ['custom', 'Personalizado']].map(([k, l]) => `<button class="pill ${(H.nutriRange || '30') === k ? 'on' : ''}" data-act="nutriRange" data-v="${k}">${l}</button>`).join('')}</div>
     ${H.nutriRange === 'custom' ? `<div class="hl-custom"><label>Desde<input type="date" id="nuFrom" value="${esc(H.nutriFrom || a)}" max="${TODAY()}"></label><label>Hasta<input type="date" id="nuTo" value="${esc(H.nutriTo || b)}" max="${TODAY()}"></label></div>` : ''}
@@ -2561,15 +2690,10 @@ function viewNutricion(){
       <div class="hl-card-h"><b>Ingesta y gasto</b><span class="muted small">${fmtShort(a)} – ${fmtShort(b)}</span>
         <button class="btn ghost sm hl-tools-btn" data-act="nutriTools" aria-label="Filtros de la gráfica">${ic('sliders')}${nTools ? `<b>${nTools}</b>` : ''}</button></div>
       ${nutriChart(list, a, b)}
-      ${list.length ? legend : ''}
     </div>
     ${per ? nutriResumen(per, a, b, days) : ''}
     ${nutriEtapas()}
-    ${per ? `<details class="st-guide nu-como"><summary>¿Cómo se calculan los gastos?</summary>
-      <p class="hint" style="padding-left:0"><b>Gasto real (por tu peso):</b> lo que comes de media menos lo que cambia tu peso, pasado a kcal (7.700 kcal ≈ 1 kg). El cambio de peso es la pendiente de la recta que mejor encaja con todas tus pesadas de las 4 semanas anteriores a cada día: una pesada suelta con agua o sal apenas lo mueve. Hace falta comer registrado 3 de cada 4 días y 6 pesadas (alguna en la primera y en la última semana). El balance se calcula con este gasto.<br>
-      <b>Según Sparky:</b> metabolismo basal por fórmula + lo quemado con ejercicio y actividad que registra Sparky. Suele quedarse corto (no cuenta la digestión ni toda la actividad diaria).</p></details>` : ''}
-    <button class="hl-entry" data-act="nutriList">${ic('list')}<div><b>Historial de días</b><small>${list.length ? `${list.length} día${list.length === 1 ? '' : 's'} · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>
-    ${VIS ? '' : `<div class="rm-sub" style="margin-top:22px">De dónde salen los datos</div>${AND ? sparkyAndroidNote() : sparkyIphoneNote()}`}`;
+    <button class="hl-entry" data-act="nutriList">${ic('list')}<div><b>Historial de días</b><small>${list.length ? `${list.length} día${list.length === 1 ? '' : 's'} · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>`;
 }
 function nutriListSheet(){
   const [a, b] = nutriRange(), list = nutriIn(a, b);
@@ -2577,7 +2701,7 @@ function nutriListSheet(){
     const g = nuGasto(n), gsp = nuGastoSparky(n), bal = nuBal(n);
     return `<div class="hl-row"><div><b class="cap">${fmtLong(n.d)}</b><small>${n.kcal ? `P ${fmtNum(n.p || 0)} · C ${fmtNum(n.c || 0)} · G ${fmtNum(n.g || 0)} g` : 'sin comidas registradas'}</small>
       <small>${g != null ? `gasto real ${fmtKcal(g)}` : 'gasto real: faltan datos'}${gsp != null ? ` · Sparky ${fmtKcal(gsp)}` : ''}</small></div>
-      <span class="hl-d">${bal != null ? fmtBal(bal) : ''}</span><b class="hl-kg">${n.kcal ? fmtKcal(n.kcal) + ' kcal' : '–'}</b></div>`;
+      <span class="hl-d ${clsObj(bal, n.d, 100)}">${bal != null ? fmtBal(bal) : ''}</span><b class="hl-kg">${n.kcal ? fmtKcal(n.kcal) + ' kcal' : '–'}</b></div>`;
   }).join('') : '<p class="hint" style="padding-left:12px">Nada en este periodo.</p>';
   const sh = $('#sheet'); delete sh.dataset.day; sh.classList.remove('has-pv');
   sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
@@ -2602,7 +2726,7 @@ function sparkyAndroidNote(){
 }
 function sparkyIphoneNote(){
   const srv = 'https://<b>tu-sparky</b>';   // la dirección real no va en el código: el repositorio de la web es público
-  return `<div class="note" style="margin-top:0"><b>Datos de SparkyFitness con un atajo del iPhone</b>La web no puede leer Sparky por sí sola, así que se hace con la app <b>Atajos</b>: el atajo baja tus datos de los últimos 7 días y los copia; aquí pulsas «Pegar datos de Sparky».
+  return `<div class="note" style="margin-top:0"><b>Datos de SparkyFitness con un atajo del iPhone</b>La web no puede leer Sparky por sí sola, así que se hace con la app <b>Atajos</b>: el atajo baja tus datos de los últimos 7 días y los copia; aquí pulsas <b>Pegar</b>, arriba a la derecha.
     <details class="st-guide"><summary>Cómo crear el atajo «Sparky a Pizarra» (una sola vez)</summary>
       <ol class="hl-steps">
         <li>En Sparky (web) → <b>Settings → Developer &amp; Integrations → API Key Management</b>, crea una clave con <b>Access: Read-only</b> y cópiala. Solo irá dentro de tu atajo, en tu iPhone.</li>
@@ -2616,12 +2740,11 @@ function sparkyIphoneNote(){
             <li><b>Diccionario</b> con tres elementos de tipo Texto: <code>d</code> = <code>Dia</code>, <code>s</code> = <code>Resumen</code>, <code>n</code> = <code>Totales</code>. Debe ser la última acción dentro de la repetición.</li>
           </ol></li>
         <li>Debajo de «Fin de repetir»: <b>Combinar texto</b> («Resultados de repetir», con <b>Salto de línea</b>) y <b>Copiar al portapapeles</b>.</li>
-        <li>Llámalo «Sparky a Pizarra», ejecútalo y en Axis → Health → Nutrición pulsa <b>Pegar datos de Sparky</b>.</li>
+        <li>Llámalo «Sparky a Pizarra», ejecútalo y en Axis → Health → Nutrición pulsa <b>Pegar</b> (arriba a la derecha).</li>
       </ol>
       <span class="small">Para no tener que acordarte: Atajos → <b>Automatización</b> → <b>Hora del día</b> (p. ej. 22:30, a diario) → <b>Ejecutar inmediatamente</b> → «Sparky a Pizarra». Los días repetidos se actualizan, no se duplican.<br>
       <b>Histórico (una vez):</b> un atajo con una sola <b>Obtener contenido de URL</b> a <code>${srv}/api/reports/mini-nutrition-trends?startDate=2024-01-01&amp;endDate=2030-12-31</code> (misma cabecera) y <b>Copiar al portapapeles</b>: trae lo comido de todos los días (sin el gasto).</span>
-    </details>
-    <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="nutriPaste">Pegar datos de Sparky</button><button class="btn ghost sm" data-act="nutriImport">Pegar a mano o importar archivo</button></div></div>`;
+    </details></div>`;
 }
 /* Lo que copia el atajo (o un JSON de la API de Sparky) → días de nutrición. Admite:
    - una lista de {d, s, n} (s = /api/daily-summary, n = /api/food-entries/nutrition/today; como objeto o como texto JSON)
@@ -2697,45 +2820,66 @@ function viewMetricas(){
   const first = pts[0], end = pts[pts.length - 1];
   const kgs = ws.map(w => w.kg), avg = kgs.length ? kgs.reduce((s, v) => s + v, 0) / kgs.length : null;
   const diff = first && end && pts.length > 1 ? end.kg - first.kg : null;
-  const prev = all.length > 1 ? all[all.length - 2] : null;
-  const goal = parseFloat(String(H.goal).replace(',', '.'));
   const synced = all.some(w => w.src === 'renpho');
-  const lastTxt = last ? `${fmtLong(last.t.slice(0, 10))} · ${last.t.slice(11, 16)} · ${last.src === 'renpho' ? 'RENPHO' : 'a mano'}` : '';
   return `
-    <div class="hl-hero">
-      ${last ? `<div><div class="muted small">Último peso</div><div class="hl-big">${fmtKg(last.kg)}</div><div class="muted small cap">${lastTxt}</div></div>
-      <div class="hl-side">${prev ? `<div class="hl-delta ${last.kg - prev.kg > 0 ? 'up' : last.kg - prev.kg < 0 ? 'down' : ''}">${fmtDiff(last.kg - prev.kg)}<small>vs. anterior</small></div>` : ''}
-        ${isNaN(goal) ? '' : `<div class="hl-delta">${fmtDiff(last.kg - goal).replace(/^[+−±]/, '')}<small>${last.kg > goal ? 'para el objetivo' : last.kg < goal ? 'bajo el objetivo' : 'objetivo logrado 🎉'}</small></div>`}</div>`
-      : `<div><div class="hl-big">— kg</div><div class="muted small">Aún no hay pesadas. Conecta RENPHO abajo o añade una con el +.</div></div>`}
-    </div>
-    ${rateCard()}
+    ${healthHero(last)}
     <div class="seg" role="tablist">${[['dia', 'Día a día'], ['semana', 'Media semanal']].map(([k, l]) => `<button class="${H.mode === k ? 'on' : ''}" data-act="healthMode" data-m="${k}" role="tab">${l}</button>`).join('')}</div>
     <div class="pills" style="padding-top:0">${[['30', 'Últimos 30 días'], ['90', 'Últimos 90 días'], ['custom', 'Personalizado']].map(([k, l]) => `<button class="pill ${H.range === k ? 'on' : ''}" data-act="healthRange" data-v="${k}">${l}</button>`).join('')}</div>
     ${H.range === 'custom' ? `<div class="hl-custom"><label>Desde<input type="date" id="hlFrom" value="${esc(H.from || a)}" max="${TODAY()}"></label><label>Hasta<input type="date" id="hlTo" value="${esc(H.to || b)}" max="${TODAY()}"></label></div>` : ''}
-    <div class="hl-card" style="--hl:${'#2BB673'}">
+    <div class="hl-card" style="--hl:var(--ok)">
       <div class="hl-card-h"><b>${wk ? 'Media de cada semana' : 'Peso día a día'}</b><span class="muted small">${fmtShort(a)} – ${fmtShort(b)}</span>
         ${(() => { const n = (H.trend ? 1 : 0) + (H.expected ? 1 : 0) + (H.bands && H.macros.length ? 1 : 0); return `<button class="btn ghost sm hl-tools-btn" data-act="healthTools" aria-label="Herramientas de la gráfica">${ic('sliders')}${n ? `<b>${n}</b>` : ''}</button>`; })()}</div>
       ${healthChart(pts, a, b)}
-      ${(() => { // leyenda compacta: solo color + kcal (y la línea esperada)
-        const ex = H.expected ? expectedFrom() : null;
-        const its = (H.trend && pts.length ? [`<span class="hl-trd-l" style="--bc:#2BB673"><i></i>Tendencia 7 días</span>`] : [])
-          .concat(ex ? [`<span class="hl-exp-l"><i></i>Esperado ${fmtPct(ex.r.mid)}/mes</span>`] : [])
-          .concat(H.bands && H.macros.length ? macroPeriods().filter(m => m.from <= b && (!m.to || m.to >= a)).map(m => `<span style="--bc:${m.color}"><i></i>${fmtNum(m.kcal || macroKcal(m))}</span>`) : []);
-        return its.length ? `<div class="mc-legend row">${its.join('')}</div>` : '';
-      })()}
     </div>
     <div class="hl-stats">
       <div><small>Media</small><b>${fmtKg(avg)}</b></div>
-      <div><small>Cambio</small><b class="${diff > 0 ? 'up' : diff < 0 ? 'down' : ''}">${diff == null ? '–' : fmtDiff(diff)}</b></div>
+      <div><small>Cambio</small><b class="${clsObj(diff, b, .3)}">${diff == null ? '–' : fmtDiff(diff)}</b></div>
       <div><small>Mínimo</small><b>${fmtKg(kgs.length ? Math.min(...kgs) : null)}</b></div>
       <div><small>Máximo</small><b>${fmtKg(kgs.length ? Math.max(...kgs) : null)}</b></div>
     </div>
-    <button class="hl-entry" data-act="healthList">${ic('list')}<div><b>Historial de ${wk ? 'semanas' : 'pesadas'}</b><small>${ws.length ? `${ws.length} pesada${ws.length === 1 ? '' : 's'} · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>
-    ${VIS ? '' : `<div class="rm-sub" style="margin-top:22px">Conexión con RENPHO</div>`}
-    ${VIS ? '' : AND ? healthAndroidNote() : `<div class="note ${synced ? 'on' : ''}" style="margin-top:0"><b>La báscula se conecta desde la app Android</b>
-      Las pesadas pasan de RENPHO Health a Health Connect y Axis las lee y las guarda en tu Nextcloud. Aquí puedes importar un CSV.
-      <div class="row-btns" style="margin-top:10px"><button class="btn ghost sm" data-act="healthImport">Importar CSV</button></div>
-    </div>`}`;
+    <button class="hl-entry" data-act="healthList">${ic('list')}<div><b>Historial de ${wk ? 'semanas' : 'pesadas'}</b><small>${ws.length ? `${ws.length} pesada${ws.length === 1 ? '' : 's'} · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>`;
+}
+/* ---------- Ayuda de Health: el «?» de la barra superior ----------
+   Todo lo explicativo de cada pestaña (de dónde salen los datos, conexiones, cómo se calcula) va en esta hoja, para que
+   la pantalla quede para los datos. Si en el móvil falta conectar o dar un permiso, el «?» lleva un punto amarillo. */
+function healthHelpPendiente(){
+  if (!AND || VIS) return false;
+  const t = S.health.tab, h = andJSON('healthStatus') || {};
+  if (t === 'metricas') return !h.available || !h.granted;
+  if (t === 'pasos') return !h.available || !h.steps;
+  if (t === 'nutricion'){ const sp = andJSON('sparkyStatus') || {}; return !sp.conectado || !!sp.error; }
+  return false;
+}
+function healthHelpBody(){
+  const t = S.health.tab, sec = (h, b) => `<div class="hp-sec"><div class="rm-sub">${h}</div>${b}</div>`;
+  const colores = sec('Cómo leer los colores', `<p class="hint">Azul: la estructura y los datos sin valoración. <b class="ok">Verde</b>: los datos de la gráfica y lo que va hacia tu objetivo (subir en volumen, bajar en definición, quedarte en tu rango en mantenimiento). <b class="off">Amarillo</b>: objetivos, tendencias, datos auxiliares y lo que va en contra del objetivo. Los colores de cada línea de la gráfica están en su botón de filtros.</p>`);
+  const importar = VIS ? '' : sec('Importar', `<p class="hint"><b>Pegar</b> (arriba a la derecha) lee lo que tengas copiado y lo importa directamente. El botón de al lado abre la hoja para elegir un archivo o pegar el texto a mano.</p>`);
+  if (t === 'pasos') return (VIS ? '' : sec('De dónde salen los pasos', AND ? stepsAndroidNote() : stepsIphoneNote()))
+    + importar
+    + sec('La gráfica', '<p class="hint">Las barras en azul más intenso son los días por encima de tu media; la línea amarilla discontinua es la media del periodo.</p>');
+  if (t === 'nutricion') return (VIS ? '' : sec('De dónde salen los datos', AND ? sparkyAndroidNote() : sparkyIphoneNote()))
+    + importar
+    + sec('Planes de macros', `<p class="hint">Pulsa + junto a las tarjetas para añadir un plan nuevo y toca una tarjeta para editarla, cambiar su color o borrarla. El botón de los tres colores cambia los de CH, P y G. ${"Toca una etapa para editarla o cambiar su color. «Peso a 30 días»: cuánto habría cambiado tu peso en 30 días si se hubiera mantenido el ritmo de esa etapa; en verde si va hacia el objetivo de su ciclo (subir en volumen, bajar en definición, quedarse en su rango en mantenimiento) y en amarillo si no. El gasto real y el balance salen de lo comido (Sparky) y de tus pesadas."}</p>`)
+    + sec('¿Cómo se calculan los gastos?', "<p class=\"hint\"><b>Gasto real (por tu peso):</b> lo que comes de media menos lo que cambia tu peso, pasado a kcal (7.700 kcal ≈ 1 kg). El cambio de peso es la pendiente de la recta que mejor encaja con todas tus pesadas de las 4 semanas anteriores a cada día: una pesada suelta con agua o sal apenas lo mueve. Hace falta comer registrado 3 de cada 4 días y 6 pesadas (alguna en la primera y en la última semana). El balance se calcula con este gasto.<br>\n      <b>Según Sparky:</b> metabolismo basal por fórmula + lo quemado con ejercicio y actividad que registra Sparky. Suele quedarse corto (no cuenta la digestión ni toda la actividad diaria).</p>")
+    + sec('La gráfica', '<p class="hint">Azul oscuro con un punto verde: días a ±5 % de las kcal planificadas en tu etapa de macros. Azul claro: días fuera de ese margen. Las etapas de macros de debajo se deslizan a izquierda o derecha.</p>')
+    + colores;
+  return (VIS ? '' : sec('Conexión con RENPHO', AND ? healthAndroidNote() : `<div class="note ${weights().some(w => w.src === 'renpho') ? 'on' : ''}" style="margin-top:0"><b>La báscula se conecta desde la app Android</b>
+      Las pesadas pasan de RENPHO Health a Health Connect y Axis las lee y las guarda en tu Nextcloud. Para traer el histórico, importa un CSV de RENPHO con el botón de importar de arriba.</div>`))
+    + importar
+    + sec('El resumen', '<p class="hint">Último peso y cuánto ha cambiado en los últimos 30 días (desde el día con pesada más cercano a hace 30 días). Al fondo, tu peso de esos 30 días.</p>')
+    + colores;
+}
+function paintHealthHelp(open){
+  const sh = $('#sheet');
+  if (!open && !(sh.classList.contains('open') && sh.querySelector('.hp-body'))) return;
+  const box = sh.querySelector('.hp-body');
+  if (box && sh.classList.contains('open')){ box.innerHTML = healthHelpBody(); return; }   // ya abierta: se refresca (p. ej. tras conectar)
+  const tit = {metricas:'Métricas', pasos:'Pasos', macros:'Macros', nutricion:'Nutrición'}[S.health.tab] || 'Health';
+  delete sh.dataset.day; sh.classList.remove('has-pv');
+  sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
+    <div class="sheet-h"><h2>${tit} · cómo funciona</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+    <div class="hp-body">${healthHelpBody()}</div></div>`;
+  sh.classList.add('open'); document.body.classList.add('locked');
 }
 /* Historial de pesadas y de pasos: lista completa del periodo en una hoja aparte (desde ahí se editan y se borran) */
 function openListSheet(title, sub, html, delAct){
@@ -2750,27 +2894,29 @@ function weightListSheet(){
   const {a, b, pts} = healthSeries(), wk = S.health.mode === 'semana';
   const html = pts.length ? pts.slice().reverse().map((p, i, arr) => {
     const older = arr[i + 1], dd = older ? p.kg - older.kg : null;
-    if (wk) return `<div class="hl-row"><div><b>Semana del ${fmtShort(p.d)}</b><small>${p.n} pesada${p.n === 1 ? '' : 's'}</small></div><span class="hl-d ${dd > 0 ? 'up' : dd < 0 ? 'down' : ''}">${dd == null ? '' : fmtDiff(dd)}</span><b class="hl-kg">${fmtKg(p.kg)}</b></div>`;
-    return p.list.slice().reverse().map(w => `<button class="hl-row" data-act="healthEdit" data-t="${esc(w.t)}"><div><b class="cap">${fmtLong(w.t.slice(0, 10))}</b><small>${w.t.slice(11, 16)} · ${w.src === 'renpho' ? 'RENPHO' : 'a mano'}${w.fat ? ` · grasa ${String(w.fat).replace('.', ',')} %` : ''}</small></div><span class="hl-d ${dd > 0 ? 'up' : dd < 0 ? 'down' : ''}">${dd == null || p.list.length > 1 ? '' : fmtDiff(dd)}</span><b class="hl-kg">${fmtKg(w.kg)}</b></button>`).join('');
+    if (wk) return `<div class="hl-row"><div><b>Semana del ${fmtShort(p.d)}</b><small>${p.n} pesada${p.n === 1 ? '' : 's'}</small></div><span class="hl-d ${clsObj(dd, p.d, .3)}">${dd == null ? '' : fmtDiff(dd)}</span><b class="hl-kg">${fmtKg(p.kg)}</b></div>`;
+    return p.list.slice().reverse().map(w => `<button class="hl-row" data-act="healthEdit" data-t="${esc(w.t)}"><div><b class="cap">${fmtLong(w.t.slice(0, 10))}</b><small>${w.t.slice(11, 16)} · ${w.src === 'renpho' ? 'RENPHO' : 'a mano'}${w.fat ? ` · grasa ${String(w.fat).replace('.', ',')} %` : ''}</small></div><span class="hl-d ${clsObj(dd, p.d, .3)}">${dd == null || p.list.length > 1 ? '' : fmtDiff(dd)}</span><b class="hl-kg">${fmtKg(w.kg)}</b></button>`).join('');
   }).join('') : '<p class="hint" style="padding-left:12px">Nada en este periodo.</p>';
   openListSheet(wk ? 'Semanas' : 'Pesadas', `${fmtShort(a)} – ${fmtShort(b)}`, html, 'healthDelRange');
 }
 function stepsListSheet(){
   const [a, b] = stepsRange(), list = S.health.steps.filter(s => s.d >= a && s.d <= b && s.n > 0);
   const avg = list.length ? list.reduce((s, x) => s + x.n, 0) / list.length : null;
-  const html = list.length ? list.slice().reverse().map(s => `<button class="hl-row" data-act="stepsEdit" data-d="${s.d}"><div><b class="cap">${fmtLong(s.d)}</b><small>${STEP_SRC[s.src] || 'importado'}</small></div>${avg ? `<span class="hl-d ${s.n >= avg ? 'down' : 'up'}">${s.n >= avg ? '▲' : '▼'}</span>` : ''}<b class="hl-kg">${fmtSteps(s.n)}</b></button>`).join('')
+  const html = list.length ? list.slice().reverse().map(s => `<button class="hl-row" data-act="stepsEdit" data-d="${s.d}"><div><b class="cap">${fmtLong(s.d)}</b><small>${STEP_SRC[s.src] || 'importado'}</small></div>${avg ? `<span class="hl-d ${s.n >= avg ? 'ok' : 'off'}">${s.n >= avg ? '▲' : '▼'}</span>` : ''}<b class="hl-kg">${fmtSteps(s.n)}</b></button>`).join('')
     : '<p class="hint" style="padding-left:12px">Nada en este periodo.</p>';
   openListSheet('Pasos por día', `${fmtShort(a)} – ${fmtShort(b)}`, html, 'stepsDelRange');
 }
+/* Interruptor de las hojas de filtros, con la muestra del color con el que sale en la gráfica */
+const toolTg = (on, act, t, d, sw) => `<button class="mc-toggle ${on ? 'on' : ''}" data-act="${act}" role="switch" aria-checked="${!!on}"><span class="mc-sw"></span><span><span class="tg-t">${sw || ''}${t}</span><small>${d}</small></span></button>`;
+const swMacros = () => `<span class="sw-dots">${macroPeriods().slice(-4).map(m => `<i style="background:${m.color}"></i>`).join('')}</span>`;
 /* Herramientas de la gráfica de peso: hoja aparte (aquí irán más en el futuro) */
 function paintHealthTools(open){
   const sh = $('#sheet'), H = S.health;
   if (!open && !(sh.classList.contains('open') && sh.querySelector('.hl-tools'))) return;
   const r = rateTarget();
-  const tg = (on, act, t, d) => `<button class="mc-toggle ${on ? 'on' : ''}" data-act="${act}" role="switch" aria-checked="${!!on}"><span class="mc-sw"></span><span>${t}<small>${d}</small></span></button>`;
-  const body = tg(H.trend, 'healthTrend', 'Tendencia de 7 días', 'Media de los últimos 7 días en cada día: quita el vaivén diario del agua')
-    + tg(H.expected, 'healthExpected', 'Progreso esperado', r ? `Recta desde el peso de hace 30 días a ${rateTxt(r)} al mes` : 'Antes fija el ritmo en Objetivo')
-    + (H.macros.length ? tg(H.bands, 'healthBands', 'Fondo por macros', 'Una franja de color por cada etapa de macros') : '');
+  const body = toolTg(H.trend, 'healthTrend', 'Tendencia de 7 días', 'Media de los últimos 7 días en cada día: quita el vaivén diario del agua', '<i class="sw-line sw-yel"></i>')
+    + toolTg(H.expected, 'healthExpected', 'Progreso esperado', r ? `Recta desde el peso de hace 30 días a ${rateTxt(r)} al mes, con su franja mínimo–máximo` : 'Antes fija el ritmo en Objetivo', '<i class="sw-line sw-yel sw-dash"></i>')
+    + (H.macros.length ? toolTg(H.bands, 'healthBands', 'Fondo por macros', 'Una franja de color por cada etapa de macros', swMacros()) : '');
   const box = sh.querySelector('.hl-tools');
   if (box && sh.classList.contains('open')){ box.innerHTML = body; return; } // ya abierta: solo cambia los interruptores
   delete sh.dataset.day; sh.classList.remove('has-pv');
@@ -2784,14 +2930,14 @@ function healthAndroidNote(){
   const h = andJSON('healthStatus') || {};
   const when = h.lastSync ? new Date(h.lastSync).toLocaleString('es-ES', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) : '';
   if (!h.available) return `<div class="note" style="margin-top:0"><b>Falta Health Connect</b>${h.needsUpdate ? 'Hay que instalarlo o actualizarlo desde Google Play.' : 'Este móvil no tiene Health Connect (hace falta Android 9 o superior).'}
-    <div class="row-btns" style="margin-top:10px">${h.needsUpdate ? '<button class="btn sm" data-act="healthAndroid">Instalar Health Connect</button>' : ''}<button class="btn ghost sm" data-act="healthImport">Importar CSV</button></div></div>`;
+    <div class="row-btns" style="margin-top:10px">${h.needsUpdate ? '<button class="btn sm" data-act="healthAndroid">Instalar Health Connect</button>' : ''}</div></div>`;
   if (!h.granted) return `<div class="note" style="margin-top:0"><b>Sin conectar todavía</b>1) En RENPHO Health, activa Health Connect y deja que escriba «Peso» y «Grasa corporal». 2) Pulsa aquí y da permiso de lectura a Axis.
-    <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="healthAndroid">Conectar Health Connect</button><button class="btn ghost sm" data-act="healthImport">Importar CSV</button></div></div>`;
+    <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="healthAndroid">Conectar Health Connect</button></div></div>`;
   return `<div class="note on" style="margin-top:0"><b>Conectado con Health Connect</b>${when ? `Última lectura: ${when}${h.lastSent != null ? ` (${h.lastSent} nueva${h.lastSent === 1 ? '' : 's'})` : ''}. ` : ''}${h.background ? 'Se actualiza sola cada 15 minutos, aunque no abras la app.' : 'Se actualiza cada vez que abres Axis (sin permiso para leer en segundo plano).'}${h.error ? `<br><span class="small">Último error: ${esc(h.error)}</span>` : ''}
     <br><span class="small">${h.history ? `Histórico completo permitido${h.since ? `: Health Connect tiene pesadas desde el ${new Date(h.since + 'T12:00').toLocaleDateString('es-ES', {day:'numeric', month:'short', year:'numeric'})}` : ''}.`
       : h.historyOk ? 'Sin permiso de histórico: solo se ven los 30 días anteriores a la conexión. Pulsa «Traer histórico».'
-      : 'Este Health Connect no deja leer más de 30 días antes de la conexión: para lo anterior, importa un CSV exportado de RENPHO.'}</span>
-    <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="healthAndroid">Sincronizar ahora</button>${h.historyOk ? '<button class="btn ghost sm" data-act="healthHistory">Traer histórico</button>' : ''}<button class="btn ghost sm" data-act="healthImport">Importar CSV</button></div></div>`;
+      : 'Este Health Connect no deja leer más de 30 días antes de la conexión: para lo anterior, importa un CSV exportado de RENPHO con el botón de importar de arriba.'}</span>
+    <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="healthAndroid">Sincronizar ahora</button>${h.historyOk ? '<button class="btn ghost sm" data-act="healthHistory">Traer histórico</button>' : ''}</div></div>`;
 }
 /* Gráfica interactiva: al tocar o pasar el ratón, marca el punto más cercano */
 function healthPointer(e){
@@ -2816,7 +2962,7 @@ function healthPointer(e){
   tip.innerHTML = box.dataset.kind === 'nutri' ? `<b>${fmtKcal(best.kcal)} kcal</b> <small>${corta(best.d)}</small>`
       + (best.gasto != null ? `<span class="nu-t">Gasto real ${fmtKcal(best.gasto)} · balance ${fmtBal(best.bal)}</span>` : '')
       + (best.gs != null ? `<span class="nu-t2">Sparky: gasto ${fmtKcal(best.gs)}</span>` : '')
-      + (best.plan ? `<span class="exp">Planificadas ${fmtKcal(best.plan)} kcal</span>` : '')
+      + (best.plan ? `<span class="exp">Planificadas ${fmtKcal(best.plan)} kcal${best.kcal && Math.abs(best.kcal / best.plan - 1) <= .05 ? ' <i class="okt">✓ dentro ±5 %</i>' : ''}</span>` : '')
       + (best.kcal ? `<span class="nu-t2">P ${fmtNum(best.p || 0)} · C ${fmtNum(best.c || 0)} · G ${fmtNum(best.g || 0)}</span>` : '')
     : box.dataset.kind === 'steps' ? `<b>${fmtSteps(best.n)} pasos</b> <small>${corta(best.d)}</small>`
     : `<b>${fmtKg(best.kg, wk ? 2 : 1)}</b> <small>${wk ? 'sem. ' : ''}${corta(best.d)}${best.n > 1 ? ` · ${best.n}` : ''}</small>${exp}`;
@@ -3609,10 +3755,12 @@ function render(){
   const sameView = lastView === S.ui.view && S.ui.view === 'calendario', keepY = scrollY;
   const keepIn = $('#calbox') ? $('#calbox').scrollTop : 0, keepDv = $('#dvGrid') ? $('#dvGrid').scrollTop : 0;
   $('#title').textContent = title;
+  $('#tbActs').innerHTML = v === 'health' ? `<button class="icon-btn tb-help ${healthHelpPendiente() ? 'pend' : ''}" data-act="healthHelp" aria-label="Ayuda e información de esta pestaña">${ic('help')}</button>` : '';
+  paintHealthHelp();
   $('#view').dataset.v = S.ui.view; // permite anchos distintos por vista
   $('#fab').style.display = VIS || S.ui.view === 'ajustes' &&!['perfiles', 'hojas'].includes(S.ui.setTab) ? 'none' : ''; // el + solo donde crea algo
   $('#view').innerHTML = html;
-  document.querySelectorAll('.nu-swipe').forEach(sw => { sw.scrollLeft = sw.scrollWidth; }); // etapa de macros actual a la vista
+  document.querySelectorAll('.nu-swipe').forEach(sw => { const c = sw.querySelector('.et-card.cur'); sw.scrollLeft = c ? c.getBoundingClientRect().left - sw.getBoundingClientRect().left + sw.scrollLeft - parseFloat(getComputedStyle(sw).paddingLeft) : sw.scrollWidth; }); // etapa de macros actual a la vista
   enterAnim();
   document.documentElement.style.setProperty('--tb', $('.topbar').offsetHeight + 'px');
   const tt = $('.tl-today'); // centra la línea de tiempo en HOY
@@ -4409,13 +4557,14 @@ const actions = {
   healthBands(){ S.health.bands = !S.health.bands; render(); paintHealthTools(); },
   healthTrend(){ S.health.trend = !S.health.trend; render(); paintHealthTools(); },
   healthTools(){ paintHealthTools(true); },
+  healthHelp(){ paintHealthHelp(true); },
   healthList(){ weightListSheet(); },
   stepsList(){ stepsListSheet(); },
   macroEdit(el){ // nuevo cambio de macros (con las anteriores como punto de partida) o editar uno
     const id = el && el.dataset && el.dataset.id, m = id && S.health.macros.find(x => x.id === id);
     const base = m || macroPeriods().pop() || {};
     const num = v => { const n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? 0 : Math.round(n); };
-    openForm({title:m ? 'Macros' : 'Nuevo cambio de macros',
+    openForm({title:m ? 'Plan de macros' : 'Nuevo plan de macros',
       note:'Rigen desde la fecha de cambio hasta el siguiente cambio. Si dejas las kcal vacías, se calculan: CH×4 + P×4 + G×9.<br>El objetivo (volumen, mantenimiento o definición) y su ritmo son los del ciclo en el que empieza la etapa: se fijan en Métricas → Objetivo.',
       values:{color:m ? m.color || '' : '', from:m ? m.from : TODAY(), kcal:m ? m.kcal || '' : '', ch:base.ch || '', p:base.p || '', g:base.g || '', reason:m ? m.reason || m.note || '' : ''},
       fields:[{key:'from', label:'Fecha de inicio', type:'date', required:true, half:true}, {key:'kcal', label:'Kcal (opcional)', type:'text', half:true, placeholder:'auto'},
@@ -4431,9 +4580,9 @@ const actions = {
         delete x.obj; if (m){ delete m.obj; delete m.rateMin; delete m.rateMax; }
         x.kcal = num(String(v.kcal).replace(/\./g, '')) || macroKcal(x);
         if (m){ Object.assign(m, x); delete m.note; } else S.health.macros.push({id:uid(), ...x});
-        S.health.tab = 'macros'; toast(m ? 'Macros guardadas' : 'Cambio de macros guardado');
+        S.health.tab = 'nutricion'; toast(m ? 'Macros guardadas' : 'Plan de macros guardado');
       },
-      onDelete: m ? () => { S.health.macros = S.health.macros.filter(y => y !== m); toast('Cambio de macros borrado'); } : null});
+      onDelete: m ? () => { S.health.macros = S.health.macros.filter(y => y !== m); toast('Plan de macros borrado'); } : null});
   },
   macroColors(){
     const c = Object.assign({}, MC_DEF, S.macroCols || {});
@@ -4570,7 +4719,7 @@ const actions = {
     let txt = '';
     try { txt = await navigator.clipboard.readText(); } catch (e) {}
     if (!txt || !parseStepsText(txt).length){ actions.stepsImport(txt); toast(txt ? 'Lo copiado no parece el texto del atajo' : 'No puedo leer el portapapeles: pégalo aquí'); return; }
-    importSteps(txt, 'salud');
+    importSteps(txt, AND ? 'csv' : 'salud');
   },
   stepsImport(pre){
     const sh = $('#sheet'); delete sh.dataset.day; sh.classList.remove('has-pv');
@@ -4603,13 +4752,20 @@ const actions = {
       },
       onDelete: w ? () => { S.health.weight = S.health.weight.filter(x => x !== w); if (w.src === 'renpho') S.health.del = [...new Set([...(S.health.del || []), w.t])]; toast('Pesada borrada'); } : null});
   },
-  healthImport(){
+  async healthPaste(){ // «Pegar» de Métricas: lee el portapapeles e importa las pesadas directamente
+    let txt = '';
+    try { txt = await navigator.clipboard.readText(); } catch (e) {}
+    if (!txt || !parseWeightCSV(txt).length){ actions.healthImport(txt); toast(txt ? 'Lo copiado no parece una tabla de pesadas' : 'No puedo leer el portapapeles: pégalo aquí'); return; }
+    const rows = parseWeightCSV(txt), n = mergeWeights(rows, 'renpho'); render();
+    toast(n ? `${n} pesada${n === 1 ? '' : 's'} importada${n === 1 ? '' : 's'}${rows.length > n ? ` (${rows.length - n} ya estaban)` : ''}` : 'Las pesadas ya estaban al día');
+  },
+  healthImport(pre){
     const sh = $('#sheet'); delete sh.dataset.day; sh.classList.remove('has-pv');
     sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
       <div class="sheet-h"><h2>Importar pesadas</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
       <p class="muted small" style="margin:-4px 0 12px">Si RENPHO Health te deja exportar tus datos a un CSV (en los ajustes de la cuenta), elige el archivo o pega su contenido. Sirve para traer el histórico antiguo; lo nuevo llega solo.</p>
       <input type="file" id="hlFile" accept=".csv,text/csv,text/plain">
-      <textarea id="hlCsv" placeholder="Fecha;Peso(kg)&#10;2026-11-01 07:30;78,4" style="margin-top:10px;min-height:120px"></textarea>
+      <textarea id="hlCsv" placeholder="Fecha;Peso(kg)&#10;2026-11-01 07:30;78,4" style="margin-top:10px;min-height:120px">${typeof pre === 'string' ? esc(pre) : ''}</textarea>
       <div class="sheet-f"><span></span><button class="btn" data-act="healthImportGo">Importar</button></div></div>`;
     sh.classList.add('open'); document.body.classList.add('locked');
     $('#hlFile').onchange = async e => { const f = e.target.files[0]; if (f) $('#hlCsv').value = await f.text(); };
