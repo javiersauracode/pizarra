@@ -1078,6 +1078,13 @@ b.ok,.hl-d.ok{color:var(--ok)} b.off,.hl-d.off{color:var(--off)}
 .et-add .i{width:18px;height:18px;stroke-width:2.4}
 .et-colbtn{display:flex!important;gap:2px;align-items:center;justify-content:center}
 .et-colbtn i{width:7px;height:12px;border-radius:2px}
+/* Hojas de añadir/importar de Health: registro a mano arriba, importación debajo */
+.rg-sec{display:flex;flex-direction:column;gap:10px;padding-bottom:16px}
+.rg-sec + .rg-sec{border-top:1px solid var(--line);padding-top:16px}
+.rg-sec .rm-sub{margin:0}
+.rg-f{display:flex;justify-content:flex-end}
+.rg-f .btn .i{width:16px;height:16px}
+.rg-sec .sheet-f{margin-top:0}
 /* «?» de la barra superior y hoja de ayuda */
 .tb-help{position:relative;color:var(--muted);width:38px;height:38px}
 .tb-help .i{width:21px;height:21px}
@@ -1419,7 +1426,7 @@ const visStore = l => { try { localStorage.setItem(VIS_KEY, JSON.stringify(l)); 
 const visHealth = h => ensureDefaults({health:JSON.parse(JSON.stringify(h || {})), device:{id:'visor'}}).health;
 const VIS_RO = new Set(['healthGoal', 'healthEdit', 'stepsEdit', 'macroEdit', 'healthDelRange', 'stepsDelRange', 'healthImport', 'stepsImport',
   'stepsPaste', 'healthAndroid', 'healthHistory', 'exportData', 'importData', 'resetData',
-  'nutriPaste', 'nutriImport', 'nutriImportGo', 'healthPaste', 'sparkyForm', 'sparkySync', 'sparkyOff']);
+  'nutriPaste', 'nutriImport', 'nutriImportGo', 'healthPaste', 'healthAddGo', 'stepsAddGo', 'nutriAddGo', 'sparkyForm', 'sparkySync', 'sparkyOff']);
 function visLastDate(h){
   const ds = (h.weight || []).map(w => (w.t || '').slice(0, 10)).concat((h.steps || []).map(s => s.d)).filter(Boolean).sort();
   return ds[ds.length - 1] || '';
@@ -2150,7 +2157,7 @@ const rateTxt = r => Math.abs(r.min - r.max) < 1e-9 ? fmtPct(r.min) : `${fmtPct(
    con una minigráfica de esos 30 días al fondo. Sin comparar con la pesada anterior ni ritmo objetivo ni esperado. */
 function healthHero(last){
   if (!last) return `<div class="hl-hero ax-hero"><div><div class="ax-k">Último peso</div><div class="hl-big">— <small>kg</small></div>
-    <div class="ax-sub">Aún no hay pesadas. Conéctala con RENPHO (en el ? de arriba), importa un CSV o añade una con el +.</div></div></div>`;
+    <div class="ax-sub">Aún no hay pesadas. Conéctala con RENPHO (en el ? de arriba) o añade una con el botón de añadir de arriba.</div></div></div>`;
   const w = weight30(), c = cicloActual();
   const cls = w ? (c ? colorPesoCiclo(c, w.month) : clsObj(w.kg, null, .3)) : '';
   const ds = dayWeights().filter(p => p.d >= iso(addDays(new Date(), -30)));
@@ -2373,9 +2380,9 @@ function viewHealth(){
         <div class="row-btns" style="margin-top:10px"><button class="btn ghost sm" data-act="visorImportar" data-id="${esc(p.id)}">Actualizar copia</button><button class="btn ghost sm danger" data-act="visorQuitar" data-id="${esc(p.id)}">Quitar</button></div></div>`; })() : ''}`;
   // Arriba a la derecha, en cada pestaña con datos que llegan de fuera: «Pegar» (lee el portapapeles y lo importa
   // directamente) y el botón de importar (despliega la hoja para elegir un archivo o pegar el texto a mano)
-  const imp = VIS ? null : {metricas:['healthPaste', 'healthImport', 'pesadas (CSV)'], pasos:['stepsPaste', 'stepsImport', 'pasos'], nutricion:['nutriPaste', 'nutriImport', 'datos de Sparky']}[t];
+  const imp = VIS ? null : {metricas:['healthPaste', 'healthImport', 'pesadas'], pasos:['stepsPaste', 'stepsImport', 'pasos'], nutricion:['nutriPaste', 'nutriImport', 'nutrición']}[t];
   const acts = (t === 'metricas' && !VIS ? `<button class="btn ghost sm" data-act="healthGoal">${ic('flag')} Objetivo</button>` : '')
-    + (imp ? `<button class="icon-btn hl-hbtn" data-act="${imp[1]}" aria-label="Importar ${imp[2]} desde un archivo o texto" title="Importar archivo o texto">${ic('upload')}</button>
+    + (imp ? `<button class="icon-btn hl-hbtn" data-act="${imp[1]}" aria-label="Añadir o importar ${imp[2]}" title="Añadir a mano o importar">${ic('upload')}</button>
       <button class="btn sm hl-paste" data-act="${imp[0]}" aria-label="Pegar ${imp[2]} del portapapeles">${ic('paste')} Pegar</button>` : '');
   const head = `<div class="sec-h"><h1>Health</h1>${acts ? `<div class="hl-acts">${acts}</div>` : ''}</div>${who}
     <div class="seg" role="tablist" style="margin-top:8px">${[['metricas', 'Métricas'], ['pasos', 'Pasos'], ['nutricion', 'Nutrición']].map(([k, l]) => `<button class="${t === k ? 'on' : ''}" data-act="healthTab" data-t="${k}" role="tab">${l}</button>`).join('')}</div>`; // quién: justo bajo el título (va en ${who})
@@ -3758,7 +3765,7 @@ function render(){
   $('#tbActs').innerHTML = v === 'health' ? `<button class="icon-btn tb-help ${healthHelpPendiente() ? 'pend' : ''}" data-act="healthHelp" aria-label="Ayuda e información de esta pestaña">${ic('help')}</button>` : '';
   paintHealthHelp();
   $('#view').dataset.v = S.ui.view; // permite anchos distintos por vista
-  $('#fab').style.display = VIS || S.ui.view === 'ajustes' &&!['perfiles', 'hojas'].includes(S.ui.setTab) ? 'none' : ''; // el + solo donde crea algo
+  $('#fab').style.display = VIS || S.ui.view === 'health' || S.ui.view === 'ajustes' &&!['perfiles', 'hojas'].includes(S.ui.setTab) ? 'none' : ''; // el + solo donde crea algo
   $('#view').innerHTML = html;
   document.querySelectorAll('.nu-swipe').forEach(sw => { const c = sw.querySelector('.et-card.cur'); sw.scrollLeft = c ? c.getBoundingClientRect().left - sw.getBoundingClientRect().left + sw.scrollLeft - parseFloat(getComputedStyle(sw).paddingLeft) : sw.scrollWidth; }); // etapa de macros actual a la vista
   enterAnim();
@@ -4637,11 +4644,15 @@ const actions = {
   nutriImport(pre){
     const sh = $('#sheet'); delete sh.dataset.day; sh.classList.remove('has-pv');
     sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
-      <div class="sheet-h"><h2>Importar de Sparky</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
-      <p class="muted small" style="margin:-4px 0 12px">Lo que copia el atajo «Sparky a Pizarra», o un JSON de la API de Sparky (resumen diario o tendencias). Los días repetidos se actualizan.</p>
+      <div class="sheet-h"><h2>Nutrición</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+      <div class="rg-sec"><div class="rm-sub">Lo comido en un día</div>
+      <div class="fields"><div class="field "><label for="rgNd">Día</label><input id="rgNd" type="date" max="${TODAY()}" value="${TODAY()}"></div><div class="field third"><label for="rgP">Proteína (g)</label><input id="rgP" type="text" inputmode="decimal" placeholder="150" value=""></div><div class="field third"><label for="rgC">Hidratos (g)</label><input id="rgC" type="text" inputmode="decimal" placeholder="320" value=""></div><div class="field third"><label for="rgG">Grasa (g)</label><input id="rgG" type="text" inputmode="decimal" placeholder="75" value=""></div><div class="field "><label for="rgK">Kcal · si lo dejas vacío, se calculan con P, H y G</label><input id="rgK" type="text" inputmode="numeric" placeholder="2.600" value=""></div></div>
+      <div class="rg-f"><button class="btn" data-act="nutriAddGo">${ic('check')} Guardar</button></div></div>
+      <div class="rg-sec"><div class="rm-sub">Importar archivo o texto</div>
+      <p class="muted small" style="margin:0 0 12px">Lo que copia el atajo «Sparky a Pizarra», o un JSON de la API de Sparky (resumen diario o tendencias). Los días repetidos se actualizan.</p>
       <input type="file" id="nuFile" accept=".json,.txt,application/json,text/plain">
       <textarea id="nuTxt" placeholder='{"d":"2026-11-23","s":{…},"n":{…}}' style="margin-top:10px;min-height:120px">${typeof pre === 'string' ? esc(pre) : ''}</textarea>
-      <div class="sheet-f"><span></span><button class="btn" data-act="nutriImportGo">Importar</button></div></div>`;
+      <div class="sheet-f"><span></span><button class="btn ghost" data-act="nutriImportGo">Importar</button></div></div></div>`;
     sh.classList.add('open'); document.body.classList.add('locked');
     $('#nuFile').onchange = async e => { const f = e.target.files[0]; if (f) $('#nuTxt').value = await f.text(); };
   },
@@ -4724,11 +4735,15 @@ const actions = {
   stepsImport(pre){
     const sh = $('#sheet'); delete sh.dataset.day; sh.classList.remove('has-pv');
     sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
-      <div class="sheet-h"><h2>Importar pasos</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
-      <p class="muted small" style="margin:-4px 0 12px">Una línea por día con la fecha y los pasos: lo que copia el atajo «Pasos a Pizarra» del iPhone, o un CSV exportado (p. ej. de Podómetro). Los días repetidos se actualizan; los que pusiste a mano se respetan.</p>
+      <div class="sheet-h"><h2>Pasos</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+      <div class="rg-sec"><div class="rm-sub">Pasos de un día</div>
+      <div class="fields"><div class="field half"><label for="rgN">Pasos</label><input id="rgN" type="text" inputmode="numeric" placeholder="8.500" value=""></div><div class="field half"><label for="rgSd">Día</label><input id="rgSd" type="date" max="${TODAY()}" value="${TODAY()}"></div></div>
+      <div class="rg-f"><button class="btn" data-act="stepsAddGo">${ic('check')} Guardar</button></div></div>
+      <div class="rg-sec"><div class="rm-sub">Importar archivo o texto</div>
+      <p class="muted small" style="margin:0 0 12px">Una línea por día con la fecha y los pasos: lo que copia el atajo «Pasos a Pizarra» del iPhone, o un CSV exportado (p. ej. de Podómetro). Los días repetidos se actualizan; los que pusiste a mano se respetan.</p>
       <input type="file" id="stFile" accept=".csv,.txt,text/csv,text/plain">
       <textarea id="stTxt" placeholder="2026-11-20 8421&#10;2026-11-21 10230" style="margin-top:10px;min-height:120px">${typeof pre === 'string' ? esc(pre) : ''}</textarea>
-      <div class="sheet-f"><span></span><button class="btn" data-act="stepsImportGo">Importar</button></div></div>`;
+      <div class="sheet-f"><span></span><button class="btn ghost" data-act="stepsImportGo">Importar</button></div></div></div>`;
     sh.classList.add('open'); document.body.classList.add('locked');
     $('#stFile').onchange = async e => { const f = e.target.files[0]; if (f) $('#stTxt').value = await f.text(); };
   },
@@ -4760,15 +4775,44 @@ const actions = {
     toast(n ? `${n} pesada${n === 1 ? '' : 's'} importada${n === 1 ? '' : 's'}${rows.length > n ? ` (${rows.length - n} ya estaban)` : ''}` : 'Las pesadas ya estaban al día');
   },
   healthImport(pre){
+    const lw = lastWeight(), now = new Date(), hora = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
     const sh = $('#sheet'); delete sh.dataset.day; sh.classList.remove('has-pv');
     sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
-      <div class="sheet-h"><h2>Importar pesadas</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
-      <p class="muted small" style="margin:-4px 0 12px">Si RENPHO Health te deja exportar tus datos a un CSV (en los ajustes de la cuenta), elige el archivo o pega su contenido. Sirve para traer el histórico antiguo; lo nuevo llega solo.</p>
+      <div class="sheet-h"><h2>Pesadas</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+      <div class="rg-sec"><div class="rm-sub">Nueva pesada</div>
+      <div class="fields"><div class="field "><label for="rgKg">Peso (kg)</label><input id="rgKg" type="text" inputmode="decimal" placeholder="78,4" value="${lw ? String(lw.kg).replace('.', ',') : ''}"></div><div class="field "><label for="rgFat">Grasa corporal (%) · opcional</label><input id="rgFat" type="text" inputmode="decimal" placeholder="18,5" value=""></div><div class="field half"><label for="rgD">Día</label><input id="rgD" type="date" max="${TODAY()}" value="${TODAY()}"></div><div class="field half"><label for="rgT">Hora</label><input id="rgT" type="time"  value="${hora}"></div></div>
+      <div class="rg-f"><button class="btn" data-act="healthAddGo">${ic('check')} Guardar</button></div></div>
+      <div class="rg-sec"><div class="rm-sub">Importar archivo o texto</div>
+      <p class="muted small" style="margin:0 0 12px">Si RENPHO Health te deja exportar tus datos a un CSV (en los ajustes de la cuenta), elige el archivo o pega su contenido. Sirve para traer el histórico antiguo; lo nuevo llega solo.</p>
       <input type="file" id="hlFile" accept=".csv,text/csv,text/plain">
       <textarea id="hlCsv" placeholder="Fecha;Peso(kg)&#10;2026-11-01 07:30;78,4" style="margin-top:10px;min-height:120px">${typeof pre === 'string' ? esc(pre) : ''}</textarea>
-      <div class="sheet-f"><span></span><button class="btn" data-act="healthImportGo">Importar</button></div></div>`;
+      <div class="sheet-f"><span></span><button class="btn ghost" data-act="healthImportGo">Importar</button></div></div></div>`;
     sh.classList.add('open'); document.body.classList.add('locked');
     $('#hlFile').onchange = async e => { const f = e.target.files[0]; if (f) $('#hlCsv').value = await f.text(); };
+  },
+  healthAddGo(){ // nueva pesada a mano desde la hoja de Pesadas
+    const kg = numES($('#rgKg').value), fat = numES($('#rgFat').value), d = $('#rgD').value, t = $('#rgT').value || '08:00';
+    if (!(kg > 20 && kg < 400)){ toast('Peso no válido'); return; }
+    if (!d || d > TODAY()){ toast('Elige un día'); return; }
+    if (fat != null && !(fat > 2 && fat < 70)){ toast('Grasa corporal no válida'); return; }
+    mergeWeights([{t:`${d}T${t}`, kg, fat:fat == null ? undefined : fat}], 'manual'); closeSheet(); render(); toast('Pesada guardada');
+  },
+  stepsAddGo(){ // pasos de un día a mano (sustituyen a los que hubiera ese día)
+    const n = parseInt(String($('#rgN').value).replace(/[.\s]/g, ''), 10), d = $('#rgSd').value;
+    if (!(n >= 0 && n < 200000)){ toast('Número de pasos no válido'); return; }
+    if (!d || d > TODAY()){ toast('Elige un día'); return; }
+    S.health.steps = S.health.steps.filter(x => x.d !== d).concat({d, n, src:'manual'}).sort((x, y) => x.d.localeCompare(y.d));
+    closeSheet(); render(); toast('Pasos guardados');
+  },
+  nutriAddGo(){ // lo comido en un día a mano: P, H y G (y kcal, o se calculan)
+    const d = $('#rgNd').value, p = numES($('#rgP').value), c = numES($('#rgC').value), g = numES($('#rgG').value);
+    let kcal = numES(String($('#rgK').value).replace(/\./g, ''));
+    if (!d || d > TODAY()){ toast('Elige un día'); return; }
+    if ([p, c, g].some(v => v != null && (v < 0 || v > 2000))){ toast('Revisa los gramos'); return; }
+    if (kcal == null) kcal = (p || 0) * 4 + (c || 0) * 4 + (g || 0) * 9;
+    if (!(kcal > 0 && kcal < 20000)){ toast('Pon las kcal o los gramos de P, H y G'); return; }
+    const r1 = v => Math.round((v || 0) * 10) / 10;
+    mergeNutri([{d, kcal:Math.round(kcal), p:r1(p), c:r1(c), g:r1(g), src:'manual'}]); closeSheet(); render(); toast('Día de nutrición guardado');
   },
   healthImportGo(){
     const rows = parseWeightCSV($('#hlCsv').value);
