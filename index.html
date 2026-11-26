@@ -1194,6 +1194,135 @@ b.ok,.hl-d.ok{color:var(--ok)} b.off,.hl-d.off{color:var(--off)}
 .wk-hist i.ok{background:var(--ok);opacity:1} .wk-hist i.nd{background:var(--line)}
 .wk-hist .sel i{box-shadow:0 0 0 2px var(--brand)}
 .wk-hist small{font-size:9.5px;color:var(--muted)}
+/* =========================================================
+   FUERZA
+   ========================================================= */
+.fz-hero{align-items:center}
+.fz-go{display:flex;align-items:center;gap:8px;padding:10px 14px 10px 12px;border-radius:14px;background:var(--brand);color:#fff;flex-shrink:0;box-shadow:0 8px 22px rgba(61,139,255,.45)}
+.fz-go .i{width:22px;height:22px}
+.fz-go span{display:flex;flex-direction:column;text-align:left;font-weight:800;font-size:15px;line-height:1.15}
+.fz-go small{font-size:11px;font-weight:600;opacity:.85;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fz-go.on{background:linear-gradient(135deg,#1769FF,#7C5CFF);animation:fzPulso 2s ease-in-out infinite}
+@keyframes fzPulso{50%{box-shadow:0 0 0 6px rgba(61,139,255,.18),0 8px 22px rgba(61,139,255,.45)}}
+.fz-week{display:grid;grid-template-columns:repeat(7,1fr) 36px;gap:5px;align-items:center;margin-top:10px}
+.fz-wd{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:11px;background:var(--surface);border:1px solid var(--line)}
+.fz-wd b{font-size:10.5px;color:var(--muted)}
+.fz-wd span{font-size:11.5px;font-weight:700;color:var(--text)}
+.fz-wd.ok{background:color-mix(in srgb,var(--ok) 16%,var(--surface));border-color:color-mix(in srgb,var(--ok) 45%,var(--line))} .fz-wd.ok span{color:var(--ok)}
+.fz-wd.hoy{box-shadow:inset 0 0 0 1.5px var(--brand)} .fz-wd.hoy b{color:var(--brand)}
+.fz-wd.fut{opacity:.6}
+.fz-wedit{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:var(--muted);border:1px solid var(--line);background:var(--surface)}
+.fz-wedit .i{width:16px;height:16px}
+.fz-kgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fz-k{position:relative;overflow:hidden;text-align:left;padding:10px 11px 34px;border-radius:14px;background:var(--surface);border:1px solid var(--line);min-width:0}
+.fz-k small{display:block;font-size:11px;font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fz-k b{display:block;font-size:22px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.fz-k b i{font-style:normal;font-size:12px;color:var(--muted);font-weight:700}
+.fz-k em{display:block;font-style:normal;font-size:10.5px;color:var(--muted);line-height:1.3}
+.fz-k.ok em{color:var(--ok)} .fz-k.off em{color:var(--off)}
+.fz-k.vacio{opacity:.6}
+.fz-sp{position:absolute;left:0;right:0;bottom:4px;width:100%;height:28px}
+.fz-sp path{fill:none;stroke:var(--ok);stroke-width:2;stroke-linejoin:round}
+.fz-k:not(.ok) .fz-sp path{stroke:#7CF7FF}
+.fz-card{padding:12px}
+.fz-seg{display:flex;background:var(--surface2);border-radius:9px;padding:2px}
+.fz-seg button{font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:7px;color:var(--muted)}
+.fz-seg button.on{background:var(--brand);color:#fff}
+.fz-bars{display:grid;grid-template-columns:repeat(12,1fr);gap:5px;height:110px;align-items:end;padding-top:6px}
+.fz-bars > div{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px}
+.fz-bars i{display:block;width:100%;min-height:2px;border-radius:5px 5px 2px 2px;background:var(--nu-out);opacity:.75}
+.fz-bars .cur i{background:var(--brand);opacity:1}
+.fz-bars small{font-size:9px;color:var(--muted);height:11px}
+.fz-foot{font-size:12px;color:var(--muted);margin-top:8px}
+.fz-foot b{color:var(--text)}
+.lnk{color:var(--brand);font-weight:700;font-size:12px}
+.fz-mus{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.fz-mr{display:grid;grid-template-columns:76px 1fr 34px 54px;gap:8px;align-items:center;font-size:12.5px}
+.fz-mr > span{color:var(--text)}
+.fz-mr i{position:relative;height:9px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.fz-mr em{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--off);z-index:1}
+.fz-mr.ok em{background:var(--ok)}
+.fz-mr u{position:absolute;top:0;bottom:0;background:rgba(124,247,255,.16);text-decoration:none}
+.fz-mr b{text-align:right;font-variant-numeric:tabular-nums}
+.fz-mr small{font-size:10.5px;color:var(--muted);text-align:right}
+.fz-mr.nd > span,.fz-mr.nd b{color:var(--muted)}
+.fz-eq{display:flex;flex-direction:column;gap:6px}
+.fz-eq > div{display:grid;grid-template-columns:1fr auto 64px;gap:8px;align-items:baseline;font-size:13px;padding:6px 10px;border-radius:10px;background:var(--surface2)}
+.fz-eq b{font-variant-numeric:tabular-nums} .fz-eq .ok b{color:var(--ok)} .fz-eq .off b{color:var(--off)}
+.fz-eq small{font-size:11px;color:var(--muted);text-align:right}
+.fz-map{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.fz-map::-webkit-scrollbar{display:none}
+.fz-map > div{display:flex;flex-direction:column;gap:2px}
+.fz-map i{width:9px;height:9px;border-radius:2px;background:var(--surface2)}
+.fz-map i.on{background:var(--ok)}
+.fz-map i.fut{opacity:.25}
+.fz-tot{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:8px;margin-top:12px}
+.fz-tot > div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.fz-tot b{display:block;font-size:18px;font-variant-numeric:tabular-nums}
+.fz-tot small{font-size:10.5px;color:var(--muted)}
+/* Entreno en curso */
+.fz-run .sheet-h{position:sticky;top:-1px;z-index:3;background:var(--surface);padding-top:4px}
+.fz-rh{flex:1;min-width:0}
+.fz-rh h2{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fz-rh small{font-size:12px;color:var(--brand);font-weight:700;font-variant-numeric:tabular-nums}
+.fz-ex{background:var(--surface2);border-radius:16px;padding:10px 10px 8px;margin-bottom:10px}
+.fz-exh{display:flex;align-items:flex-start;gap:6px}
+.fz-exh > div{flex:1;min-width:0}
+.fz-exh b{font-size:15px}
+.fz-exh small{display:block;font-size:11.5px;color:var(--muted);margin-top:1px}
+.fz-exh .icon-btn{width:32px;height:32px}
+.fz-sug{display:block;width:100%;text-align:left;margin:6px 0 2px;padding:6px 9px;border-radius:9px;font-size:12px;font-weight:600;color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent);border:1px solid color-mix(in srgb,var(--ok) 35%,transparent)}
+.fz-sets{margin-top:6px}
+.fz-sh,.fz-set{display:grid;grid-template-columns:38px 1fr 1fr 58px 42px;gap:6px;align-items:center}
+.fz-sh{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:0 2px 4px}
+.fz-set{padding:4px 2px;border-radius:10px;transition:background .2s}
+.fz-set input,.fz-set select{min-height:38px;padding:6px 8px;text-align:center;font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;border-radius:9px;background:var(--surface);border:1px solid var(--line);width:100%;min-width:0}
+.fz-set select{padding:6px 2px}
+.fz-n{height:32px;border-radius:9px;font-weight:800;font-size:13px;color:var(--muted);background:var(--surface)}
+.fz-set.w .fz-n{color:var(--off);background:color-mix(in srgb,var(--off) 14%,var(--surface))}
+.fz-set.w input{opacity:.75}
+.fz-ok{height:38px;border-radius:10px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.fz-ok .i{width:18px;height:18px;stroke-width:2.6}
+.fz-set.ok{background:color-mix(in srgb,var(--ok) 13%,transparent)}
+.fz-set.ok .fz-ok{background:var(--ok);border-color:var(--ok);color:#04150C}
+.fz-exf{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+.fz-exf .btn .i{width:14px;height:14px}
+.fz-discos{font-size:11px;color:#7CF7FF;margin-left:auto}
+.fz-runf{display:flex;justify-content:space-between;gap:8px;margin:6px 0 10px}
+.fz-runf .btn .i{width:15px;height:15px}
+.fz-nota{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:70px}
+.fz-rest{position:sticky;bottom:calc(8px + env(safe-area-inset-bottom));z-index:4;display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:16px;
+  background:linear-gradient(120deg,#17408F,#0A1A45);border:1px solid rgba(124,247,255,.3);box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.fz-rest[hidden]{display:none}
+.fz-rest b{font-size:24px;font-variant-numeric:tabular-nums;color:#EAF2FF;min-width:62px}
+.fz-rest span{flex:1;font-size:12px;color:#8FB0E8;font-weight:700}
+.fz-rest button{padding:7px 10px;border-radius:9px;background:rgba(255,255,255,.1);color:#EAF2FF;font-weight:700;font-size:13px}
+.fz-prs{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.fz-prs > div{padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--ok) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--ok) 40%,var(--line));font-size:13.5px}
+.fz-prs small{color:var(--muted)}
+.fz-verx{padding:9px 0;border-top:1px solid var(--line)}
+.fz-verx > div{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.fz-verx span{font-size:12.5px;font-weight:700;padding:3px 8px;border-radius:8px;background:var(--surface2);font-variant-numeric:tabular-nums}
+.fz-verx span.w{color:var(--off)}
+.fz-verx span small{font-weight:500;color:var(--muted)}
+.fz-verx > small{display:block;color:var(--muted);margin-top:4px}
+.fz-pick input[type=search]{width:100%}
+.fz-pick-l{margin-top:4px;max-height:52vh;overflow-y:auto}
+.fz-plan{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fz-plan label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:700;color:var(--muted)}
+.fz-rlist{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.fz-rit{background:var(--surface2);border-radius:12px;padding:8px 10px}
+.fz-rit-h{display:flex;align-items:center;gap:4px}
+.fz-rit-h b{flex:1;font-size:14px}
+.fz-rit-h .icon-btn{width:32px;height:32px}
+.fz-rit-f{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:4px}
+.fz-rit-f label{display:flex;flex-direction:column;gap:3px;font-size:10.5px;font-weight:700;color:var(--muted)}
+.fz-rit-f input{min-height:34px;padding:5px 6px;text-align:center}
+.fz-g{display:block}
+.fz-gl{fill:none;stroke:var(--ok);stroke-width:2.2;stroke-linejoin:round}
+.fz-g circle{fill:var(--ok)}
+/* Configuración → pestañas de Health */
+.navcfg .hl-ic{width:18px;height:18px}
 /* «?» de la barra superior y hoja de ayuda */
 .tb-help{position:relative;color:var(--muted);width:38px;height:38px}
 .tb-help .i{width:21px;height:21px}
@@ -1538,7 +1667,7 @@ const visStore = l => { try { localStorage.setItem(VIS_KEY, JSON.stringify(l)); 
 const visHealth = h => ensureDefaults({health:JSON.parse(JSON.stringify(h || {})), device:{id:'visor'}}).health;
 const VIS_RO = new Set(['healthGoal', 'healthEdit', 'stepsEdit', 'macroEdit', 'healthDelRange', 'stepsDelRange', 'healthImport', 'stepsImport',
   'stepsPaste', 'healthAndroid', 'healthHistory', 'exportData', 'importData', 'resetData',
-  'nutriPaste', 'nutriImport', 'nutriImportGo', 'kcalRitmo', 'medidaEdit', 'medidasRef', 'healthPaste', 'healthAddGo', 'stepsAddGo', 'nutriAddGo', 'sparkyForm', 'sparkySync', 'sparkyOff']);
+  'nutriPaste', 'nutriImport', 'nutriImportGo', 'kcalRitmo', 'fzEmpezar', 'fzIniciar', 'fzOk', 'fzWarm', 'fzAddSet', 'fzDelSet', 'fzSug', 'fzExMenu', 'fzAddEj', 'fzPickEj', 'fzNuevoEj', 'fzTerminar', 'fzDescartar', 'fzEditar', 'fzBorrar', 'fzRutina', 'fzRutAdd', 'fzRutGuardar', 'fzRutBorrar', 'fzObjSeries', 'fzClaveElegir', 'fuerzaPaste', 'fuerzaImport', 'fuerzaImportGo', 'healthTabToggle', 'medidaEdit', 'medidasRef', 'healthPaste', 'healthAddGo', 'stepsAddGo', 'nutriAddGo', 'sparkyForm', 'sparkySync', 'sparkyOff']);
 function visLastDate(h){
   const ds = (h.weight || []).map(w => (w.t || '').slice(0, 10)).concat((h.steps || []).map(s => s.d)).filter(Boolean).sort();
   return ds[ds.length - 1] || '';
@@ -2478,8 +2607,11 @@ function etapaCard(m, ctx){
     ${empezada ? `<div class="et-tiles">${tiles.join('')}</div>` : ''}
   </div>`;
 }
+const HEALTH_TABS = [['metricas', 'Métricas'], ['nutricion', 'Nutrición'], ['fuerza', 'Fuerza'], ['pasos', 'Pasos']];
+const healthTabs = () => { const off = new Set(S.health.tabsOff || []), l = HEALTH_TABS.filter(([k]) => !off.has(k)); return l.length ? l : [HEALTH_TABS[0]]; };
 function viewHealth(){
-  if (S.health.tab === 'macros') S.health.tab = 'nutricion';   // la pestaña Macros ya no existe: sus tarjetas están en Nutrición
+  if (S.health.tab === 'macros') S.health.tab = 'nutricion';
+  if (!healthTabs().some(([k]) => k === S.health.tab)) S.health.tab = healthTabs()[0][0];   // la pestaña Macros ya no existe: sus tarjetas están en Nutrición
   const t = S.health.tab;
   const vl = NC ? [] : visList();
   const who = NC ? '' : `<div class="pills vis-pills" style="padding-top:4px;padding-bottom:0">
@@ -2492,14 +2624,15 @@ function viewHealth(){
         <div class="row-btns" style="margin-top:10px"><button class="btn ghost sm" data-act="visorImportar" data-id="${esc(p.id)}">Actualizar copia</button><button class="btn ghost sm danger" data-act="visorQuitar" data-id="${esc(p.id)}">Quitar</button></div></div>`; })() : ''}`;
   // Arriba a la derecha, en cada pestaña con datos que llegan de fuera: «Pegar» (lee el portapapeles y lo importa
   // directamente) y el botón de importar (despliega la hoja para elegir un archivo o pegar el texto a mano)
-  const imp = VIS ? null : {metricas:['healthPaste', 'healthImport', 'pesadas'], pasos:['stepsPaste', 'stepsImport', 'pasos'], nutricion:['nutriPaste', 'nutriImport', 'nutrición']}[t];
+  const imp = VIS ? null : {metricas:['healthPaste', 'healthImport', 'pesadas'], pasos:['stepsPaste', 'stepsImport', 'pasos'], nutricion:['nutriPaste', 'nutriImport', 'nutrición'], fuerza:['fuerzaPaste', 'fuerzaImport', 'entrenos']}[t];
   const acts = (t === 'metricas' && !VIS ? `<button class="btn ghost sm" data-act="healthGoal">${ic('flag')} Objetivo</button>` : '')
     + (imp ? `<button class="icon-btn hl-hbtn" data-act="${imp[1]}" aria-label="Añadir o importar ${imp[2]}" title="Añadir a mano o importar">${ic('upload')}</button>
       <button class="btn sm hl-paste" data-act="${imp[0]}" aria-label="Pegar ${imp[2]} del portapapeles">${ic('paste')} Pegar</button>` : '');
   const head = `<div class="sec-h"><h1>Health</h1>${acts ? `<div class="hl-acts">${acts}</div>` : ''}</div>${who}
-    <div class="seg" role="tablist" style="margin-top:8px">${[['metricas', 'Métricas'], ['pasos', 'Pasos'], ['nutricion', 'Nutrición']].map(([k, l]) => `<button class="${t === k ? 'on' : ''}" data-act="healthTab" data-t="${k}" role="tab">${l}</button>`).join('')}</div>`; // quién: justo bajo el título (va en ${who})
+    <div class="seg" role="tablist" style="margin-top:8px">${healthTabs().map(([k, l]) => `<button class="${t === k ? 'on' : ''}" data-act="healthTab" data-t="${k}" role="tab">${l}</button>`).join('')}</div>`; // quién: justo bajo el título (va en ${who})
   if (t === 'nutricion') return head + viewNutricion();
   if (t === 'pasos') return head + viewPasos();
+  if (t === 'fuerza') return head + viewFuerza();
   return head + viewMetricas();
 }
 /* ---------- Pasos diarios: Health Connect (Android, p. ej. Podómetro) · app Salud del iPhone (con Atajos) ---------- */
@@ -2977,6 +3110,10 @@ function healthHelpBody(){
   if (t === 'pasos') return (VIS ? '' : sec('De dónde salen los pasos', AND ? stepsAndroidNote() : stepsIphoneNote()))
     + importar
     + sec('La gráfica', '<p class="hint">Las barras en azul más intenso son los días por encima de tu media; la línea amarilla discontinua es la media del periodo.</p>');
+  if (t === 'fuerza') return sec('Registrar un entreno', '<p class="hint">Pulsa <b>Empezar</b>: se abre la rutina del día (según tu plan semanal) con tus pesos de la última vez. Marca cada serie con ✓ y arranca el descanso; toca el número de la serie para marcarla como calentamiento (C), que no cuenta para récords ni volumen. Puedes minimizar el entreno y seguir luego, incluso en otro dispositivo.</p>')
+    + sec('Progresión', '<p class="hint">Si en una rutina pones un rango de repeticiones (p. ej. 8-10) y la última vez hiciste todas las series al tope, Axis te propone subir el peso (progresión doble). En la barra te dice qué discos poner a cada lado.</p>')
+    + sec('Las tarjetas', '<p class="hint"><b>1RM estimado</b>: lo máximo que levantarías una vez, calculado con tu mejor serie de 1 a 12 repeticiones (fórmula de Epley). Verde si ha subido en 4 semanas. <b>Series por músculo</b>: series de trabajo de la semana; cada ejercicio cuenta entera para su músculo principal y media para los secundarios; la franja es tu objetivo. <b>Equilibrio</b>: relaciones entre tus levantamientos frente a referencias orientativas, con el eslabón más débil. <b>Tu año</b>: un cuadro por día entrenado.</p>')
+    + sec('Importar de openGym', '<p class="hint">En openGym: Ajustes → Data &amp; backup → Spreadsheet (CSV). Aquí, <b>Pegar</b> o el botón de importar. También sirven los CSV de Strong, Hevy o FitNotes. Los ejercicios en inglés se reconocen; los que no, se crean como ejercicios propios.</p>');
   if (t === 'nutricion') return (VIS ? '' : sec('De dónde salen los datos', AND ? sparkyAndroidNote() : sparkyIphoneNote()))
     + importar
     + sec('Planes de macros', `<p class="hint">Pulsa + junto a las tarjetas para añadir un plan nuevo y toca una tarjeta para editarla, cambiar su color o borrarla. ${"Toca una etapa para editarla o cambiar su color. «Peso a 30 días»: cuánto habría cambiado tu peso en 30 días si se hubiera mantenido el ritmo de esa etapa; en verde si va hacia el objetivo de su ciclo (subir en volumen, bajar en definición, quedarse en su rango en mantenimiento) y en amarillo si no. El gasto real y el balance salen de lo comido (Sparky) y de tus pesadas."}</p>`)
@@ -3128,9 +3265,11 @@ function semanaDatos(lun){
     hayPlan ? {k:'plan', l:'Dentro del plan', t:`${dentro} de ${vivos} días`, v:dentro / vivos, w:25} : null,
     {k:'pesadas', l:'Pesadas', t:`${pes.size} día${pes.size === 1 ? '' : 's'}`, v:Math.min(1, pes.size / Math.min(4, vivos)), w:15},
     mediaPas ? {k:'pasos', l:'Pasos sobre tu media', t:`${D.filter(x => !x.fut && x.pasosOk).length} de ${vivos} días`, v:D.filter(x => !x.fut && x.pasosOk).length / vivos, w:15} : null,
+    (() => { const F = FZ(), plan = dias.filter(d => d <= hoy && F.plan[(parseISO(d).getDay() + 6) % 7 + 1]).length, hechos = F.entrenos.filter(e => e.d >= lun && e.d <= dom).length;
+      return plan ? {k:'entrenos', l:'Entrenos hechos', t:`${hechos} de ${plan}`, v:Math.min(1, hechos / plan), w:20} : null; })(),
     cp ? {k:'ritmo', l:'Peso hacia el objetivo', t:fmtPct(pctMes, 2) + '/mes', v:cp === 'ok' ? 1 : 0, w:20} : null].filter(Boolean);
   const tw = parts.reduce((s, p) => s + p.w, 0);
-  const score = tw && (nu.size || pes.size || st.size) ? Math.round(parts.reduce((s, p) => s + p.v * p.w, 0) / tw * 100) : null;
+  const score = tw && (nu.size || pes.size || st.size || FZ().entrenos.some(e => e.d >= lun && e.d <= dom)) ? Math.round(parts.reduce((s, p) => s + p.v * p.w, 0) / tw * 100) : null;
   return {lun, dom, D, vivos, kg, dkg, pctMes, cp, bal, pasMedia, mediaPas, dentro, hayPlan, parts, score, ciclo:c, completa:dom < hoy};
 }
 const nivelSemana = s => s >= 85 ? ['Semana redonda', '🏆'] : s >= 70 ? ['Buena semana', '💪'] : s >= 50 ? ['En camino', '🚶'] : ['Semana para reajustar', '🔧'];
@@ -3160,7 +3299,7 @@ function semanaStrip(){
 }
 const TIP_SEMANA = {comidas:'Registra lo que comes todos los días: es la base de todo el cálculo.', plan:'Acércate a tus kcal planificadas: ±5 % ya cuenta como día dentro.',
   pesadas:'Pésate al menos 4 días: la tendencia será mucho más fiable.', pasos:'Supera tu media de pasos un día más que esta semana.',
-  ritmo:'El peso no va hacia tu objetivo: mira las kcal recomendadas en Nutrición.'};
+  ritmo:'El peso no va hacia tu objetivo: mira las kcal recomendadas en Nutrición.', entrenos:'Completa los entrenos de tu plan semanal: si un día falla, muévelo a otro.'};
 function paintSemana(lun){
   const sh = $('#sheet'), s = semanaDatos(lun), hoy = TODAY();
   const prevLun = iso(addDays(parseISO(lun), -7)), nextLun = iso(addDays(parseISO(lun), 7));
@@ -3195,6 +3334,453 @@ function paintSemana(lun){
   </div>`;
   sh.classList.add('open'); document.body.classList.add('locked');
 }
+/* =========================================================
+   FUERZA · entrenos registrados en Axis (o importados de openGym u otra app por CSV)
+   S.health.fuerza = {
+     ejercicios:[{id, n, g, sec:[], eq, t}]      ejercicios propios (además del catálogo EJ_BASE)
+     rutinas:[{id, n, ej:[{e, series, reps:'8-10', rir, desc}]}]
+     plan:{1..7: idRutina}                         plan semanal (1 = lunes)
+     entrenos:[{id, d, ini, fin, dur, n, rutina, nota, src:'axis'|'csv', ej:[{e, nota, sets:[{kg, reps, rir, w, seg}]}]}]
+     activo:{…mismo formato, con sets.ok}          entreno en curso (se puede seguir en otro dispositivo)
+     clave:[idEjercicio]                           ejercicios clave (hasta 4)
+     objSeries:{min, max}                          series semanales por músculo (10–20 por defecto)
+   }
+   1RM estimado: Epley, kg × (1 + reps / 30), solo con series de trabajo de 1 a 12 repeticiones.
+   Series por músculo: 1 para el músculo principal y 0,5 para cada secundario; los calentamientos no cuentan.
+   ========================================================= */
+const GRUPOS = {pecho:'Pecho', espalda:'Espalda', hombro:'Hombros', biceps:'Bíceps', triceps:'Tríceps', cuadriceps:'Cuádriceps', isquios:'Isquios',
+  gluteo:'Glúteos', gemelo:'Gemelos', abdomen:'Abdomen', antebrazo:'Antebrazo', otro:'Otros'};
+const EQUIPOS = {barra:'Barra', mancuernas:'Mancuernas', maquina:'Máquina', polea:'Polea', corporal:'Peso corporal', kettlebell:'Kettlebell', otro:'Otro'};
+// [id, nombre, grupo, secundarios, equipo, alias (otros nombres, también en inglés, para importar), tipo]
+const EJ_BASE = [
+  ['sentadilla', 'Sentadilla con barra', 'cuadriceps', ['gluteo', 'isquios'], 'barra', 'squat|back squat|barbell squat|sentadilla'],
+  ['sentadilla_frontal', 'Sentadilla frontal', 'cuadriceps', ['gluteo'], 'barra', 'front squat'],
+  ['prensa', 'Prensa de piernas', 'cuadriceps', ['gluteo'], 'maquina', 'leg press|prensa'],
+  ['hack', 'Sentadilla hack', 'cuadriceps', ['gluteo'], 'maquina', 'hack squat'],
+  ['bulgara', 'Sentadilla búlgara', 'cuadriceps', ['gluteo'], 'mancuernas', 'bulgarian split squat|split squat'],
+  ['zancadas', 'Zancadas', 'cuadriceps', ['gluteo'], 'mancuernas', 'lunge|lunges|walking lunge'],
+  ['ext_cuadriceps', 'Extensión de cuádriceps', 'cuadriceps', [], 'maquina', 'leg extension'],
+  ['peso_muerto', 'Peso muerto', 'gluteo', ['isquios', 'espalda', 'antebrazo'], 'barra', 'deadlift|conventional deadlift|barbell deadlift'],
+  ['peso_muerto_rumano', 'Peso muerto rumano', 'isquios', ['gluteo', 'espalda'], 'barra', 'romanian deadlift|rdl|stiff leg deadlift'],
+  ['curl_femoral', 'Curl femoral', 'isquios', [], 'maquina', 'leg curl|lying leg curl|seated leg curl|hamstring curl|leg curl machine'],
+  ['hip_thrust', 'Hip thrust', 'gluteo', ['isquios'], 'barra', 'hip thrust|barbell hip thrust|glute bridge'],
+  ['gemelo_pie', 'Elevación de gemelos de pie', 'gemelo', [], 'maquina', 'standing calf raise|calf raise'],
+  ['gemelo_sentado', 'Elevación de gemelos sentado', 'gemelo', [], 'maquina', 'seated calf raise'],
+  ['press_banca', 'Press de banca', 'pecho', ['triceps', 'hombro'], 'barra', 'bench press|barbell bench press|flat bench press|press banca'],
+  ['press_inclinado', 'Press inclinado con barra', 'pecho', ['hombro', 'triceps'], 'barra', 'incline bench press|incline barbell bench press'],
+  ['press_mancuernas', 'Press de banca con mancuernas', 'pecho', ['triceps', 'hombro'], 'mancuernas', 'dumbbell bench press|db bench press'],
+  ['press_inclinado_manc', 'Press inclinado con mancuernas', 'pecho', ['hombro', 'triceps'], 'mancuernas', 'incline dumbbell press|incline db press'],
+  ['aperturas', 'Aperturas con mancuernas', 'pecho', [], 'mancuernas', 'dumbbell fly|chest fly|flyes'],
+  ['cruce_poleas', 'Cruce de poleas', 'pecho', [], 'polea', 'cable crossover|cable fly'],
+  ['fondos', 'Fondos en paralelas', 'pecho', ['triceps', 'hombro'], 'corporal', 'dips|chest dip|dip'],
+  ['flexiones', 'Flexiones', 'pecho', ['triceps', 'hombro'], 'corporal', 'push up|push-up|pushups'],
+  ['dominadas', 'Dominadas', 'espalda', ['biceps'], 'corporal', 'pull up|pull-up|chin up|chin-up'],
+  ['jalon', 'Jalón al pecho', 'espalda', ['biceps'], 'polea', 'lat pulldown|pulldown|lat pulldown cable|wide grip lat pulldown'],
+  ['remo_barra', 'Remo con barra', 'espalda', ['biceps'], 'barra', 'barbell row|bent over row|pendlay row'],
+  ['remo_mancuerna', 'Remo con mancuerna', 'espalda', ['biceps'], 'mancuernas', 'dumbbell row|one arm row|db row'],
+  ['remo_polea', 'Remo en polea baja', 'espalda', ['biceps'], 'polea', 'seated cable row|cable row'],
+  ['remo_maquina', 'Remo en máquina', 'espalda', ['biceps'], 'maquina', 'machine row|chest supported row|t-bar row'],
+  ['pullover', 'Pull-over en polea', 'espalda', [], 'polea', 'pullover|straight arm pulldown'],
+  ['press_militar', 'Press militar', 'hombro', ['triceps'], 'barra', 'overhead press|ohp|military press|shoulder press'],
+  ['press_hombro_manc', 'Press de hombro con mancuernas', 'hombro', ['triceps'], 'mancuernas', 'dumbbell shoulder press|seated dumbbell press'],
+  ['elev_laterales', 'Elevaciones laterales', 'hombro', [], 'mancuernas', 'lateral raise|side lateral raise|dumbbell lateral raise|cable lateral raise|lateral raise cable|machine lateral raise'],
+  ['face_pull', 'Face pull', 'hombro', ['espalda'], 'polea', 'face pull'],
+  ['pajaros', 'Pájaros (deltoides posterior)', 'hombro', ['espalda'], 'mancuernas', 'reverse fly|rear delt fly'],
+  ['encogimientos', 'Encogimientos', 'espalda', ['antebrazo'], 'mancuernas', 'shrug|shrugs'],
+  ['curl_barra', 'Curl con barra', 'biceps', ['antebrazo'], 'barra', 'barbell curl|ez bar curl'],
+  ['curl_mancuernas', 'Curl con mancuernas', 'biceps', ['antebrazo'], 'mancuernas', 'dumbbell curl|bicep curl|biceps curl|incline dumbbell curl'],
+  ['curl_martillo', 'Curl martillo', 'biceps', ['antebrazo'], 'mancuernas', 'hammer curl'],
+  ['curl_polea', 'Curl en polea', 'biceps', [], 'polea', 'cable curl'],
+  ['press_frances', 'Press francés', 'triceps', [], 'barra', 'skull crusher|lying triceps extension'],
+  ['ext_triceps_polea', 'Extensión de tríceps en polea', 'triceps', [], 'polea', 'triceps pushdown|tricep pushdown|rope pushdown|cable pushdown|triceps rope pushdown'],
+  ['ext_triceps_cabeza', 'Extensión de tríceps sobre la cabeza', 'triceps', [], 'mancuernas', 'overhead triceps extension'],
+  ['press_cerrado', 'Press de banca agarre cerrado', 'triceps', ['pecho'], 'barra', 'close grip bench press'],
+  ['plancha', 'Plancha', 'abdomen', [], 'corporal', 'plank', 'tiempo'],
+  ['crunch_polea', 'Crunch en polea', 'abdomen', [], 'polea', 'cable crunch'],
+  ['elev_piernas', 'Elevación de piernas colgado', 'abdomen', [], 'corporal', 'hanging leg raise|leg raise'],
+  ['rueda', 'Rueda abdominal', 'abdomen', [], 'corporal', 'ab wheel|ab rollout'],
+  ['curl_muneca', 'Curl de muñeca', 'antebrazo', [], 'mancuernas', 'wrist curl'],
+  ['paseo_granjero', 'Paseo del granjero', 'antebrazo', ['espalda'], 'mancuernas', 'farmer walk|farmers walk|farmer carry']];
+const normTxt = t => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+const FZ = () => { const H = S.health; if (!H.fuerza || typeof H.fuerza !== 'object') H.fuerza = {};
+  const F = H.fuerza; ['ejercicios', 'rutinas', 'entrenos', 'clave'].forEach(k => { if (!Array.isArray(F[k])) F[k] = k === 'clave' ? ['sentadilla', 'press_banca', 'peso_muerto', 'press_militar'] : []; });
+  if (!F.plan || typeof F.plan !== 'object') F.plan = {}; if (!F.objSeries) F.objSeries = {min:10, max:20}; return F; };
+function ejercicios(){
+  const base = EJ_BASE.map(([id, n, g, sec, eq, al, t]) => ({id, n, g, sec, eq, al:al || '', t:t || 'peso', base:true}));
+  return base.concat((FZ().ejercicios || []).map(x => ({sec:[], eq:'otro', t:'peso', al:'', ...x})));
+}
+const ejDe = id => ejercicios().find(x => x.id === id) || {id, n:id, g:'otro', sec:[], eq:'otro', t:'peso'};
+const e1rm = (kg, reps) => kg > 0 && reps >= 1 && reps <= 12 ? (reps === 1 ? kg : kg * (1 + reps / 30)) : null;
+const trabajo = s => !s.w && Number(s.reps) > 0;
+const fmtPeso = v => v == null || isNaN(v) ? '–' : (Math.round(v * 10) / 10).toLocaleString('es-ES', {maximumFractionDigits:1});
+const entrenos = () => FZ().entrenos.slice().sort((a, b) => (a.d + (a.ini || '')).localeCompare(b.d + (b.ini || '')));
+function volEntreno(e){ let v = 0, n = 0; e.ej.forEach(x => x.sets.forEach(s => { if (trabajo(s)){ n++; v += (Number(s.kg) || 0) * Number(s.reps); } })); return {vol:v, series:n}; }
+/* Historial de un ejercicio: por sesión, mejor 1RM estimado, mejor serie y volumen */
+function histEj(id){
+  const out = [];
+  for (const e of entrenos()) for (const x of e.ej) if (x.e === id){
+    let best = null, top = null, vol = 0, reps = 0;
+    x.sets.filter(trabajo).forEach(s => { const kg = Number(s.kg) || 0, r = Number(s.reps), m = e1rm(kg, r); vol += kg * r; reps = Math.max(reps, r);
+      if (m != null && (!best || m > best.m)) best = {m, kg, reps:r}; if (!top || kg > top.kg || kg === top.kg && r > top.reps) top = {kg, reps:r}; });
+    if (top) out.push({d:e.d, id:e.id, best, top, vol, reps, sets:x.sets});
+  }
+  return out;
+}
+function recordEj(id, antesDe){ // mejor 1RM estimado (y mejor peso) hasta una fecha (sin incluirla)
+  let m = null, kg = null; for (const h of histEj(id)){ if (antesDe && h.d >= antesDe) continue; if (h.best && (!m || h.best.m > m.m)) m = {...h.best, d:h.d}; if (!kg || h.top.kg > kg.kg) kg = {...h.top, d:h.d}; }
+  return {m, kg};
+}
+const ultimaVez = (id, antesDeId) => { const l = entrenos().filter(e => e.id !== antesDeId && e.ej.some(x => x.e === id)); const e = l[l.length - 1]; return e ? {d:e.d, x:e.ej.find(x => x.e === id)} : null; };
+/* Series semanales por músculo de un intervalo */
+function seriesMusculo(a, b){
+  const m = Object.fromEntries(Object.keys(GRUPOS).map(k => [k, 0]));
+  entrenos().filter(e => e.d >= a && e.d <= b).forEach(e => e.ej.forEach(x => { const ej = ejDe(x.e), n = x.sets.filter(trabajo).length; if (!n) return;
+    m[ej.g] = (m[ej.g] || 0) + n; (ej.sec || []).forEach(g => { m[g] = (m[g] || 0) + n * .5; }); }));
+  return m;
+}
+function ultimoMusculo(){ // último día en que se trabajó cada músculo (como principal o secundario)
+  const u = {}; entrenos().forEach(e => e.ej.forEach(x => { if (x.sets.some(trabajo)){ const ej = ejDe(x.e); [ej.g, ...(ej.sec || [])].forEach(g => { if (!u[g] || e.d > u[g]) u[g] = e.d; }); } })); return u;
+}
+const diasPlan = () => Object.values(FZ().plan).filter(Boolean).length;
+const semanaFz = lun => entrenos().filter(e => e.d >= lun && e.d <= iso(addDays(parseISO(lun), 6))).length;
+function rachaFz(){ // semanas seguidas cumpliendo (lo planificado, o al menos 1 entreno sin plan); la semana en curso cuenta si ya se cumplió
+  const meta = Math.max(1, diasPlan()); let n = 0, l = isoWeekStart(TODAY());
+  if (semanaFz(l) >= meta) n++; l = iso(addDays(parseISO(l), -7));
+  for (let i = 0; i < 104; i++){ if (semanaFz(l) < meta) break; n++; l = iso(addDays(parseISO(l), -7)); }
+  return n;
+}
+const rutinaDe = id => FZ().rutinas.find(r => r.id === id);
+const rutinaHoy = () => { const dow = (parseISO(TODAY()).getDay() + 6) % 7 + 1; return rutinaDe(FZ().plan[dow]); };
+const RIR_OPTS = ['', '0', '1', '2', '3', '4', '5'];
+/* Progresión doble: si la última vez todas las series de trabajo llegaron al tope del rango de repeticiones, sube el peso */
+function sugerencia(item, rut){
+  const ref = rut && rut.ej.find(x => x.e === item.e), u = ultimaVez(item.e, FZ().activo && FZ().activo.editando);
+  if (!ref || !u) return null;
+  const tope = +(String(ref.reps || '').split('-').pop()), ws = u.x.sets.filter(trabajo);
+  if (!tope || !ws.length || ws.some(s => Number(s.reps) < tope)) return null;
+  const kg = Math.max(...ws.map(s => Number(s.kg) || 0)); if (!kg) return null;
+  const inc = {barra:2.5, maquina:2.5, polea:2.5, mancuernas:2, kettlebell:4}[ejDe(item.e).eq] || 2.5;
+  return {kg:kg + inc, txt:`La última vez hiciste ${ws.length}×${tope} o más con ${fmtPeso(kg)} kg: prueba con ${fmtPeso(kg + inc)} kg`};
+}
+const DISCOS = [25, 20, 15, 10, 5, 2.5, 1.25];
+function discos(kg, barra = 20){ // qué va a cada lado de la barra
+  let lado = (kg - barra) / 2; if (!(lado > 0)) return null; const out = [];
+  for (const d of DISCOS){ while (lado >= d - 1e-9){ out.push(d); lado -= d; } }
+  return lado > .01 ? null : out;
+}
+
+/* ---------- Vista de la pestaña Fuerza ---------- */
+function viewFuerza(){
+  const F = FZ(), es = entrenos(), act = F.activo, hoyR = rutinaHoy(), lun = isoWeekStart(TODAY());
+  const hechas = semanaFz(lun), meta = diasPlan(), racha = rachaFz();
+  const ult = es[es.length - 1];
+  const hero = `<div class="hl-hero ax-hero fz-hero">
+    <div class="ax-main"><div class="ax-k">Esta semana</div><div class="hl-big">${hechas}${meta ? ` <small>de ${meta}</small>` : ''} <small>entreno${hechas === 1 && !meta ? '' : 's'}</small></div>
+      <div class="ax-sub">${racha > 1 ? `🔥 ${racha} semanas seguidas` : ult ? `Último: ${fmtShort(ult.d)} · ${esc(ult.n || 'Entreno')}` : 'Aún no hay entrenos'}</div></div>
+    ${VIS ? '' : act ? `<button class="fz-go on" data-act="fzAbrir">${ic('clock')}<span>En curso<small>${esc(act.n || 'Entreno')}</small></span></button>`
+      : `<button class="fz-go" data-act="fzEmpezar">${ic('flame')}<span>${es.some(e => e.d === TODAY()) ? 'Otro entreno' : 'Empezar'}<small>${es.some(e => e.d === TODAY()) ? 'hoy ya hecho ✓' : hoyR ? esc(hoyR.n) : 'entreno libre'}</small></span></button>`}
+  </div>`;
+  // plan de la semana: L–D con la rutina de cada día y si ya está hecha
+  const L = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+  const semana = `<div class="fz-week">${L.map((l, i) => { const d = iso(addDays(parseISO(lun), i)), r = rutinaDe(F.plan[i + 1]), hecho = es.some(e => e.d === d);
+    return `<div class="fz-wd ${hecho ? 'ok' : ''} ${d === TODAY() ? 'hoy' : ''} ${d > TODAY() ? 'fut' : ''}"><b>${l}</b><span>${hecho ? '✓' : r ? esc(r.n.slice(0, 3)) : '·'}</span></div>`; }).join('')}
+    <button class="fz-wedit" data-act="fzRutinas" aria-label="Rutinas y plan semanal">${ic('edit')}</button></div>`;
+  if (!es.length) return hero + semana + `<div class="empty" style="margin-top:14px"><b>Empieza a registrar tus entrenos</b>Crea tus rutinas y tu plan semanal (lápiz de arriba) y pulsa «Empezar». También puedes traer tu historial de openGym, Strong o Hevy con «Pegar» o el botón de importar de arriba.</div>` + fzEntradas();
+  return hero + semana + fzClave() + fzVolumen() + fzMusculos() + fzEquilibrio() + fzMapa() + fzTotales() + fzEntradas();
+}
+function fzEntradas(){
+  const es = entrenos(), ult = es[es.length - 1];
+  return `<button class="hl-entry" data-act="fzHistorial">${ic('list')}<div><b>Historial de entrenos</b><small>${es.length ? `${es.length} entreno${es.length === 1 ? '' : 's'} · último ${fmtShort(ult.d)}` : 'Nada todavía'}</small></div>${ic('chev')}</button>
+    <button class="hl-entry" data-act="fzRutinas">${ic('route')}<div><b>Rutinas y plan semanal</b><small>${FZ().rutinas.length ? `${FZ().rutinas.length} rutina${FZ().rutinas.length === 1 ? '' : 's'} · ${diasPlan()} día${diasPlan() === 1 ? '' : 's'} a la semana` : 'Crea tu primera rutina'}</small></div>${ic('chev')}</button>
+    <button class="hl-entry" data-act="fzRecords">${ic('flag')}<div><b>Récords</b><small>Mejor 1RM estimado y mejor peso de cada ejercicio</small></div>${ic('chev')}</button>`;
+}
+/* Ejercicios clave: 1RM estimado, tendencia de 12 semanas y relación con el peso corporal */
+function fzClave(){
+  const F = FZ(), kg = pesoActual(), desde = iso(addDays(new Date(), -84)), hace4 = iso(addDays(new Date(), -28));
+  const cards = F.clave.map(id => {
+    const h = histEj(id).filter(x => x.best), ej = ejDe(id); if (!h.length) return `<button class="fz-k vacio" data-act="fzEjercicio" data-id="${esc(id)}"><small>${esc(ej.n)}</small><b>–</b><em>sin datos</em></button>`;
+    const best = h.reduce((a, x) => x.best.m > a.best.m ? x : a), ult = h[h.length - 1];
+    const prev = h.filter(x => x.d <= hace4).pop(), dm = prev ? ult.best.m - prev.best.m : null, cls = dm == null || Math.abs(dm) < .5 ? '' : dm > 0 ? 'ok' : 'off';
+    const pts = h.filter(x => x.d >= desde); let sp = '';
+    if (pts.length > 1){ const lo = Math.min(...pts.map(x => x.best.m)), hi = Math.max(...pts.map(x => x.best.m)), t0 = parseISO(pts[0].d).getTime(), t1 = Math.max(parseISO(pts[pts.length - 1].d).getTime(), t0 + 864e5);
+      sp = `<svg viewBox="0 0 100 28" preserveAspectRatio="none" class="fz-sp"><path d="${pts.map((x, i) => (i ? 'L' : 'M') + ((parseISO(x.d).getTime() - t0) / (t1 - t0) * 100).toFixed(1) + ' ' + (3 + (hi - x.best.m) / Math.max(hi - lo, 1) * 22).toFixed(1)).join(' ')}" vector-effect="non-scaling-stroke"/></svg>`; }
+    return `<button class="fz-k ${cls}" data-act="fzEjercicio" data-id="${esc(id)}"><small>${esc(ej.n)}</small><b>${fmtPeso(ult.best.m)}<i> kg</i></b>
+      <em>${dm != null ? `${dm >= 0 ? '+' : '−'}${fmtPeso(Math.abs(dm))} kg en 4 sem.` : `récord ${fmtPeso(best.best.m)} kg`}${kg ? ` · ${(ult.best.m / kg).toLocaleString('es-ES', {maximumFractionDigits:2})}× tu peso` : ''}</em>${sp}</button>`;
+  });
+  return `<div class="et-head"><div class="rm-sub">1RM estimado · ejercicios clave</div>${VIS ? '' : `<button class="btn ghost sm" data-act="fzClaveElegir">Elegir</button>`}</div><div class="fz-kgrid">${cards.join('')}</div>`;
+}
+/* Volumen semanal: series de trabajo o kg × repeticiones de las últimas 12 semanas */
+function fzVolumen(){
+  const modo = FZ().volModo || 'series', l0 = isoWeekStart(TODAY());
+  const sem = Array.from({length:12}, (_, i) => iso(addDays(parseISO(l0), -7 * (11 - i)))).map(l => { let v = 0, n = 0;
+    entrenos().filter(e => e.d >= l && e.d <= iso(addDays(parseISO(l), 6))).forEach(e => { const x = volEntreno(e); v += x.vol; n += x.series; }); return {l, v, n}; });
+  const val = s => modo === 'series' ? s.n : s.v, mx = Math.max(1, ...sem.map(val)), ult = sem[11], ant = sem[10];
+  return `<div class="hl-card fz-card"><div class="hl-card-h"><b>Volumen semanal</b>
+      <div class="fz-seg"><button class="${modo === 'series' ? 'on' : ''}" data-act="fzVolModo" data-v="series">Series</button><button class="${modo === 'kg' ? 'on' : ''}" data-act="fzVolModo" data-v="kg">Kg</button></div></div>
+    <div class="fz-bars">${sem.map((s, i) => `<div class="${i === 11 ? 'cur' : ''}"><i style="height:${(val(s) / mx * 100).toFixed(1)}%"></i><small>${i % 2 === 1 || i === 11 ? parseISO(s.l).getDate() + '/' + (parseISO(s.l).getMonth() + 1) : ''}</small></div>`).join('')}</div>
+    <div class="fz-foot">Esta semana: <b>${modo === 'series' ? ult.n + ' series' : fmtNum(ult.v) + ' kg'}</b> · la anterior: ${modo === 'series' ? ant.n + ' series' : fmtNum(ant.v) + ' kg'}</div></div>`;
+}
+/* Series por músculo: esta semana (o 4 semanas) frente al rango objetivo; y días desde la última vez */
+function fzMusculos(){
+  const F = FZ(), modo = F.musModo || 'semana', o = F.objSeries, lun = isoWeekStart(TODAY());
+  const a = modo === 'semana' ? lun : iso(addDays(parseISO(lun), -21)), div = modo === 'semana' ? 1 : 4;
+  const m = seriesMusculo(a, TODAY()), u = ultimoMusculo();
+  const rows = Object.keys(GRUPOS).filter(g => g !== 'otro').map(g => { const v = m[g] / div, dias = u[g] ? daysBetween(u[g], TODAY()) : null;
+    const cls = !v ? 'nd' : v < o.min ? 'off' : v > o.max ? 'off' : 'ok';
+    return `<div class="fz-mr ${cls}"><span>${GRUPOS[g]}</span><i><em style="width:${Math.min(100, v / (o.max * 1.25) * 100).toFixed(1)}%"></em><u style="left:${(o.min / (o.max * 1.25) * 100).toFixed(1)}%;width:${((o.max - o.min) / (o.max * 1.25) * 100).toFixed(1)}%"></u></i>
+      <b>${fmtPeso(v)}</b><small>${dias == null ? 'nunca' : dias === 0 ? 'hoy' : `hace ${dias} d`}</small></div>`; }).join('');
+  return `<div class="hl-card fz-card"><div class="hl-card-h"><b>Series por músculo</b>
+      <div class="fz-seg"><button class="${modo === 'semana' ? 'on' : ''}" data-act="fzMusModo" data-v="semana">Semana</button><button class="${modo === 'media' ? 'on' : ''}" data-act="fzMusModo" data-v="media">Media 4 sem.</button></div></div>
+    <div class="fz-mus">${rows}</div>
+    <div class="fz-foot">Franja: tu objetivo de ${o.min}–${o.max} series semanales. Secundarios cuentan medio. <button class="lnk" data-act="fzObjSeries">Cambiar</button></div></div>`;
+}
+/* Equilibrio estructural: relaciones entre levantamientos (referencias orientativas) */
+const RATIOS = [['press_banca', 'sentadilla', .75, 'Banca / sentadilla'], ['peso_muerto', 'sentadilla', 1.2, 'Peso muerto / sentadilla'],
+  ['press_militar', 'press_banca', .65, 'Press militar / banca'], ['remo_barra', 'press_banca', .8, 'Remo / banca']];
+function fzEquilibrio(){
+  const best = id => { const r = recordEj(id).m; return r ? r.m : null; };
+  const filas = RATIOS.map(([a, b, ref, l]) => { const x = best(a), y = best(b); if (!x || !y) return null; const r = x / y, dev = r / ref - 1; return {l, r, ref, dev}; }).filter(Boolean);
+  if (!filas.length) return '';
+  const peor = filas.reduce((a, f) => f.dev < a.dev ? f : a);
+  return `<div class="hl-card fz-card"><div class="hl-card-h"><b>Equilibrio entre levantamientos</b><span class="muted small">1RM estimado</span></div>
+    <div class="fz-eq">${filas.map(f => `<div class="${Math.abs(f.dev) <= .1 ? 'ok' : 'off'}"><span>${f.l}</span><b>${f.r.toLocaleString('es-ES', {maximumFractionDigits:2})}</b><small>ref. ${f.ref.toLocaleString('es-ES')}</small></div>`).join('')}</div>
+    ${peor.dev < -.1 ? `<div class="fz-foot">Eslabón más débil: <b>${peor.l.split(' / ')[0]}</b> (${Math.round(-peor.dev * 100)} % por debajo de la referencia).</div>`
+      : filas.some(f => Math.abs(f.dev) > .1) ? `<div class="fz-foot">Por encima de la referencia: ${filas.filter(f => f.dev > .1).map(f => `<b>${f.l}</b> (+${Math.round(f.dev * 100)} %)`).join(', ')}. No es un problema: solo indica dónde vas más fuerte.</div>`
+      : '<div class="fz-foot">Todo dentro de ±10 % de las referencias.</div>'}</div>`;
+}
+/* Mapa del año: un cuadrado por día, más intenso cuanto más volumen */
+function fzMapa(){
+  const l0 = iso(addDays(parseISO(isoWeekStart(TODAY())), -7 * 51)), por = new Map();
+  entrenos().forEach(e => por.set(e.d, (por.get(e.d) || 0) + volEntreno(e).series));
+  const mx = Math.max(1, ...por.values()), cols = [];
+  for (let w = 0; w < 52; w++){ let c = ''; for (let i = 0; i < 7; i++){ const d = iso(addDays(parseISO(l0), w * 7 + i)), v = por.get(d) || 0;
+    c += `<i class="${d > TODAY() ? 'fut' : v ? 'on' : ''}" style="${v ? `opacity:${(.35 + .65 * v / mx).toFixed(2)}` : ''}" title="${d}"></i>`; } cols.push(`<div>${c}</div>`); }
+  const total = entrenos().filter(e => e.d >= l0).length;
+  return `<div class="hl-card fz-card"><div class="hl-card-h"><b>Tu año de entrenos</b><span class="muted small">${total} en 12 meses</span></div>
+    <div class="fz-map" id="fzMap">${cols.join('')}</div></div>`;
+}
+function fzTotales(){
+  const es = entrenos(); let vol = 0, series = 0, min = 0; es.forEach(e => { const x = volEntreno(e); vol += x.vol; series += x.series; min += Number(e.dur) || 0; });
+  const mes = TODAY().slice(0, 7); let prs = 0;
+  es.filter(e => e.d.slice(0, 7) === mes).forEach(e => e.ej.forEach(x => { const prev = recordEj(x.e, e.d).m, b = Math.max(0, ...x.sets.filter(trabajo).map(s => e1rm(Number(s.kg) || 0, Number(s.reps)) || 0)); if (prev && b > prev.m + .01) prs++; }));
+  return `<div class="fz-tot"><div><b>${es.length}</b><small>entrenos</small></div><div><b>${Math.round(min / 60)}</b><small>horas</small></div>
+    <div><b>${vol >= 1e6 ? (vol / 1e6).toLocaleString('es-ES', {maximumFractionDigits:1}) + ' M' : fmtNum(Math.round(vol / 1000)) + ' t'}</b><small>levantado</small></div><div><b>${prs}</b><small>récords este mes</small></div></div>`;
+}
+
+/* ---------- Entreno en curso ---------- */
+let fzTick = null, fzDescanso = null;
+function nuevoSet(prev){ return {kg:prev && prev.kg !== '' && prev.kg != null ? String(prev.kg).replace('.', ',') : '', reps:prev ? prev.reps : '', rir:'', w:prev ? !!prev.w : false, ok:false}; }
+function itemDesde(e, rut){ // un ejercicio para el entreno: series de la rutina, con los pesos de la última vez
+  const ref = rut && rut.ej.find(x => x.e === e), u = ultimaVez(e), n = ref ? Math.max(1, +ref.series || 3) : u ? u.x.sets.filter(trabajo).length || 3 : 3;
+  const prev = u ? u.x.sets.filter(trabajo) : [];
+  return {e, desc:ref ? +ref.desc || 120 : 120, nota:'', sets:Array.from({length:n}, (_, i) => nuevoSet(prev[i] || prev[prev.length - 1]))};
+}
+function fzGuardar(){ save(); }
+function fzRepintar(){ const sc = $('#sheet .sheet'), y = sc ? sc.scrollTop : 0; paintFz(); const n = $('#sheet .sheet'); if (n) n.scrollTop = y; }
+function paintFz(){
+  const sh = $('#sheet'), A = FZ().activo; if (!A){ closeSheet(); return; }
+  const rut = rutinaDe(A.rutina);
+  const items = A.ej.map((x, ei) => { const ej = ejDe(x.e), u = ultimaVez(x.e, A.editando), sg = sugerencia(x, rut), rec = recordEj(x.e, A.editando ? A.d : null).m;
+    const ultTxt = u ? u.x.sets.filter(trabajo).map(s => `${fmtPeso(Number(s.kg))}×${s.reps}`).join(' · ') : '';
+    const kgMax = Math.max(0, ...x.sets.map(s => numES(s.kg) || 0)), ds = ej.eq === 'barra' && kgMax > 20 ? discos(kgMax) : null;
+    return `<div class="fz-ex" data-ei="${ei}"><div class="fz-exh"><div><b>${esc(ej.n)}</b><small>${u ? `Última vez (${fmtShort(u.d)}): ${ultTxt}` : 'Primera vez'}${rec ? ` · récord 1RM ${fmtPeso(rec.m)} kg` : ''}</small></div>
+        <button type="button" class="icon-btn" data-act="fzExMenu" data-ei="${ei}" aria-label="Opciones del ejercicio">${ic('edit')}</button></div>
+      ${sg ? `<button type="button" class="fz-sug" data-act="fzSug" data-ei="${ei}" data-kg="${sg.kg}">↑ ${sg.txt}</button>` : ''}
+      <div class="fz-sets"><div class="fz-sh"><span>Serie</span><span>Kg</span><span>Reps</span><span>RIR</span><span></span></div>
+      ${x.sets.map((s, si) => `<div class="fz-set ${s.ok ? 'ok' : ''} ${s.w ? 'w' : ''}">
+        <button type="button" class="fz-n" data-act="fzWarm" data-ei="${ei}" data-si="${si}" aria-label="Marcar como calentamiento">${s.w ? 'C' : x.sets.filter((y, j) => j <= si && !y.w).length}</button>
+        <input inputmode="decimal" data-ei="${ei}" data-si="${si}" data-f="kg" value="${esc(String(s.kg ?? ''))}" placeholder="kg">
+        <input inputmode="numeric" data-ei="${ei}" data-si="${si}" data-f="reps" value="${esc(String(s.reps ?? ''))}" placeholder="reps">
+        <select data-ei="${ei}" data-si="${si}" data-f="rir">${RIR_OPTS.map(o => `<option value="${o}" ${String(s.rir ?? '') === o ? 'selected' : ''}>${o === '' ? '–' : o}</option>`).join('')}</select>
+        <button type="button" class="fz-ok" data-act="fzOk" data-ei="${ei}" data-si="${si}" aria-label="Serie hecha">${ic('check')}</button></div>`).join('')}</div>
+      <div class="fz-exf"><button type="button" class="btn ghost sm" data-act="fzAddSet" data-ei="${ei}">${ic('plus')} Serie</button>${x.sets.length > 1 ? `<button type="button" class="btn ghost sm" data-act="fzDelSet" data-ei="${ei}">Quitar la última</button>` : ''}
+        ${ds ? `<span class="fz-discos">Barra 20 + ${ds.map(fmtPeso).join(' + ')} por lado</span>` : ''}</div></div>`; }).join('');
+  const t0 = A.ini ? new Date(A.ini).getTime() : Date.now();
+  sh.classList.remove('has-pv'); delete sh.dataset.day;
+  sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet fz-run"><div class="grab"></div>
+    <div class="sheet-h"><div class="fz-rh"><h2>${esc(A.n || 'Entreno')}</h2><small id="fzReloj" data-t0="${t0}">${A.editando ? 'Editando un entreno guardado' : ''}</small></div>
+      <button type="button" class="btn sm" data-act="fzTerminar">${A.editando ? 'Guardar' : 'Terminar'}</button><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Minimizar">${ic('down')}</button></div>
+    ${items || '<p class="hint" style="padding-left:0">Añade el primer ejercicio.</p>'}
+    <div class="fz-runf"><button type="button" class="btn ghost" data-act="fzAddEj">${ic('plus')} Ejercicio</button><button type="button" class="btn ghost danger" data-act="fzDescartar">${A.editando ? 'Cancelar' : 'Descartar'}</button></div>
+    <label class="fz-nota">Nota del entreno<textarea data-f="nota" rows="2" placeholder="Cómo te has sentido, molestias…">${esc(A.nota || '')}</textarea></label>
+    <div class="fz-rest" id="fzRest" hidden><b id="fzRestT">0:00</b><span>Descanso</span><button type="button" data-act="fzRestMas" data-v="-15">−15</button><button type="button" data-act="fzRestMas" data-v="15">+15</button><button type="button" data-act="fzRestFin">Saltar</button></div>
+  </div>`;
+  sh.classList.add('open'); document.body.classList.add('locked');
+  clearInterval(fzTick); fzTick = setInterval(fzReloj, 1000); fzReloj();
+}
+function fzReloj(){
+  const r = $('#fzReloj'); if (!r){ clearInterval(fzTick); return; }
+  const A = FZ().activo; if (A && !A.editando){ const s = Math.max(0, Math.round((Date.now() - +r.dataset.t0) / 1000)); r.textContent = `${Math.floor(s / 60)} min ${String(s % 60).padStart(2, '0')} s`; }
+  const box = $('#fzRest');
+  if (box && fzDescanso){ const q = Math.round((fzDescanso - Date.now()) / 1000);
+    if (q <= 0){ fzDescanso = null; box.hidden = true; try { navigator.vibrate && navigator.vibrate([250, 120, 250]); } catch (e) {} toast('¡Descanso terminado!'); }
+    else { box.hidden = false; $('#fzRestT').textContent = `${Math.floor(q / 60)}:${String(q % 60).padStart(2, '0')}`; } }
+  else if (box) box.hidden = true;
+}
+document.addEventListener('input', e => { // lo que se escribe en el entreno en curso se guarda al momento
+  const el = e.target; if (!el.closest || !el.closest('.fz-run')) return; const A = FZ().activo; if (!A) return;
+  if (el.dataset.f === 'nota' && el.dataset.ei == null){ A.nota = el.value; fzGuardar(); return; }
+  const x = A.ej[+el.dataset.ei]; if (!x) return;
+  if (el.dataset.si == null){ x[el.dataset.f] = el.value; } else { const s = x.sets[+el.dataset.si]; if (s) s[el.dataset.f] = el.value; }
+  fzGuardar();
+});
+document.addEventListener('change', e => { const el = e.target; if (el.closest && el.closest('.fz-run') && el.tagName === 'SELECT'){ const A = FZ().activo, s = A && A.ej[+el.dataset.ei] && A.ej[+el.dataset.ei].sets[+el.dataset.si]; if (s){ s.rir = el.value; fzGuardar(); } } });
+function limpiarEntreno(A){ // del entreno en curso a uno guardado: solo las series con repeticiones
+  return {id:A.editando || uid(), d:A.d || TODAY(), ini:A.ini || '', fin:A.fin || new Date().toISOString(), dur:A.dur != null ? A.dur : Math.max(1, Math.round((Date.now() - new Date(A.ini).getTime()) / 60000)),
+    n:A.n || 'Entreno', rutina:A.rutina || '', nota:A.nota || '', src:A.src || 'axis',
+    ej:A.ej.map(x => ({e:x.e, nota:x.nota || '', sets:x.sets.filter(s => numES(s.reps) > 0).map(s => { const o = {kg:numES(s.kg) || 0, reps:numES(s.reps)}; if (s.rir !== '' && s.rir != null) o.rir = +s.rir; if (s.w) o.w = true; return o; })})).filter(x => x.sets.length)};
+}
+function paintFzResumen(e, prs){
+  const x = volEntreno(e), sh = $('#sheet');
+  sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
+    <div class="sheet-h"><h2>¡Entreno guardado!</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+    <div class="hl-hero ax-hero"><div class="ax-main"><div class="ax-k">${esc(e.n)} · ${fmtShort(e.d)}</div><div class="hl-big">${e.dur} <small>min</small></div><div class="ax-sub">${x.series} series · ${fmtNum(x.vol)} kg levantados · ${e.ej.length} ejercicios</div></div></div>
+    ${prs.length ? `<div class="fz-prs">${prs.map(p => `<div>🏆 <b>${esc(ejDe(p.e).n)}</b> · nuevo récord: 1RM estimado ${fmtPeso(p.m)} kg <small>(${fmtPeso(p.kg)} × ${p.reps})</small></div>`).join('')}</div>` : '<p class="hint" style="padding-left:0;margin-top:12px">Un entreno más en la cuenta. La constancia es lo que construye.</p>'}
+  </div>`;
+  sh.classList.add('open'); document.body.classList.add('locked');
+}
+function paintFzHist(){
+  const sh = $('#sheet'), es = entrenos().slice().reverse();
+  const html = es.length ? es.map(e => { const x = volEntreno(e); return `<button class="hl-row" data-act="fzVer" data-id="${esc(e.id)}"><div><b class="cap">${fmtLong(e.d)}</b><small>${esc(e.n || 'Entreno')} · ${e.dur ? e.dur + ' min · ' : ''}${x.series} series · ${fmtNum(x.vol)} kg${e.src === 'csv' ? ' · importado' : ''}</small></div>${ic('chev')}</button>`; }).join('') : '<p class="hint" style="padding-left:12px">Nada todavía.</p>';
+  openListSheet('Entrenos', `${es.length} en total`, html, '');
+  const b = sh.querySelector('.hl-subrow .danger'); if (b) b.remove();
+}
+function paintFzVer(id){
+  const e = FZ().entrenos.find(x => x.id === id); if (!e) return;
+  const sh = $('#sheet'), x = volEntreno(e);
+  sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
+    <div class="sheet-h"><h2>${esc(e.n || 'Entreno')}</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+    <p class="muted small" style="margin:-6px 0 10px" class="cap">${fmtLong(e.d)}${e.dur ? ` · ${e.dur} min` : ''} · ${x.series} series · ${fmtNum(x.vol)} kg</p>
+    ${e.ej.map(y => `<div class="fz-verx"><b>${esc(ejDe(y.e).n)}</b><div>${y.sets.map(s => `<span class="${s.w ? 'w' : ''}">${s.w ? 'C ' : ''}${fmtPeso(s.kg)}×${s.reps}${s.rir != null ? ` <small>RIR ${s.rir}</small>` : ''}</span>`).join('')}</div>${y.nota ? `<small>${esc(y.nota)}</small>` : ''}</div>`).join('')}
+    ${e.nota ? `<p class="hint" style="padding-left:0">${esc(e.nota)}</p>` : ''}
+    ${VIS ? '' : `<div class="sheet-f"><button class="btn ghost danger" data-act="fzBorrar" data-id="${esc(e.id)}">Eliminar</button><button class="btn" data-act="fzEditar" data-id="${esc(e.id)}">Editar</button></div>`}</div>`;
+  sh.classList.add('open'); document.body.classList.add('locked');
+}
+/* Selector de ejercicios (para el entreno, las rutinas y los ejercicios clave) */
+let fzPick = null;
+function paintFzPicker(q = '', grupo = ''){
+  const sh = $('#sheet'), nq = normTxt(q);
+  const l = ejercicios().filter(x => (!grupo || x.g === grupo) && (!nq || normTxt(x.n + ' ' + x.al).includes(nq)));
+  const usados = new Map(); entrenos().forEach(e => e.ej.forEach(y => usados.set(y.e, (usados.get(y.e) || 0) + 1)));
+  l.sort((a, b) => (usados.get(b.id) || 0) - (usados.get(a.id) || 0) || a.n.localeCompare(b.n));
+  const lista = l.map(x => `<button class="hl-row" data-act="fzPickEj" data-id="${esc(x.id)}"><div><b>${esc(x.n)}</b><small>${GRUPOS[x.g] || x.g}${x.sec && x.sec.length ? ' + ' + x.sec.map(g => GRUPOS[g]).join(', ') : ''} · ${EQUIPOS[x.eq] || ''}</small></div>${usados.get(x.id) ? `<span class="muted small">${usados.get(x.id)}×</span>` : ''}</button>`).join('')
+    || `<p class="hint" style="padding-left:12px">Nada con ese nombre.</p>`;
+  if (sh.querySelector('.fz-pick') && sh.classList.contains('open')){ sh.querySelector('.fz-pick-l').innerHTML = lista; sh.querySelectorAll('.fz-pick .pill').forEach(p => p.classList.toggle('on', p.dataset.g === grupo)); return; }
+  sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet fz-pick"><div class="grab"></div>
+    <div class="sheet-h"><h2>Elegir ejercicio</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+    <input id="fzQ" type="search" placeholder="Buscar (también en inglés: squat, bench…)" value="${esc(q)}" autocomplete="off">
+    <div class="pills" style="padding-top:8px">${[['', 'Todos'], ...Object.entries(GRUPOS)].map(([k, n]) => `<button class="pill ${grupo === k ? 'on' : ''}" data-act="fzPickG" data-g="${k}">${n}</button>`).join('')}</div>
+    <div class="hl-list fz-pick-l">${lista}</div>
+    <button class="btn ghost" data-act="fzNuevoEj" style="margin-top:10px">${ic('plus')} Crear un ejercicio</button></div>`;
+  sh.classList.add('open'); document.body.classList.add('locked');
+  $('#fzQ').oninput = ev => paintFzPicker(ev.target.value, sh.querySelector('.fz-pick .pill.on') ? sh.querySelector('.fz-pick .pill.on').dataset.g : '');
+}
+/* Rutinas y plan semanal */
+function paintFzRutinas(){
+  const F = FZ(), sh = $('#sheet'), L = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  sh.classList.remove('has-pv'); delete sh.dataset.day;
+  sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
+    <div class="sheet-h"><h2>Rutinas y plan</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+    <div class="rg-sec"><div class="et-head" style="margin:0"><div class="rm-sub">Rutinas</div>${VIS ? '' : `<button class="icon-btn et-add" data-act="fzRutina" aria-label="Nueva rutina">${ic('plus')}</button>`}</div>
+      ${F.rutinas.length ? `<div class="hl-list">${F.rutinas.map(r => `<button class="hl-row" data-act="fzRutina" data-id="${esc(r.id)}"><div><b>${esc(r.n)}</b><small>${r.ej.map(x => ejDe(x.e).n).join(' · ') || 'sin ejercicios'}</small></div>${ic('chev')}</button>`).join('')}</div>`
+        : '<p class="hint" style="padding-left:0">Aún no hay rutinas. Crea una con el +: por ejemplo «Torso», «Pierna» o «Empuje».</p>'}</div>
+    <div class="rg-sec"><div class="rm-sub">Plan semanal</div>
+      <div class="fz-plan">${L.map((l, i) => `<label>${l}<select data-fzplan="${i + 1}" ${VIS ? 'disabled' : ''}><option value="">Descanso</option>${F.rutinas.map(r => `<option value="${esc(r.id)}" ${F.plan[i + 1] === r.id ? 'selected' : ''}>${esc(r.n)}</option>`).join('')}</select></label>`).join('')}</div>
+      <p class="hint" style="padding-left:0;margin:0">El día que toca, «Empezar» abre esa rutina con tus pesos de la última vez.</p></div></div>`;
+  sh.classList.add('open'); document.body.classList.add('locked');
+  sh.querySelectorAll('[data-fzplan]').forEach(s => s.onchange = () => { F.plan[s.dataset.fzplan] = s.value; if (!s.value) delete F.plan[s.dataset.fzplan]; save(); render(); });
+}
+let fzRutEd = null;   // rutina que se está editando (copia)
+function paintFzRutina(){
+  const r = fzRutEd, sh = $('#sheet');
+  sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
+    <div class="sheet-h"><h2>${r.nueva ? 'Nueva rutina' : 'Rutina'}</h2><button type="button" class="icon-btn" data-act="fzRutinas" aria-label="Volver">${ic('x')}</button></div>
+    <div class="field"><label for="fzRn">Nombre</label><input id="fzRn" value="${esc(r.n)}" placeholder="p. ej. Torso A"></div>
+    <div class="fz-rlist">${r.ej.map((x, i) => `<div class="fz-rit"><div class="fz-rit-h"><b>${esc(ejDe(x.e).n)}</b>
+        <button type="button" class="icon-btn" data-act="fzRutMov" data-i="${i}" data-v="-1" aria-label="Subir" ${i ? '' : 'disabled'}>${ic('up')}</button>
+        <button type="button" class="icon-btn" data-act="fzRutQuitar" data-i="${i}" aria-label="Quitar">${ic('trash')}</button></div>
+      <div class="fz-rit-f"><label>Series<input inputmode="numeric" data-ri="${i}" data-rf="series" value="${esc(String(x.series || 3))}"></label>
+        <label>Reps<input data-ri="${i}" data-rf="reps" value="${esc(String(x.reps || '8-10'))}" placeholder="8-10"></label>
+        <label>RIR<input inputmode="numeric" data-ri="${i}" data-rf="rir" value="${esc(String(x.rir ?? 2))}"></label>
+        <label>Descanso (s)<input inputmode="numeric" data-ri="${i}" data-rf="desc" value="${esc(String(x.desc || 120))}"></label></div></div>`).join('')}</div>
+    <button type="button" class="btn ghost" data-act="fzRutAdd" style="margin-top:8px">${ic('plus')} Añadir ejercicio</button>
+    <p class="hint" style="padding-left:0">Reps con rango (p. ej. 8-10): cuando hagas todas las series al tope, Axis te propone subir el peso (progresión doble).</p>
+    <div class="sheet-f">${r.nueva ? '<span></span>' : `<button type="button" class="btn ghost danger" data-act="fzRutBorrar">Eliminar</button>`}<button type="button" class="btn" data-act="fzRutGuardar">Guardar</button></div></div>`;
+  sh.classList.add('open'); document.body.classList.add('locked');
+  $('#fzRn').oninput = e => { r.n = e.target.value; };
+  sh.querySelectorAll('[data-rf]').forEach(inp => inp.oninput = () => { r.ej[+inp.dataset.ri][inp.dataset.rf] = inp.value; });
+}
+function paintFzEjercicio(id){
+  const ej = ejDe(id), h = histEj(id), sh = $('#sheet'), rec = recordEj(id);
+  const pts = h.filter(x => x.best); let graf = '';
+  if (pts.length > 1){ const W = 320, Hh = 120, lo = Math.min(...pts.map(x => x.best.m)), hi = Math.max(...pts.map(x => x.best.m)), t0 = parseISO(pts[0].d).getTime(), t1 = Math.max(parseISO(pts[pts.length - 1].d).getTime(), t0 + 864e5);
+    const X = d => 6 + (parseISO(d).getTime() - t0) / (t1 - t0) * (W - 12), Y = v => 10 + (hi - v) / Math.max(hi - lo, 1) * (Hh - 24);
+    graf = `<svg viewBox="0 0 ${W} ${Hh}" width="100%" class="fz-g"><path class="fz-gl" d="${pts.map((x, i) => (i ? 'L' : 'M') + X(x.d).toFixed(1) + ' ' + Y(x.best.m).toFixed(1)).join(' ')}"/>${pts.map(x => `<circle cx="${X(x.d).toFixed(1)}" cy="${Y(x.best.m).toFixed(1)}" r="2.6"/>`).join('')}
+      <text x="6" y="${Hh - 2}" class="hl-ax">${fmtShort(pts[0].d)}</text><text x="${W - 6}" y="${Hh - 2}" text-anchor="end" class="hl-ax">${fmtShort(pts[pts.length - 1].d)}</text></svg>`; }
+  sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
+    <div class="sheet-h"><h2>${esc(ej.n)}</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+    <p class="muted small" style="margin:-6px 0 10px">${GRUPOS[ej.g] || ''}${ej.sec && ej.sec.length ? ' + ' + ej.sec.map(g => GRUPOS[g]).join(', ') : ''} · ${EQUIPOS[ej.eq] || ''}</p>
+    <div class="fz-tot"><div><b>${rec.m ? fmtPeso(rec.m.m) : '–'}</b><small>récord 1RM est.</small></div><div><b>${rec.kg ? `${fmtPeso(rec.kg.kg)}×${rec.kg.reps}` : '–'}</b><small>mejor peso</small></div><div><b>${h.length}</b><small>sesiones</small></div></div>
+    ${graf ? `<div class="hl-card" style="padding:10px"><div class="rm-sub" style="margin:0 0 4px">1RM estimado por sesión</div>${graf}</div>` : ''}
+    <div class="rm-sub" style="margin:16px 0 8px">Sesiones</div>
+    <div class="hl-list">${h.slice().reverse().map(x => `<div class="hl-row"><div><b class="cap">${fmtLong(x.d)}</b><small>${x.sets.filter(trabajo).map(s => `${fmtPeso(s.kg)}×${s.reps}`).join(' · ')}</small></div>${x.best ? `<b class="hl-kg">${fmtPeso(x.best.m)}</b>` : ''}</div>`).join('') || '<p class="hint" style="padding-left:12px">Sin sesiones.</p>'}</div></div>`;
+  sh.classList.add('open'); document.body.classList.add('locked');
+}
+function paintFzRecords(){
+  const ids = [...new Set(entrenos().flatMap(e => e.ej.map(x => x.e)))];
+  const filas = ids.map(id => ({id, ...recordEj(id)})).filter(x => x.kg).sort((a, b) => (b.m ? b.m.m : 0) - (a.m ? a.m.m : 0));
+  const html = filas.map(x => `<button class="hl-row" data-act="fzEjercicio" data-id="${esc(x.id)}"><div><b>${esc(ejDe(x.id).n)}</b><small>Mejor peso ${fmtPeso(x.kg.kg)} kg × ${x.kg.reps} · ${fmtShort(x.kg.d)}</small></div><b class="hl-kg">${x.m ? fmtPeso(x.m.m) + ' kg' : '–'}</b></button>`).join('') || '<p class="hint" style="padding-left:12px">Aún sin récords.</p>';
+  openListSheet('Récords', 'A la derecha, el 1RM estimado (Epley, series de 1 a 12 repeticiones)', html, '');
+  const b = $('#sheet').querySelector('.hl-subrow .danger'); if (b) b.remove();
+}
+/* Importar entrenos de un CSV (openGym, Strong, Hevy, FitNotes…): una fila por serie, columnas por nombre */
+const BODY_EN = {chest:'pecho', back:'espalda', lats:'espalda', shoulders:'hombro', shoulder:'hombro', biceps:'biceps', triceps:'triceps', legs:'cuadriceps', quadriceps:'cuadriceps', quads:'cuadriceps',
+  hamstrings:'isquios', glutes:'gluteo', calves:'gemelo', abs:'abdomen', core:'abdomen', abdominals:'abdomen', forearms:'antebrazo', arms:'biceps', traps:'espalda'};
+function parseFuerzaCSV(txt){
+  const lines = String(txt || '').split(/\r?\n/).filter(l => l.trim()); if (lines.length < 2) return [];
+  const sep = [',', ';', '\t'].sort((x, y) => lines[0].split(y).length - lines[0].split(x).length)[0];
+  const split = l => { const out = []; let cur = '', q = false; for (const ch of l){ if (ch === '"') q = !q; else if (ch === sep && !q){ out.push(cur); cur = ''; } else cur += ch; } out.push(cur); return out.map(c => c.trim()); };
+  const head = split(lines[0]).map(h => normTxt(h).replace(/ /g, ''));
+  const col = (...ns) => { for (const n of ns){ const i = head.indexOf(n); if (i >= 0) return i; } return -1; };
+  const C = {ex:col('exercise', 'exercisename', 'exercisetitle', 'ejercicio'), d:col('date', 'workoutdate', 'fecha', 'starttime', 'startdate'), wn:col('workoutname', 'title', 'workout', 'routine', 'rutina'),
+    cat:col('category', 'bodypart', 'musclegroup'), kg:col('weightkg', 'kg', 'peso', 'pesokg'), lb:col('weightlbs', 'weightlb', 'lbs', 'lb'), w:col('weight'), unit:col('weightunit', 'unit', 'unidad'),
+    reps:col('reps', 'repetitions', 'repeticiones'), rir:col('rir', 'repsinreserve'), rpe:col('rpe', 'rperating'), st:col('settype', 'tipo', 'warmup', 'iswarmup'),
+    nota:col('setnote', 'note', 'notes', 'comment', 'comments', 'nota'), wnota:col('workoutnotes', 'workoutnote'), dur:col('duration', 'durationminutes', 'durationmin'), fin:col('endtime')};
+  if (C.ex < 0 || C.d < 0 || C.reps < 0) return [];
+  const exMap = new Map(); ejercicios().forEach(x => { exMap.set(normTxt(x.n), x.id); exMap.set(normTxt(x.id.replace(/_/g, ' ')), x.id); (x.al || '').split('|').filter(Boolean).forEach(a => exMap.set(normTxt(a), x.id)); });
+  const nuevosEj = new Map(), grupos = new Map();
+  for (const l of lines.slice(1)){
+    const c = split(l), exN = c[C.ex]; if (!exN) continue;
+    const dm = String(c[C.d] || '').match(/(\d{4})-(\d{1,2})-(\d{1,2})|(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})/); if (!dm) continue;
+    const d = dm[1] ? `${dm[1]}-${pad(+dm[2])}-${pad(+dm[3])}` : `${dm[6].length === 2 ? '20' + dm[6] : dm[6]}-${pad(+dm[5])}-${pad(+dm[4])}`;
+    const reps = numES(c[C.reps]); if (!(reps > 0)) continue;
+    let kg = C.kg >= 0 ? numES(c[C.kg]) : null;
+    if (kg == null && C.lb >= 0 && numES(c[C.lb]) != null) kg = numES(c[C.lb]) * .45359237;
+    if (kg == null && C.w >= 0){ kg = numES(c[C.w]); if (kg != null && C.unit >= 0 && /lb/i.test(c[C.unit] || '')) kg *= .45359237; }
+    let id = exMap.get(normTxt(exN)) || nuevosEj.get(normTxt(exN));
+    if (!id){ id = 'x_' + normTxt(exN).replace(/ /g, '_').slice(0, 40); const g = BODY_EN[normTxt(c[C.cat] || '').split(' ')[0]] || 'otro'; nuevosEj.set(normTxt(exN), id);
+      if (!FZ().ejercicios.some(x => x.id === id)) FZ().ejercicios.push({id, n:exN, g, sec:[], eq:'otro', t:'peso', imp:true}); exMap.set(normTxt(exN), id); }
+    const wn = (C.wn >= 0 && c[C.wn]) || 'Entreno', key = d + '|' + wn;
+    if (!grupos.has(key)) grupos.set(key, {d, n:wn, ej:[], nota:C.wnota >= 0 ? c[C.wnota] || '' : '', dur:C.dur >= 0 ? Math.round(numES(c[C.dur]) || 0) || '' : '', ini:C.d >= 0 && /\d:\d/.test(c[C.d]) ? c[C.d] : ''});
+    const g = grupos.get(key); let it = g.ej[g.ej.length - 1]; if (!it || it.e !== id){ it = g.ej.find(x => x.e === id) || null; if (!it){ it = {e:id, nota:'', sets:[]}; g.ej.push(it); } }
+    const s = {kg:Math.round((kg || 0) * 100) / 100, reps};
+    const rir = C.rir >= 0 ? numES(c[C.rir]) : null, rpe = C.rpe >= 0 ? numES(c[C.rpe]) : null;
+    if (rir != null) s.rir = rir; else if (rpe != null && rpe >= 5) s.rir = Math.max(0, Math.round(10 - rpe));
+    if (C.st >= 0 && /warm|calent|^w$|true|^1$/i.test(c[C.st] || '')) s.w = true;
+    if (C.nota >= 0 && c[C.nota]) s.nota = c[C.nota];
+    it.sets.push(s);
+  }
+  return [...grupos.values()].map(g => ({...g, id:'csv-' + g.d + '-' + normTxt(g.n).replace(/ /g, '-'), src:'csv', dur:g.dur || ''}));
+}
+function importFuerza(txt){
+  const l = parseFuerzaCSV(txt); if (!l.length){ toast('No encuentro series en ese texto: hacen falta columnas de ejercicio, fecha y repeticiones'); return false; }
+  const F = FZ(), ids = new Set(l.map(x => x.id)); const antes = F.entrenos.length;
+  F.entrenos = F.entrenos.filter(e => !ids.has(e.id)).concat(l);
+  const nuevos = F.entrenos.length - antes; render();
+  toast(`Fuerza: ${l.length} entreno${l.length === 1 ? '' : 's'} importado${l.length === 1 ? '' : 's'}${nuevos < l.length ? ` (${l.length - nuevos} actualizados)` : ''}`);
+  return true;
+}
+
 /* Historial de pesadas y de pasos: lista completa del periodo en una hoja aparte (desde ahí se editan y se borran) */
 function openListSheet(title, sub, html, delAct){
   const sh = $('#sheet'); delete sh.dataset.day; sh.classList.remove('has-pv');
@@ -3369,7 +3955,11 @@ function viewBarra(){
       <button class="icon-btn" data-act="navMove" data-k="${x.k}" data-n="-1" aria-label="Subir" ${i ? '' : 'disabled'}>${ic('up')}</button>
       <button class="icon-btn" data-act="navMove" data-k="${x.k}" data-n="1" aria-label="Bajar" ${i < S.navCfg.length - 1 ? '' : 'disabled'}>${ic('down')}</button>
       <input type="checkbox" class="switch" data-act="navToggle" data-k="${x.k}" ${x.on ? 'checked' : ''} aria-label="Mostrar ${NAV_DEFS[x.k].l}">
-    </div>`).join('')}</div>`;
+    </div>`).join('')}</div>
+    <div class="rm-sub" style="margin-top:24px">Pestañas de Health</div>
+    <p class="muted" style="margin-top:6px">Elige qué pestañas ves en Health. Lo que ocultes sigue guardado.</p>
+    <div class="ncard">${HEALTH_TABS.map(([k, l]) => { const on = !(S.health.tabsOff || []).includes(k); return `<div class="navcfg ${on ? '' : 'off'}"><span class="navcfg-ic">${ic({metricas:'scale', nutricion:'flame', fuerza:'bars', pasos:'route'}[k])}</span><b>${l}</b>
+      <input type="checkbox" class="switch" data-act="healthTabToggle" data-k="${k}" ${on ? 'checked' : ''} aria-label="Mostrar ${l}"></div>`; }).join('')}</div>`;
 }
 
 /* ---------- Hábitos: visor con histórico, rachas y celebración ---------- */
@@ -4074,6 +4664,7 @@ function render(){
   $('#view').dataset.v = S.ui.view; // permite anchos distintos por vista
   $('#fab').style.display = VIS || S.ui.view === 'health' || S.ui.view === 'ajustes' &&!['perfiles', 'hojas'].includes(S.ui.setTab) ? 'none' : ''; // el + solo donde crea algo
   $('#view').innerHTML = html;
+  document.querySelectorAll('.fz-map').forEach(m => { m.scrollLeft = m.scrollWidth; });
   document.querySelectorAll('.nu-swipe').forEach(sw => { const c = sw.querySelector('.et-card.cur'); sw.scrollLeft = c ? c.getBoundingClientRect().left - sw.getBoundingClientRect().left + sw.scrollLeft - parseFloat(getComputedStyle(sw).paddingLeft) : sw.scrollWidth; }); // etapa de macros actual a la vista
   enterAnim();
   document.documentElement.style.setProperty('--tb', $('.topbar').offsetHeight + 'px');
@@ -4872,6 +5463,157 @@ const actions = {
   healthTrend(){ S.health.trend = !S.health.trend; render(); paintHealthTools(); },
   healthTools(){ paintHealthTools(true); },
   healthHelp(){ paintHealthHelp(true); },
+  /* ---- Fuerza ---- */
+  fzEmpezar(){
+    const F = FZ(); if (F.activo){ paintFz(); return; }
+    const hoy = rutinaHoy();
+    if (hoy || !F.rutinas.length){ actions.fzIniciar({dataset:{id:hoy ? hoy.id : ''}}); return; }
+    const sh = $('#sheet'); sh.classList.remove('has-pv'); delete sh.dataset.day;
+    sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
+      <div class="sheet-h"><h2>¿Qué toca hoy?</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+      <div class="hl-list">${F.rutinas.map(r => `<button class="hl-row" data-act="fzIniciar" data-id="${esc(r.id)}"><div><b>${esc(r.n)}</b><small>${r.ej.map(x => ejDe(x.e).n).join(' · ')}</small></div>${ic('chev')}</button>`).join('')}
+        <button class="hl-row" data-act="fzIniciar" data-id=""><div><b>Entreno libre</b><small>Sin rutina: añades los ejercicios sobre la marcha</small></div>${ic('chev')}</button></div></div>`;
+    sh.classList.add('open'); document.body.classList.add('locked');
+  },
+  fzIniciar(el){
+    const F = FZ(), r = rutinaDe(el.dataset.id);
+    F.activo = {id:uid(), d:TODAY(), ini:new Date().toISOString(), n:r ? r.n : 'Entreno libre', rutina:r ? r.id : '', nota:'', ej:r ? r.ej.map(x => itemDesde(x.e, r)) : []};
+    save(); render(); paintFz(); toast('¡A por ello! 💪');
+  },
+  fzAbrir(){ paintFz(); },
+  fzOk(el){
+    const A = FZ().activo, x = A && A.ej[+el.dataset.ei], s = x && x.sets[+el.dataset.si]; if (!s) return;
+    if (!s.ok && !(numES(s.reps) > 0)){ toast('Pon las repeticiones'); return; }
+    s.ok = !s.ok;
+    if (s.ok && !A.editando){
+      if (!s.w) fzDescanso = Date.now() + (+x.desc || 120) * 1000;
+      const m = !s.w ? e1rm(numES(s.kg) || 0, numES(s.reps)) : null, rec = recordEj(x.e).m;
+      if (m && rec && m > rec.m + .01) toast(`🏆 ¡Récord! 1RM estimado ${fmtPeso(m)} kg`);
+    }
+    save(); fzRepintar();
+  },
+  fzWarm(el){ const s = FZ().activo.ej[+el.dataset.ei].sets[+el.dataset.si]; s.w = !s.w; save(); fzRepintar(); },
+  fzAddSet(el){ const x = FZ().activo.ej[+el.dataset.ei]; x.sets.push(nuevoSet(x.sets[x.sets.length - 1])); save(); fzRepintar(); },
+  fzDelSet(el){ const x = FZ().activo.ej[+el.dataset.ei]; if (x.sets.length > 1) x.sets.pop(); save(); fzRepintar(); },
+  fzSug(el){ const x = FZ().activo.ej[+el.dataset.ei]; x.sets.forEach(s => { if (!s.w && !s.ok) s.kg = String(el.dataset.kg).replace('.', ','); }); save(); fzRepintar(); toast('Peso subido en las series que faltan'); },
+  fzExMenu(el){
+    const A = FZ().activo, ei = +el.dataset.ei, x = A.ej[ei];
+    openForm({title:ejDe(x.e).n, values:{desc:String(x.desc || 120), nota:x.nota || ''},
+      fields:[{key:'desc', label:'Descanso entre series (segundos)', type:'text', placeholder:'120'}, {key:'nota', label:'Nota del ejercicio', type:'textarea', placeholder:'p. ej. agarre más cerrado, molestia en el hombro…'}],
+      onSave:v => { x.desc = +v.desc || 120; x.nota = v.nota; setTimeout(paintFz, 320); },
+      onDelete:() => { if (!confirm('¿Quitar este ejercicio del entreno?')) return false; A.ej.splice(ei, 1); setTimeout(paintFz, 320); }});
+  },
+  fzAddEj(){ fzPick = {modo:'entreno'}; paintFzPicker(); },
+  fzPickG(el){ const q = $('#fzQ'); paintFzPicker(q ? q.value : '', el.dataset.g); },
+  fzPickEj(el){
+    const id = el.dataset.id, F = FZ();
+    if (fzPick && fzPick.modo === 'rutina' && fzRutEd){ fzRutEd.ej.push({e:id, series:3, reps:'8-10', rir:2, desc:120}); paintFzRutina(); return; }
+    if (F.activo){ F.activo.ej.push(itemDesde(id, rutinaDe(F.activo.rutina))); save(); paintFz(); setTimeout(() => { const s = $('#sheet .sheet'); if (s) s.scrollTop = s.scrollHeight; }, 50); }
+  },
+  fzNuevoEj(){
+    const vuelta = fzPick;
+    openForm({title:'Nuevo ejercicio', values:{n:'', g:'pecho', eq:'barra'},
+      fields:[{key:'n', label:'Nombre', type:'text', required:true, placeholder:'p. ej. Press Landmine'},
+        {key:'g', label:'Músculo principal', type:'select', options:Object.entries(GRUPOS).map(([v, l]) => ({v, l}))},
+        {key:'eq', label:'Material', type:'select', options:Object.entries(EQUIPOS).map(([v, l]) => ({v, l}))}],
+      onSave:v => { FZ().ejercicios.push({id:'u_' + uid(), n:v.n, g:v.g, sec:[], eq:v.eq, t:'peso'}); toast('Ejercicio creado'); fzPick = vuelta; setTimeout(() => paintFzPicker(v.n), 320); }});
+  },
+  fzTerminar(){
+    const F = FZ(), A = F.activo; if (!A) return;
+    const e = limpiarEntreno(A);
+    if (!e.ej.length){ toast('No hay ninguna serie con repeticiones'); return; }
+    if (!A.editando && A.ej.some(x => x.sets.some(s => !s.ok && numES(s.reps) > 0)) && !confirm('Hay series sin marcar como hechas. ¿Terminar igualmente? (se guardan las que tienen repeticiones)')) return;
+    const prs = [];
+    e.ej.forEach(x => { const rec = recordEj(x.e, e.d).m; let b = null; x.sets.filter(trabajo).forEach(s => { const m = e1rm(s.kg, s.reps); if (m && (!b || m > b.m)) b = {e:x.e, m, kg:s.kg, reps:s.reps}; });
+      if (b && rec && b.m > rec.m + .01) prs.push(b); });
+    F.entrenos = F.entrenos.filter(x => x.id !== e.id).concat(e);
+    F.activo = null; fzDescanso = null; save(); render();
+    if (A.editando){ paintFzVer(e.id); toast('Entreno actualizado'); }
+    else { paintFzResumen(e, prs); if (prs.length && !calmMotion()) confetti(); }
+  },
+  fzDescartar(){
+    const A = FZ().activo; if (!A) return;
+    if (!confirm(A.editando ? '¿Salir sin guardar los cambios?' : '¿Descartar el entreno en curso? Se pierde lo apuntado.')) return;
+    FZ().activo = null; fzDescanso = null; save(); closeSheet(); render();
+  },
+  fzRestMas(el){ if (fzDescanso) fzDescanso += +el.dataset.v * 1000; fzReloj(); },
+  fzRestFin(){ fzDescanso = null; fzReloj(); },
+  fzHistorial(){ paintFzHist(); },
+  fzVer(el){ paintFzVer(el.dataset.id); },
+  fzEditar(el){
+    const F = FZ(), e = F.entrenos.find(x => x.id === el.dataset.id); if (!e) return;
+    if (F.activo && !F.activo.editando){ toast('Antes termina o descarta el entreno en curso'); return; }
+    F.activo = {...JSON.parse(JSON.stringify(e)), editando:e.id, ej:e.ej.map(x => ({e:x.e, nota:x.nota || '', desc:120, sets:x.sets.map(s => ({kg:String(s.kg).replace('.', ','), reps:String(s.reps), rir:s.rir != null ? String(s.rir) : '', w:!!s.w, ok:true}))}))};
+    save(); paintFz();
+  },
+  fzBorrar(el){
+    if (!confirm('¿Eliminar este entreno? No se puede deshacer.')) return;
+    const F = FZ(); F.entrenos = F.entrenos.filter(x => x.id !== el.dataset.id); save(); closeSheet(); render(); toast('Entreno eliminado');
+  },
+  fzRutinas(){ fzRutEd = null; paintFzRutinas(); },
+  fzRutina(el){
+    const r = el && el.dataset && el.dataset.id && rutinaDe(el.dataset.id);
+    fzRutEd = r ? JSON.parse(JSON.stringify(r)) : {id:uid(), n:'', ej:[], nueva:true}; paintFzRutina();
+  },
+  fzRutAdd(){ fzPick = {modo:'rutina'}; paintFzPicker(); },
+  fzRutMov(el){ const i = +el.dataset.i, j = i + +el.dataset.v, l = fzRutEd.ej; if (j < 0 || j >= l.length) return; [l[i], l[j]] = [l[j], l[i]]; paintFzRutina(); },
+  fzRutQuitar(el){ fzRutEd.ej.splice(+el.dataset.i, 1); paintFzRutina(); },
+  fzRutGuardar(){
+    const r = fzRutEd; if (!r) return; if (!String(r.n || '').trim()){ toast('Ponle un nombre'); return; }
+    const F = FZ(), limpia = {id:r.id, n:r.n.trim(), ej:r.ej.map(x => ({e:x.e, series:Math.max(1, Math.round(numES(x.series) || 3)), reps:String(x.reps || '8-10').replace(/\s/g, ''), rir:numES(x.rir) ?? 2, desc:Math.round(numES(x.desc) || 120)}))};
+    F.rutinas = F.rutinas.filter(x => x.id !== r.id).concat(limpia); fzRutEd = null; save(); render(); paintFzRutinas(); toast('Rutina guardada');
+  },
+  fzRutBorrar(){
+    if (!confirm('¿Eliminar esta rutina? Los entrenos ya hechos se quedan.')) return;
+    const F = FZ(), id = fzRutEd.id; F.rutinas = F.rutinas.filter(x => x.id !== id); Object.keys(F.plan).forEach(k => { if (F.plan[k] === id) delete F.plan[k]; });
+    fzRutEd = null; save(); render(); paintFzRutinas();
+  },
+  fzEjercicio(el){ paintFzEjercicio(el.dataset.id); },
+  fzRecords(){ paintFzRecords(); },
+  fzVolModo(el){ FZ().volModo = el.dataset.v; render(); },
+  fzMusModo(el){ FZ().musModo = el.dataset.v; render(); },
+  fzObjSeries(){
+    const o = FZ().objSeries;
+    openForm({title:'Series semanales por músculo', note:'Rango orientativo de series de trabajo a la semana para cada músculo. Para ganar músculo suele recomendarse entre 10 y 20.',
+      values:{min:String(o.min), max:String(o.max)}, fields:[{key:'min', label:'Mínimo', type:'text', half:true}, {key:'max', label:'Máximo', type:'text', half:true}],
+      onSave:v => { const a = Math.round(numES(v.min) || 10), b = Math.round(numES(v.max) || 20); FZ().objSeries = {min:Math.min(a, b), max:Math.max(a, b)}; toast('Objetivo guardado'); }});
+  },
+  fzClaveElegir(){
+    const F = FZ(), usados = new Set(entrenos().flatMap(e => e.ej.map(x => x.e)));
+    const opts = [{v:'', l:'—'}].concat(ejercicios().slice().sort((a, b) => (usados.has(b.id) - usados.has(a.id)) || a.n.localeCompare(b.n)).map(x => ({v:x.id, l:x.n})));
+    const vals = {}; [0, 1, 2, 3].forEach(i => { vals['k' + i] = F.clave[i] || ''; });
+    openForm({title:'Ejercicios clave', note:'Hasta 4: salen arriba con su 1RM estimado y su tendencia. Los que ya has hecho aparecen primero.', values:vals,
+      fields:[0, 1, 2, 3].map(i => ({key:'k' + i, label:`Ejercicio ${i + 1}`, type:'select', options:opts})),
+      onSave:v => { F.clave = [...new Set([v.k0, v.k1, v.k2, v.k3].filter(Boolean))]; toast('Ejercicios clave guardados'); }});
+  },
+  async fuerzaPaste(){
+    let txt = ''; try { txt = await navigator.clipboard.readText(); } catch (e) {}
+    if (!txt || !parseFuerzaCSV(txt).length){ actions.fuerzaImport(txt); toast(txt ? 'Lo copiado no parece un CSV de entrenos' : 'No puedo leer el portapapeles: pégalo aquí'); return; }
+    importFuerza(txt);
+  },
+  fuerzaImport(pre){
+    const sh = $('#sheet'); delete sh.dataset.day; sh.classList.remove('has-pv');
+    sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
+      <div class="sheet-h"><h2>Fuerza</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+      <div class="rg-sec"><div class="rm-sub">Registrar un entreno</div>
+        <p class="muted small" style="margin:0">Lo normal es apuntarlo en directo: «Empezar» en la tarjeta de arriba de Fuerza.</p>
+        <div class="rg-f"><button class="btn" data-act="fzEmpezar">${ic('flame')} Empezar entreno</button></div></div>
+      <div class="rg-sec"><div class="rm-sub">Importar historial (CSV)</div>
+        <p class="muted small" style="margin:0 0 4px">De openGym (Ajustes → Data &amp; backup → Spreadsheet CSV), Strong, Hevy o FitNotes: una fila por serie con ejercicio, fecha, peso y repeticiones. Si lo importas otra vez, los entrenos se actualizan en vez de duplicarse.</p>
+        <input type="file" id="fzFile" accept=".csv,.txt,text/csv,text/plain">
+        <textarea id="fzTxt" placeholder="workout name,exercise,date,weight kg,reps&#10;Pierna,Squat,2026-11-20,100,5" style="margin-top:10px;min-height:110px">${typeof pre === 'string' ? esc(pre) : ''}</textarea>
+        <div class="sheet-f"><span></span><button class="btn ghost" data-act="fuerzaImportGo">Importar</button></div></div></div>`;
+    sh.classList.add('open'); document.body.classList.add('locked');
+    $('#fzFile').onchange = async e => { const f = e.target.files[0]; if (f) $('#fzTxt').value = await f.text(); };
+  },
+  fuerzaImportGo(){ const t = $('#fzTxt').value; if (!parseFuerzaCSV(t).length){ toast('No encuentro series en ese texto'); return; } closeSheet(); importFuerza(t); },
+  healthTabToggle(el){
+    const H = S.health, k = el.dataset.k, off = new Set(H.tabsOff || []);
+    if (!off.has(k) && HEALTH_TABS.filter(([x]) => !off.has(x)).length === 1){ toast('Deja al menos una pestaña'); render(); return; }
+    off.has(k) ? off.delete(k) : off.add(k); H.tabsOff = [...off]; render();
+    toast(`${HEALTH_TABS.find(([x]) => x === k)[1]}: ${off.has(k) ? 'oculta' : 'visible'}`);
+  },
+
   kcalRitmo(){
     const r = ritmoKcal();
     openForm({title:'Kcal recomendadas', note:'Con tu gasto real (lo que comes menos lo que cambia tu peso) y tu peso actual, calcula cuántas kcal comer para que tu peso cambie al ritmo que elijas. El ritmo se guarda y se usa también al crear un plan de macros.',
