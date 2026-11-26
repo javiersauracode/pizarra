@@ -1102,6 +1102,98 @@ b.ok,.hl-d.ok{color:var(--ok)} b.off,.hl-d.off{color:var(--off)}
 .ci-tiles .et-tile b,.ci-tiles .et-peso b{font-size:15px}
 .ci-tiles .et-tile small{font-size:10px}
 .ci-tiles .et-tile em{font-size:9.5px}
+/* Kcal recomendadas (sobre las tarjetas de macros) */
+.kc-rec{display:flex;align-items:center;gap:9px;width:100%;text-align:left;margin:0 0 10px;padding:9px 12px;border-radius:12px;font-size:13px;color:var(--text);
+  background:linear-gradient(90deg,rgba(61,139,255,.16),rgba(124,247,255,.06));border:1px solid rgba(61,139,255,.35)}
+.kc-rec > span{flex:1;min-width:0}
+.kc-rec b{font-variant-numeric:tabular-nums}
+.kc-rec .i{width:17px;height:17px;color:#7CF7FF;flex-shrink:0}
+.kc-rec .i:last-child{color:var(--muted);width:15px;height:15px}
+.finfo-v small{line-height:1.35}
+/* Medidas */
+.med-toca{font-size:10.5px;font-weight:800;letter-spacing:.04em;padding:3px 8px;border-radius:999px;background:color-mix(in srgb,var(--off) 18%,transparent);color:var(--off);flex-shrink:0}
+.med-acts{display:flex;gap:8px;margin:-4px 0 14px}
+.med-acts .btn .i{width:15px;height:15px}
+.med-tab{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:6px 12px 10px}
+.med-th,.med-tr{display:grid;grid-template-columns:1fr 56px 74px 74px;gap:6px;align-items:baseline;padding:7px 0;font-variant-numeric:tabular-nums}
+.med-th{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
+.med-th span,.med-tr b,.med-tr em{text-align:right}
+.med-tr{border-top:1px solid var(--line);font-size:13.5px}
+.med-tr:nth-child(2){border-top:0}
+.med-tr em{font-style:normal;font-size:12.5px;font-weight:700;color:var(--muted)}
+.med-tr em.ok{color:var(--ok)} .med-tr em.off{color:var(--off)}
+.med-peso{font-size:12px;color:var(--muted);padding-top:8px;border-top:1px solid var(--line)}
+.med-proto{margin-top:14px}
+.med-sitios{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;font-size:13px;margin:10px 0 0}
+.med-sitios dt{font-weight:700}
+.med-sitios dd{margin:0;color:var(--muted)}
+.med-warn{color:var(--off)!important}
+.med-chk{font-size:13px} .med-chk.off,.med-chk.off b{color:var(--off)}
+.med-chk small{color:var(--muted)}
+/* Resumen semanal: tira en Métricas */
+.wk-strip{position:relative;display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin-top:10px;padding:8px 12px 8px 8px;border-radius:16px;
+  background:linear-gradient(120deg,rgba(23,64,143,.55),rgba(10,26,69,.4));border:1px solid rgba(124,247,255,.18)}
+.wk-strip > div{flex:1;min-width:0}
+.wk-strip small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8FB0E8}
+.wk-strip small i{font-style:normal;color:var(--off)}
+.wk-strip b{display:block;font-size:15.5px}
+.wk-strip > .i{color:var(--muted);width:16px;height:16px}
+.wk-strip.nuevo{box-shadow:0 0 0 1px rgba(124,247,255,.35),0 6px 22px rgba(61,139,255,.3)}
+.wk-racha{display:inline-block;font-size:11.5px;font-weight:700;color:#FFD08A;margin-top:1px}
+.wk-ring{display:block;flex-shrink:0}
+.wk-ring-t{fill:#EAF2FF;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.wk-arc{animation:wkArc 1.1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes wkArc{from{stroke-dasharray:0 var(--c)}}
+/* Resumen semanal: hoja */
+.wk-sheet .sheet-h{gap:2px}
+.wk-tit{flex:1;text-align:center;font-size:16px}
+.wk-hero{display:flex;align-items:center;gap:16px;padding:14px;border-radius:18px;margin-bottom:12px;position:relative;overflow:hidden;
+  background:radial-gradient(130% 150% at 0% 0%,#17408F 0%,#0A1A45 46%,#050B1F 100%);border:1px solid rgba(124,247,255,.16)}
+.wk-hero::before{content:"";position:absolute;left:0;right:0;top:0;height:1.5px;background:var(--holo-line)}
+.wk-hero small{display:block;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#8FB0E8}
+.wk-hero b{display:block;font-size:22px;letter-spacing:-.02em;margin:2px 0 4px;color:#EAF2FF}
+.wk-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:10px 8px 8px;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.wk-day{display:flex;flex-direction:column;align-items:center;gap:5px}
+.wk-day b{font-size:11px;color:var(--muted)}
+.wk-day.hoy b{color:var(--brand)}
+.wk-day.fut{opacity:.3}
+.wk-bar{position:relative;width:12px;height:44px;border-radius:6px;background:var(--surface2);overflow:hidden}
+.wk-bar i{position:absolute;left:0;right:0;bottom:0;border-radius:6px;background:var(--nu-out)}
+.wk-bar i.ok{background:var(--ok)}
+.wk-bar em{position:absolute;left:-2px;right:-2px;height:0;border-top:1.5px dashed var(--hl-yel)}
+.wk-food{width:22px;height:22px;border-radius:50%;border:1.5px dashed var(--line);display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff}
+.wk-food.reg{border:0;background:var(--nu-out)}
+.wk-food.in{border:0;background:var(--nu-in);box-shadow:0 0 0 2px color-mix(in srgb,var(--ok) 70%,transparent)}
+.wk-kg{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--line)}
+.wk-kg.on{border:0;background:#7CF7FF}
+.wk-leg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:var(--muted);margin:8px 2px 0}
+.wk-leg span{display:inline-flex;align-items:center;gap:5px}
+.wk-leg i{display:inline-block}
+.wk-leg .f{width:10px;height:10px;border-radius:50%;background:var(--nu-out)} .wk-leg .f.in{background:var(--nu-in);box-shadow:0 0 0 1.5px var(--ok)}
+.wk-leg .k{width:7px;height:7px;border-radius:50%;background:#7CF7FF}
+.wk-leg .b{width:6px;height:11px;border-radius:2px;background:var(--ok)}
+.wk-tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.wk-tiles > div{background:var(--surface2);border-radius:12px;padding:8px 10px;min-width:0}
+.wk-tiles small{display:block;font-size:10.5px;color:var(--muted);font-weight:650}
+.wk-tiles b{display:block;font-size:17px;font-variant-numeric:tabular-nums}
+.wk-tiles em{display:block;font-style:normal;font-size:10.5px;color:var(--muted)}
+.wk-tiles .ok{background:color-mix(in srgb,var(--ok) 12%,var(--surface2))} .wk-tiles .ok b{color:var(--ok)}
+.wk-tiles .off{background:color-mix(in srgb,var(--off) 12%,var(--surface2))} .wk-tiles .off b{color:var(--off)}
+.wk-parts{display:flex;flex-direction:column;gap:7px;margin-top:14px}
+.wk-parts > div{display:grid;grid-template-columns:128px 1fr auto;gap:8px;align-items:center;font-size:12.5px}
+.wk-parts span{color:var(--muted)}
+.wk-parts i{height:7px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.wk-parts em{display:block;height:100%;border-radius:99px;background:var(--off)} .wk-parts em.ok{background:var(--ok)}
+.wk-parts b{font-size:12px;font-variant-numeric:tabular-nums;text-align:right}
+.wk-msg{margin-top:14px;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:13.5px}
+.wk-msg p{margin:2px 0}
+.wk-msg b.ok{color:var(--ok)} .wk-msg b.off{color:var(--off)}
+.wk-hist{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;align-items:end;height:84px}
+.wk-hist button{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
+.wk-hist i{display:block;width:100%;max-width:22px;border-radius:5px;background:var(--nu-out);opacity:.7}
+.wk-hist i.ok{background:var(--ok);opacity:1} .wk-hist i.nd{background:var(--line)}
+.wk-hist .sel i{box-shadow:0 0 0 2px var(--brand)}
+.wk-hist small{font-size:9.5px;color:var(--muted)}
 /* «?» de la barra superior y hoja de ayuda */
 .tb-help{position:relative;color:var(--muted);width:38px;height:38px}
 .tb-help .i{width:21px;height:21px}
@@ -1284,6 +1376,8 @@ ICONS.user = '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>';
 ICONS.shield = '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/>';
 ICONS.flag ='<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>';
 ICONS.help = '<circle cx="12" cy="12" r="9.5"/><path d="M9.4 9.2a2.7 2.7 0 0 1 5.2.9c0 1.8-2.6 2.3-2.6 3.9"/><path d="M12 17.3h.01"/>';
+ICONS.target = '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>';
+ICONS.ruler = '<path d="M3 16.5 16.5 3 21 7.5 7.5 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/>';
 ICONS.paste = '<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 14l2 2 4-4"/>';
 ICONS.upload = '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 18v-6M9.5 14.5 12 12l2.5 2.5"/>';
 ICONS.trash = '<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/>';
@@ -1444,7 +1538,7 @@ const visStore = l => { try { localStorage.setItem(VIS_KEY, JSON.stringify(l)); 
 const visHealth = h => ensureDefaults({health:JSON.parse(JSON.stringify(h || {})), device:{id:'visor'}}).health;
 const VIS_RO = new Set(['healthGoal', 'healthEdit', 'stepsEdit', 'macroEdit', 'healthDelRange', 'stepsDelRange', 'healthImport', 'stepsImport',
   'stepsPaste', 'healthAndroid', 'healthHistory', 'exportData', 'importData', 'resetData',
-  'nutriPaste', 'nutriImport', 'nutriImportGo', 'healthPaste', 'healthAddGo', 'stepsAddGo', 'nutriAddGo', 'sparkyForm', 'sparkySync', 'sparkyOff']);
+  'nutriPaste', 'nutriImport', 'nutriImportGo', 'kcalRitmo', 'medidaEdit', 'medidasRef', 'healthPaste', 'healthAddGo', 'stepsAddGo', 'nutriAddGo', 'sparkyForm', 'sparkySync', 'sparkyOff']);
 function visLastDate(h){
   const ds = (h.weight || []).map(w => (w.t || '').slice(0, 10)).concat((h.steps || []).map(s => s.d)).filter(Boolean).sort();
   return ds[ds.length - 1] || '';
@@ -2676,6 +2770,7 @@ function nutriEtapas(){
   const btns = VIS ? '' : `<div class="et-acts">
       <button class="icon-btn et-add" data-act="macroEdit" aria-label="Nuevo plan de macros" title="Nuevo plan de macros">${ic('plus')}</button></div>`;
   return `<div class="et-head"><div class="rm-sub">Macros: planificado y comido</div>${btns}</div>
+    ${kcalRecStrip()}
     ${ps.length ? `<div class="nu-swipe">${ps.map(m => etapaCard(m, 'nu')).join('<span class="et-flecha" aria-hidden="true">' + ic('chev') + '</span>')}</div>`
       : `<div class="empty" style="margin-top:4px"><b>Aún no hay plan de macros</b>Pulsa + para apuntar tus kcal, CH, P y G. Cada vez que las cambies, añade un plan nuevo con su fecha y su razón.</div>`}`;
 }
@@ -2846,6 +2941,7 @@ function viewMetricas(){
   const synced = all.some(w => w.src === 'renpho');
   return `
     ${healthHero(last)}
+    ${semanaStrip()}
     <div class="seg" role="tablist">${[['dia', 'Día a día'], ['semana', 'Media semanal']].map(([k, l]) => `<button class="${H.mode === k ? 'on' : ''}" data-act="healthMode" data-m="${k}" role="tab">${l}</button>`).join('')}</div>
     <div class="pills" style="padding-top:0">${[['30', 'Últimos 30 días'], ['90', 'Últimos 90 días'], ['custom', 'Personalizado']].map(([k, l]) => `<button class="pill ${H.range === k ? 'on' : ''}" data-act="healthRange" data-v="${k}">${l}</button>`).join('')}</div>
     ${H.range === 'custom' ? `<div class="hl-custom"><label>Desde<input type="date" id="hlFrom" value="${esc(H.from || a)}" max="${TODAY()}"></label><label>Hasta<input type="date" id="hlTo" value="${esc(H.to || b)}" max="${TODAY()}"></label></div>` : ''}
@@ -2860,7 +2956,8 @@ function viewMetricas(){
       <div><small>Mínimo</small><b>${fmtKg(kgs.length ? Math.min(...kgs) : null)}</b></div>
       <div><small>Máximo</small><b>${fmtKg(kgs.length ? Math.max(...kgs) : null)}</b></div>
     </div>
-    <button class="hl-entry" data-act="healthList">${ic('list')}<div><b>Historial de ${wk ? 'semanas' : 'pesadas'}</b><small>${ws.length ? `${ws.length} pesada${ws.length === 1 ? '' : 's'} · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>`;
+    <button class="hl-entry" data-act="healthList">${ic('list')}<div><b>Historial de ${wk ? 'semanas' : 'pesadas'}</b><small>${ws.length ? `${ws.length} pesada${ws.length === 1 ? '' : 's'} · ${fmtShort(a)} – ${fmtShort(b)}` : 'Nada en este periodo'}</small></div>${ic('chev')}</button>
+    ${medidasEntry()}`;
 }
 /* ---------- Ayuda de Health: el «?» de la barra superior ----------
    Todo lo explicativo de cada pestaña (de dónde salen los datos, conexiones, cómo se calcula) va en esta hoja, para que
@@ -2883,12 +2980,15 @@ function healthHelpBody(){
   if (t === 'nutricion') return (VIS ? '' : sec('De dónde salen los datos', AND ? sparkyAndroidNote() : sparkyIphoneNote()))
     + importar
     + sec('Planes de macros', `<p class="hint">Pulsa + junto a las tarjetas para añadir un plan nuevo y toca una tarjeta para editarla, cambiar su color o borrarla. ${"Toca una etapa para editarla o cambiar su color. «Peso a 30 días»: cuánto habría cambiado tu peso en 30 días si se hubiera mantenido el ritmo de esa etapa; en verde si va hacia el objetivo de su ciclo (subir en volumen, bajar en definición, quedarse en su rango en mantenimiento) y en amarillo si no. El gasto real y el balance salen de lo comido (Sparky) y de tus pesadas."}</p>`)
+    + sec('Kcal recomendadas', '<p class="hint">Tu gasto real más lo que hace falta para que el peso cambie al ritmo que elijas (7.700 kcal ≈ 1 kg). Toca la línea de «Kcal recomendadas» para cambiar el ritmo; al crear un plan de macros, el botón «Usar estas kcal» las pone en el plan.</p>')
     + sec('¿Cómo se calcula el gasto?', "<p class=\"hint\"><b>Gasto real (por tu peso):</b> lo que comes de media menos lo que cambia tu peso, pasado a kcal (7.700 kcal ≈ 1 kg). El cambio de peso es la pendiente de la recta que mejor encaja con todas tus pesadas de las 4 semanas anteriores a cada día: una pesada suelta con agua o sal apenas lo mueve. Hace falta comer registrado 3 de cada 4 días y 6 pesadas (alguna en la primera y en la última semana). El balance se calcula con este gasto.</p>")
     + sec('La gráfica', '<p class="hint">Azul oscuro con un punto verde: días a ±5 % de las kcal planificadas en tu etapa de macros. Azul claro: días fuera de ese margen. Las etapas de macros de debajo se deslizan a izquierda o derecha.</p>')
     + colores;
   return (VIS ? '' : sec('Conexión con RENPHO', AND ? healthAndroidNote() : `<div class="note ${weights().some(w => w.src === 'renpho') ? 'on' : ''}" style="margin-top:0"><b>La báscula se conecta desde la app Android</b>
       Las pesadas pasan de RENPHO Health a Health Connect y Axis las lee y las guarda en tu Nextcloud. Para traer el histórico, importa un CSV de RENPHO con el botón de importar de arriba.</div>`))
     + importar
+    + sec('Tu semana', '<p class="hint">Cada lunes, la puntuación de la semana anterior (0–100) con lo que depende de ti: comidas registradas, días dentro del plan (±5 %), pesadas, días sobre tu media de pasos y que el peso vaya hacia tu objetivo. Con 70 o más, la semana suma a tu racha. Tócala para ver el detalle y las semanas anteriores.</p>')
+    + sec('Medidas corporales', '<p class="hint">Cada 2–4 semanas, siempre en las mismas condiciones y en los mismos puntos (con tus referencias de brazo y muslo), 2 o 3 tomas por sitio. Los cambios de menos de 0,3 cm se consideran ruido. En la hoja de medidas está el protocolo completo.</p>')
     + sec('El resumen', '<p class="hint">Último peso y cuánto ha cambiado en los últimos 30 días (desde el día con pesada más cercano a hace 30 días). Al fondo, tu peso de esos 30 días.</p>')
     + colores;
 }
@@ -2902,6 +3002,197 @@ function paintHealthHelp(open){
   sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
     <div class="sheet-h"><h2>${tit} · cómo funciona</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
     <div class="hp-body">${healthHelpBody()}</div></div>`;
+  sh.classList.add('open'); document.body.classList.add('locked');
+}
+/* ---------- Kcal recomendadas: gasto real + lo que hace falta para el ritmo elegido ----------
+   kcal = gasto real actual + ritmo(%/mes) × peso actual / 30 × 7.700. El ritmo lo elige el usuario (S.health.kcalRate);
+   si no ha elegido, el centro del rango de su ciclo. Se ve sobre las tarjetas de macros y al crear un plan nuevo. */
+function gastoActual(){ // gasto real más reciente (ventana de 28 días del último día con comidas que lo tenga)
+  const l = (S.health.nutri || []).filter(n => n.kcal > 0);
+  for (let i = l.length - 1; i >= Math.max(0, l.length - 14); i--){ const g = nuGasto(l[i]); if (g != null) return {kcal:g, d:l[i].d}; }
+  return null;
+}
+function pesoActual(){ const t = trend7(iso(addDays(new Date(), -21)), TODAY()); return t.length ? t[t.length - 1].kg : (lastWeight() || {}).kg || null; }
+function ritmoKcal(){
+  const v = numES(S.health.kcalRate); if (v != null) return v;
+  const r = rangoCiclo(cicloActual()); return r ? Math.round((r.lo + r.hi) / 2 * 100) / 100 : null;
+}
+function kcalRecom(rate){
+  const g = gastoActual(), kg = pesoActual(); if (!g || !kg || rate == null || isNaN(rate)) return null;
+  const extra = rate / 100 * kg / 30 * KCAL_KG;
+  return {kcal:Math.round((g.kcal + extra) / 10) * 10, gasto:g.kcal, extra, kg, rate};
+}
+const fmtRate = r => (r > 0 ? '+' : r < 0 ? '−' : '±') + Math.abs(r).toLocaleString('es-ES', {maximumFractionDigits:2}) + ' %/mes';
+function kcalRecomHTML(rate, conBoton){
+  if (rate == null || isNaN(rate)) return '<span class="muted">Pon el ritmo que quieres: % de tu peso al mes (negativo para bajar).</span>';
+  const k = kcalRecom(rate);
+  if (!k) return '<span class="muted">Aún no hay gasto real: hacen falta 2 semanas con comidas registradas y pesadas.</span>';
+  return `<b>≈ ${fmtKcal(k.kcal)} kcal/día</b><small>Gasto real ${fmtKcal(k.gasto)} ${k.extra >= 0 ? '+' : '−'} ${fmtKcal(Math.abs(k.extra))} para ${fmtRate(rate)} (≈ ${fmtDiff(rate / 100 * k.kg)} al mes con ${fmtKg(k.kg)})</small>`
+    + (conBoton ? `<button type="button" class="btn ghost sm" data-act="kcalUsar" data-k="${k.kcal}" style="margin-top:8px">Usar estas kcal</button>` : '');
+}
+function kcalRecStrip(){
+  if (VIS) return '';
+  const r = ritmoKcal(), k = r != null ? kcalRecom(r) : null;
+  return `<button class="kc-rec" data-act="kcalRitmo">${ic('target')}<span>${k ? `Kcal recomendadas para <b>${fmtRate(r)}</b>: <b>≈ ${fmtKcal(k.kcal)}</b>/día` : r == null ? 'Kcal recomendadas: elige tu ritmo' : 'Kcal recomendadas: falta el gasto real'}</span>${ic('chev')}</button>`;
+}
+
+/* ---------- Medidas corporales, tomadas para que sean comparables ----------
+   S.health.medidas = [{id, d, v:{sitio:cm medio}, r:{sitio:[tomas]}, ok:bool (protocolo), nota}]
+   S.health.medidasRef = {brazo:'cm bajo el hombro', muslo:'cm sobre la rótula'}: el mismo punto exacto cada vez.
+   Cada sitio admite 2–3 tomas separadas por espacios: se guarda la media y se avisa si se separan más de 0,5 cm.
+   dir: 1 = mejor si sube (músculo), −1 = mejor si baja (grasa), 0 = neutro. */
+const MED_SITIOS = [
+  ['cintura', 'Cintura', 'A la altura del ombligo, de pie y relajado, al final de una espiración normal (sin meter tripa).', -1],
+  ['cadera', 'Cadera', 'Por la parte más ancha de los glúteos, con los pies juntos.', -1],
+  ['pecho', 'Pecho', 'A la altura de los pezones, brazos colgando, al final de una espiración normal.', 1],
+  ['hombros', 'Hombros', 'Rodeando los dos hombros por la parte más ancha, brazos colgando.', 1],
+  ['brazo', 'Brazo dcho.', 'Brazo relajado y colgando, a tu distancia fija bajo el hombro (acromion).', 1],
+  ['muslo', 'Muslo dcho.', 'De pie con el peso repartido, a tu distancia fija sobre la rótula.', 1],
+  ['gemelo', 'Gemelo dcho.', 'Por su parte más ancha, de pie.', 1],
+  ['cuello', 'Cuello', 'Justo bajo la nuez, mirando al frente.', 0]];
+const MED_COND = 'Por la mañana, en ayunas, tras ir al baño y antes de entrenar (sin bombeo)';
+function parseTomas(txt){
+  const vals = String(txt || '').trim().split(/[\s;\/]+/).map(numES).filter(v => v != null && v > 5 && v < 250);
+  if (!vals.length) return null;
+  const avg = vals.reduce((s, v) => s + v, 0) / vals.length;
+  return {avg:Math.round(avg * 10) / 10, vals, spread:Math.max(...vals) - Math.min(...vals)};
+}
+const medidas = () => (S.health.medidas || []).filter(m => m && m.d).slice().sort((x, y) => x.d.localeCompare(y.d));
+const fmtCm = v => v == null ? '–' : v.toLocaleString('es-ES', {minimumFractionDigits:1, maximumFractionDigits:1});
+const fmtDcm = v => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v).toLocaleString('es-ES', {minimumFractionDigits:1, maximumFractionDigits:1});
+function clsMed(dir, dv){ // verde si va en la buena dirección, amarillo si no; menos de 0,3 cm = sin cambio (error de medida)
+  if (dv == null || !dir || Math.abs(dv) < .3) return '';
+  return dv * dir > 0 ? 'ok' : 'off';
+}
+function pesoEn(d){ const ds = dayWeights(); if (!ds.length) return null; const p = ds.reduce((x, q) => Math.abs(daysBetween(q.d, d)) < Math.abs(daysBetween(x.d, d)) ? q : x); return Math.abs(daysBetween(p.d, d)) <= 4 ? trend7(p.d, p.d)[0].kg : null; }
+function medidasEntry(){
+  const ms = medidas(), u = ms[ms.length - 1], dias = u ? daysBetween(u.d, TODAY()) : null, toca = !u || dias >= 28;
+  return `<button class="hl-entry" data-act="medidasSheet">${ic('ruler')}<div><b>Medidas corporales</b><small>${u ? `Última: ${fmtShort(u.d)}${u.v.cintura != null ? ` · cintura ${fmtCm(u.v.cintura)} cm` : ''}` : 'Aún sin medir: cada 2–4 semanas, siempre igual'}</small></div>${toca && !VIS ? '<span class="med-toca">Toca medir</span>' : ''}${ic('chev')}</button>`;
+}
+function paintMedidasSheet(open){
+  const sh = $('#sheet');
+  if (!open && !(sh.classList.contains('open') && sh.querySelector('.med-body'))) return;
+  const ms = medidas(), u = ms[ms.length - 1], prev = ms[ms.length - 2], first = ms[0], ref = S.health.medidasRef || {};
+  const usados = MED_SITIOS.filter(([k]) => ms.some(m => m.v && m.v[k] != null));
+  const tabla = u ? `<div class="med-tab"><div class="med-th"><span></span><span>Última</span><span>Δ anterior</span><span>Δ inicio</span></div>
+      ${usados.map(([k, l, , dir]) => { const a = u.v[k], p = prev && prev.v[k], f = first !== u && first.v[k];
+        const dp = a != null && p != null ? a - p : null, df = a != null && f != null && first !== u ? a - f : null;
+        return `<div class="med-tr"><span>${l}</span><b>${fmtCm(a)}</b><em class="${clsMed(dir, dp)}">${dp != null ? fmtDcm(dp) : '–'}</em><em class="${clsMed(dir, df)}">${df != null ? fmtDcm(df) : '–'}</em></div>`; }).join('')}
+      ${(() => { const p0 = first !== u ? pesoEn(first.d) : null, p1 = pesoEn(u.d); return p0 != null && p1 != null ? `<div class="med-peso">Peso en ese tiempo (tendencia): <b>${fmtDiff(p1 - p0)}</b> · del ${fmtShort(first.d)} al ${fmtShort(u.d)}</div>` : ''; })()}
+    </div>` : `<div class="empty" style="margin:0"><b>Aún no hay medidas</b>Mide hoy siguiendo el protocolo y repite cada 2–4 semanas en las mismas condiciones.</div>`;
+  const hist = ms.length ? `<div class="rm-sub" style="margin:18px 0 8px">Historial</div><div class="hl-list">${ms.slice().reverse().map(m => `<button class="hl-row" data-act="medidaEdit" data-id="${esc(m.id)}"><div><b class="cap">${fmtLong(m.d)}</b><small>${MED_SITIOS.filter(([k]) => m.v[k] != null).map(([k, l]) => `${l.replace(' dcho.', '')} ${fmtCm(m.v[k])}`).join(' · ')}</small>${m.ok === false ? '<small class="med-warn">⚠ Fuera del protocolo: compárala con cuidado</small>' : ''}</div>${ic('chev')}</button>`).join('')}</div>` : '';
+  const proto = `<details class="st-guide med-proto"${ms.length ? '' : ' open'}><summary>Cómo medir para que sea comparable</summary>
+    <ol class="hl-steps">
+      <li><b>Mismas condiciones:</b> ${MED_COND.toLowerCase()}. Mejor el mismo día de la semana, cada 2–4 semanas.</li>
+      <li><b>Misma cinta:</b> flexible y que no dé de sí. Pegada a la piel, horizontal y sin apretar (que no hunda la piel). Mírala en un espejo para que no se tuerza.</li>
+      <li><b>Mismo punto:</b> brazo y muslo siempre en el lado derecho y a la distancia fija de tus referencias (${ref.brazo ? `brazo a ${esc(ref.brazo)} cm bajo el hombro` : 'brazo: sin fijar'} · ${ref.muslo ? `muslo a ${esc(ref.muslo)} cm sobre la rótula` : 'muslo: sin fijar'}). Puedes marcar el punto con un rotulador.</li>
+      <li><b>Músculo relajado:</b> nada de apretar ni sacar bola: el músculo contraído varía mucho de un día a otro.</li>
+      <li><b>2 o 3 tomas por sitio:</b> escríbelas separadas por espacios y Axis guarda la media. Si se separan más de 0,5 cm, repite: algo se movió.</li>
+      <li><b>Cambios menores de 0,3 cm son ruido:</b> no salen en verde ni en amarillo.</li>
+    </ol>
+    <dl class="med-sitios">${MED_SITIOS.map(([k, l, t]) => `<dt>${l}</dt><dd>${t}</dd>`).join('')}</dl></details>`;
+  const body = `${VIS ? '' : `<div class="med-acts"><button class="btn sm" data-act="medidaEdit">${ic('plus')} Nueva medición</button><button class="btn ghost sm" data-act="medidasRef">Referencias</button></div>`}
+    ${tabla}${proto}${hist}`;
+  const box = sh.querySelector('.med-body');
+  if (box && sh.classList.contains('open')){ box.innerHTML = body; return; }
+  delete sh.dataset.day; sh.classList.remove('has-pv');
+  sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet"><div class="grab"></div>
+    <div class="sheet-h"><h2>Medidas corporales</h2><button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+    <div class="med-body">${body}</div></div>`;
+  sh.classList.add('open'); document.body.classList.add('locked');
+}
+
+/* ---------- Resumen semanal: puntuación de la semana, días, peso, balance y pasos ----------
+   Semanas de lunes a domingo. La puntuación (0–100) mide lo que depende de ti, sobre los días ya vividos:
+   comidas registradas (25), días dentro del plan ±5 % (25), pesadas (15, con 4 basta), días sobre tu media de pasos (15)
+   y que el peso vaya hacia el objetivo del ciclo (20). Lo que no aplica (sin plan, sin pasos, sin ciclo) no cuenta. */
+function semanaDatos(lun){
+  const H = S.health, hoy = TODAY(), dom = iso(addDays(parseISO(lun), 6));
+  const dias = Array.from({length:7}, (_, i) => iso(addDays(parseISO(lun), i))), vivos = dias.filter(d => d <= hoy).length || 1;
+  const pes = new Set(weights().map(w => w.t.slice(0, 10)).filter(d => d >= lun && d <= dom));
+  const nu = new Map((H.nutri || []).filter(n => n.kcal > 0 && n.d >= lun && n.d <= dom).map(n => [n.d, n]));
+  const st = new Map(H.steps.filter(s => s.n > 0 && s.d >= lun && s.d <= dom).map(s => [s.d, s.n]));
+  const prevSt = H.steps.filter(s => s.n > 0 && s.d < lun && s.d >= iso(addDays(parseISO(lun), -28)));
+  const mediaPas = prevSt.length >= 7 ? prevSt.reduce((a, s) => a + s.n, 0) / prevSt.length : null;
+  const dw = dayWeights(), med = (a, b) => { const l = dw.filter(p => p.d >= a && p.d <= b); return l.length ? l.reduce((s, p) => s + p.kg, 0) / l.length : null; };
+  const kg = med(lun, dom), kgAnt = med(iso(addDays(parseISO(lun), -7)), iso(addDays(parseISO(lun), -1)));
+  const dkg = kg != null && kgAnt != null ? kg - kgAnt : null, pctMes = dkg != null ? dkg / kgAnt * 100 * 30 / 7 : null;
+  const c = cicloDe(dom > hoy ? hoy : dom), cp = pctMes != null ? colorPesoCiclo(c, pctMes) : '';
+  const D = dias.map(d => { const n = nu.get(d), p = planDia(d);
+    return {d, fut:d > hoy, peso:pes.has(d), comida:!!n, dentro:!!(n && p && Math.abs(n.kcal / p - 1) <= .05), pasos:st.get(d) || 0, pasosOk:!!(mediaPas && (st.get(d) || 0) >= mediaPas)}; });
+  const bals = [...nu.values()].map(nuBal).filter(v => v != null), bal = bals.length ? bals.reduce((s, v) => s + v, 0) / bals.length : null;
+  const pasMedia = st.size ? [...st.values()].reduce((s, v) => s + v, 0) / st.size : null;
+  const hayPlan = dias.some(d => d <= hoy && planDia(d)), dentro = D.filter(x => x.dentro).length;
+  const parts = [
+    {k:'comidas', l:'Comidas registradas', t:`${nu.size} de ${vivos} días`, v:nu.size / vivos, w:25},
+    hayPlan ? {k:'plan', l:'Dentro del plan', t:`${dentro} de ${vivos} días`, v:dentro / vivos, w:25} : null,
+    {k:'pesadas', l:'Pesadas', t:`${pes.size} día${pes.size === 1 ? '' : 's'}`, v:Math.min(1, pes.size / Math.min(4, vivos)), w:15},
+    mediaPas ? {k:'pasos', l:'Pasos sobre tu media', t:`${D.filter(x => !x.fut && x.pasosOk).length} de ${vivos} días`, v:D.filter(x => !x.fut && x.pasosOk).length / vivos, w:15} : null,
+    cp ? {k:'ritmo', l:'Peso hacia el objetivo', t:fmtPct(pctMes, 2) + '/mes', v:cp === 'ok' ? 1 : 0, w:20} : null].filter(Boolean);
+  const tw = parts.reduce((s, p) => s + p.w, 0);
+  const score = tw && (nu.size || pes.size || st.size) ? Math.round(parts.reduce((s, p) => s + p.v * p.w, 0) / tw * 100) : null;
+  return {lun, dom, D, vivos, kg, dkg, pctMes, cp, bal, pasMedia, mediaPas, dentro, hayPlan, parts, score, ciclo:c, completa:dom < hoy};
+}
+const nivelSemana = s => s >= 85 ? ['Semana redonda', '🏆'] : s >= 70 ? ['Buena semana', '💪'] : s >= 50 ? ['En camino', '🚶'] : ['Semana para reajustar', '🔧'];
+function rachaSemanas(lun){ // semanas seguidas, hasta esta, con 70 puntos o más
+  let n = 0, l = lun;
+  for (let i = 0; i < 52; i++){ const s = semanaDatos(l).score; if (s == null || s < 70) break; n++; l = iso(addDays(parseISO(l), -7)); }
+  return n;
+}
+const ultimaSemana = () => iso(addDays(parseISO(isoWeekStart(TODAY())), -7));   // la última semana completa
+const rangoSemana = (a, b) => { const A = parseISO(a), B = parseISO(b), m = d => d.toLocaleDateString('es-ES', {month:'short'}).replace('.', '');
+  return A.getMonth() === B.getMonth() ? `${A.getDate()}–${B.getDate()} ${m(B)}` : `${A.getDate()} ${m(A)} – ${B.getDate()} ${m(B)}`; };
+function anilloSemana(score, size){
+  const r = size / 2 - 5, C = 2 * Math.PI * r, p = score == null ? 0 : score / 100;
+  return `<svg class="wk-ring" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" aria-hidden="true">
+    <defs><linearGradient id="wkRingG${size}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7CF7FF"/><stop offset=".45" stop-color="#3D8BFF"/><stop offset=".8" stop-color="#B7A6FF"/><stop offset="1" stop-color="#58E6FF"/></linearGradient></defs>
+    <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="rgba(124,247,255,.14)" stroke-width="${size > 80 ? 9 : 5}"/>
+    <circle class="wk-arc" cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="url(#wkRingG${size})" stroke-width="${size > 80 ? 9 : 5}" stroke-linecap="round"
+      stroke-dasharray="${(C * p).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 ${size / 2} ${size / 2})" style="--c:${C.toFixed(1)}"/>
+    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="wk-ring-t" style="font-size:${size > 80 ? 30 : 15}px">${score == null ? '–' : score}</text></svg>`;
+}
+function semanaStrip(){
+  const lun = ultimaSemana(), s = semanaDatos(lun);
+  if (s.score == null) return '';
+  const [lv, em] = nivelSemana(s.score), racha = rachaSemanas(lun), nuevo = S.health.semanaVista !== lun && !VIS;
+  return `<button class="wk-strip ${nuevo ? 'nuevo' : ''}" data-act="semanaSheet">${anilloSemana(s.score, 46)}
+    <div><small>Tu semana · ${rangoSemana(s.lun, s.dom)}${nuevo ? ' · <i>nuevo</i>' : ''}</small><b>${em} ${lv}</b>${racha > 1 ? `<span class="wk-racha">🔥 ${racha} semanas seguidas</span>` : ''}</div>${ic('chev')}</button>`;
+}
+const TIP_SEMANA = {comidas:'Registra lo que comes todos los días: es la base de todo el cálculo.', plan:'Acércate a tus kcal planificadas: ±5 % ya cuenta como día dentro.',
+  pesadas:'Pésate al menos 4 días: la tendencia será mucho más fiable.', pasos:'Supera tu media de pasos un día más que esta semana.',
+  ritmo:'El peso no va hacia tu objetivo: mira las kcal recomendadas en Nutrición.'};
+function paintSemana(lun){
+  const sh = $('#sheet'), s = semanaDatos(lun), hoy = TODAY();
+  const prevLun = iso(addDays(parseISO(lun), -7)), nextLun = iso(addDays(parseISO(lun), 7));
+  const [lv, em] = s.score != null ? nivelSemana(s.score) : ['Sin datos', '·'], racha = s.score != null && s.completa ? rachaSemanas(lun) : 0;
+  const L = ['L', 'M', 'X', 'J', 'V', 'S', 'D'], maxP = Math.max(1, ...s.D.map(x => x.pasos), s.mediaPas || 0);
+  const dias = s.D.map((x, i) => `<div class="wk-day ${x.fut ? 'fut' : ''} ${x.d === hoy ? 'hoy' : ''}">
+      <span class="wk-bar"><i class="${x.pasosOk ? 'ok' : ''}" style="height:${(x.pasos / maxP * 100).toFixed(0)}%"></i>${s.mediaPas ? `<em style="bottom:${(s.mediaPas / maxP * 100).toFixed(0)}%"></em>` : ''}</span>
+      <span class="wk-food ${x.dentro ? 'in' : x.comida ? 'reg' : ''}">${x.dentro ? '✓' : ''}</span>
+      <span class="wk-kg ${x.peso ? 'on' : ''}"></span><b>${L[i]}</b></div>`).join('');
+  const ord = s.parts.slice().sort((a, b) => b.v - a.v), mejor = ord[0], peor = ord[ord.length - 1];
+  const hist = Array.from({length:8}, (_, i) => iso(addDays(parseISO(lun), -7 * (7 - i)))).map(l => ({l, s:semanaDatos(l).score}));
+  const tiles = `<div class="wk-tiles">
+      <div class="${s.cp}"><small>Peso medio</small><b>${s.kg != null ? fmtKg(s.kg) : '–'}</b><em>${s.dkg != null ? `${fmtDiff(s.dkg)} vs semana anterior` : 'faltan pesadas'}</em></div>
+      <div class="${clsObj(s.bal, s.dom > hoy ? hoy : s.dom, 100)}"><small>Balance medio</small><b>${s.bal != null ? fmtBal(s.bal) : '–'}</b><em>${s.bal != null ? 'kcal/día con tu gasto real' : 'falta el gasto real'}</em></div>
+      <div><small>Pasos de media</small><b>${s.pasMedia != null ? fmtSteps(s.pasMedia) : '–'}</b><em>${s.mediaPas ? `tu media: ${fmtSteps(s.mediaPas)}` : '&nbsp;'}</em></div>
+      <div class="${s.hayPlan ? (s.dentro / s.vivos >= .7 ? 'ok' : 'off') : ''}"><small>Dentro del plan</small><b>${s.hayPlan ? `${s.dentro}/${s.vivos}` : '–'}</b><em>${s.hayPlan ? 'días a ±5 % de tus kcal' : 'sin plan de macros'}</em></div></div>`;
+  sh.dataset.semana = lun; delete sh.dataset.day; sh.classList.remove('has-pv');
+  sh.innerHTML = `<div class="sheet-bg" data-act="closeSheet"></div><div class="sheet wk-sheet"><div class="grab"></div>
+    <div class="sheet-h"><button type="button" class="icon-btn" data-act="semanaNav" data-v="${prevLun}" aria-label="Semana anterior">${ic('left')}</button>
+      <h2 class="wk-tit">${rangoSemana(s.lun, s.dom)}${s.completa ? '' : ' · en curso'}</h2>
+      ${nextLun <= hoy ? `<button type="button" class="icon-btn" data-act="semanaNav" data-v="${nextLun}" aria-label="Semana siguiente">${ic('chev')}</button>` : '<span style="width:40px"></span>'}
+      <button type="button" class="icon-btn" data-act="closeSheet" aria-label="Cerrar">${ic('x')}</button></div>
+    <div class="wk-hero">${anilloSemana(s.score, 118)}<div><small>${s.completa ? 'Puntuación de la semana' : 'Así va la semana'}</small><b>${em} ${lv}</b>
+      ${racha > 1 ? `<span class="wk-racha">🔥 ${racha} semanas seguidas con 70 o más</span>` : racha === 1 ? '<span class="wk-racha">✨ Empieza tu racha: repite la semana que viene</span>' : ''}</div></div>
+    <div class="wk-week">${dias}</div>
+    <div class="wk-leg"><span><i class="f in"></i>Dentro del plan</span><span><i class="f reg"></i>Comida registrada</span><span><i class="k"></i>Pesada</span><span><i class="b"></i>Pasos (verde: sobre tu media)</span></div>
+    ${tiles}
+    ${s.parts.length ? `<div class="wk-parts">${s.parts.map(p => `<div><span>${p.l}</span><i><em style="width:${Math.round(p.v * 100)}%" class="${p.v >= .7 ? 'ok' : 'off'}"></em></i><b>${p.t}</b></div>`).join('')}</div>` : ''}
+    ${mejor && peor && mejor !== peor ? `<div class="wk-msg"><p><b class="ok">Lo mejor:</b> ${mejor.l.toLowerCase()} (${mejor.t}).</p>${peor.v < 1 ? `<p><b class="off">Para la próxima:</b> ${TIP_SEMANA[peor.k]}</p>` : ''}</div>` : ''}
+    <div class="rm-sub" style="margin:16px 0 8px">Últimas 8 semanas</div>
+    <div class="wk-hist">${hist.map(h => `<button type="button" data-act="semanaNav" data-v="${h.l}" class="${h.l === lun ? 'sel' : ''}"><i style="height:${h.s == null ? 4 : Math.max(6, h.s)}%" class="${h.s == null ? 'nd' : h.s >= 70 ? 'ok' : ''}"></i><small>${parseISO(h.l).getDate()}/${parseISO(h.l).getMonth() + 1}</small></button>`).join('')}</div>
+  </div>`;
   sh.classList.add('open'); document.body.classList.add('locked');
 }
 /* Historial de pesadas y de pasos: lista completa del periodo en una hoja aparte (desde ahí se editan y se borran) */
@@ -4581,6 +4872,46 @@ const actions = {
   healthTrend(){ S.health.trend = !S.health.trend; render(); paintHealthTools(); },
   healthTools(){ paintHealthTools(true); },
   healthHelp(){ paintHealthHelp(true); },
+  kcalRitmo(){
+    const r = ritmoKcal();
+    openForm({title:'Kcal recomendadas', note:'Con tu gasto real (lo que comes menos lo que cambia tu peso) y tu peso actual, calcula cuántas kcal comer para que tu peso cambie al ritmo que elijas. El ritmo se guarda y se usa también al crear un plan de macros.',
+      values:{ritmo:r != null ? String(r).replace('.', ',') : ''},
+      fields:[{key:'ritmo', label:'Ritmo deseado (% del peso al mes; negativo para bajar)', type:'text', placeholder:'0,75'}, {key:'recom', label:'Recomendación', type:'info', calc:v => kcalRecomHTML(numES(v.ritmo), false)}],
+      onSave:v => { const n = numES(v.ritmo); S.health.kcalRate = n == null ? '' : String(n).replace('.', ','); toast(n == null ? 'Se usa el ritmo del ciclo' : 'Ritmo guardado: ' + fmtRate(n)); }});
+  },
+  kcalUsar(el){ const i = document.querySelector('#f_kcal'); if (!i) return; i.value = el.dataset.k; i.dispatchEvent(new Event('input', {bubbles:true})); toast('Kcal puestas: ' + fmtKcal(+el.dataset.k)); },
+  medidasSheet(){ paintMedidasSheet(true); },
+  medidasRef(){
+    const r = S.health.medidasRef || {};
+    openForm({title:'Referencias de medida', note:'Mide una vez la distancia desde el punto óseo y usa siempre la misma: así el brazo y el muslo se miden cada vez en el mismo sitio. Siempre en el lado derecho.',
+      values:{brazo:r.brazo || '', muslo:r.muslo || ''},
+      fields:[{key:'brazo', label:'Brazo: cm bajo el hombro (acromion)', type:'text', half:true, placeholder:'15'}, {key:'muslo', label:'Muslo: cm sobre la rótula', type:'text', half:true, placeholder:'15'}],
+      onSave:v => { S.health.medidasRef = {brazo:v.brazo, muslo:v.muslo}; toast('Referencias guardadas'); setTimeout(() => paintMedidasSheet(true), 320); }});
+  },
+  medidaEdit(el){
+    const id = el && el.dataset && el.dataset.id, m = id && (S.health.medidas || []).find(x => x.id === id), ref = S.health.medidasRef || {};
+    const vals = {d:m ? m.d : TODAY(), ok:m ? m.ok !== false : true, nota:m ? m.nota || '' : ''};
+    MED_SITIOS.forEach(([k]) => { vals[k] = m && m.r && m.r[k] ? m.r[k].map(x => String(x).replace('.', ',')).join(' ') : ''; });
+    openForm({title:m ? 'Medición' : 'Nueva medición',
+      note:`Escribe 2 o 3 tomas por sitio separadas por espacios (p. ej. <b>82,4 82,6</b>): se guarda la media. Deja vacío lo que no midas.${ref.brazo && ref.muslo ? '' : ' Antes, fija tus <b>Referencias</b> de brazo y muslo.'}`,
+      values:vals,
+      fields:[{key:'d', label:'Día', type:'date', required:true}, {key:'ok', label:MED_COND, type:'checkbox'},
+        ...MED_SITIOS.map(([k, l]) => ({key:k, label:l + (k === 'brazo' && ref.brazo ? ` · a ${ref.brazo} cm` : k === 'muslo' && ref.muslo ? ` · a ${ref.muslo} cm` : ''), type:'text', half:true, placeholder:'cm'})),
+        {key:'chk', label:'Comprobación', type:'info', calc:v => { const l = MED_SITIOS.map(([k, n]) => [n, parseTomas(v[k])]).filter(x => x[1]);
+          return l.length ? l.map(([n, t]) => `<div class="med-chk ${t.spread > .5 ? 'off' : ''}">${n}: <b>${fmtCm(t.avg)} cm</b> <small>${t.vals.length > 1 ? `(${t.vals.length} tomas${t.spread > .5 ? `; se separan ${fmtCm(t.spread)} cm: repite` : ''})` : '(1 toma: mejor 2 o 3)'}</small></div>`).join('') : '<span class="muted">Aún nada.</span>'; }},
+        {key:'nota', label:'Nota (opcional)', type:'textarea', placeholder:'p. ej. medida por la tarde, cinta nueva…'}],
+      onSave:v => {
+        const r = {}, val = {}; MED_SITIOS.forEach(([k]) => { const t = parseTomas(v[k]); if (t){ r[k] = t.vals; val[k] = t.avg; } });
+        if (!Object.keys(val).length){ toast('No has escrito ninguna medida'); return; }
+        const x = {d:v.d, v:val, r, ok:!!v.ok, nota:v.nota || ''};
+        if (!Array.isArray(S.health.medidas)) S.health.medidas = [];
+        if (m) Object.assign(m, x); else S.health.medidas.push({id:uid(), ...x});
+        toast('Medición guardada'); setTimeout(() => paintMedidasSheet(true), 320);
+      },
+      onDelete:m ? () => { S.health.medidas = S.health.medidas.filter(y => y !== m); toast('Medición borrada'); setTimeout(() => paintMedidasSheet(true), 320); } : null});
+  },
+  semanaSheet(){ const l = ultimaSemana(); if (!VIS) S.health.semanaVista = l; render(); paintSemana(l); },
+  semanaNav(el){ paintSemana(el.dataset.v); },
   healthList(){ weightListSheet(); },
   stepsList(){ stepsListSheet(); },
   macroEdit(el){ // nuevo cambio de macros (con las anteriores como punto de partida) o editar uno
@@ -4589,10 +4920,12 @@ const actions = {
     const num = v => { const n = parseFloat(String(v).replace(',', '.')); return isNaN(n) ? 0 : Math.round(n); };
     openForm({title:m ? 'Plan de macros' : 'Nuevo plan de macros',
       note:'Rigen desde la fecha de cambio hasta el siguiente cambio. Si dejas las kcal vacías, se calculan: CH×4 + P×4 + G×9.<br>El objetivo (volumen, mantenimiento o definición) y su ritmo son los del ciclo en el que empieza la etapa: se fijan en Métricas → Objetivo.',
-      values:{color:m ? m.color || '' : '', from:m ? m.from : TODAY(), kcal:m ? m.kcal || '' : '', ch:base.ch || '', p:base.p || '', g:base.g || '', reason:m ? m.reason || m.note || '' : ''},
+      values:{color:m ? m.color || '' : '', from:m ? m.from : TODAY(), kcal:m ? m.kcal || '' : '', ch:base.ch || '', p:base.p || '', g:base.g || '', reason:m ? m.reason || m.note || '' : '', ritmo:ritmoKcal() != null ? String(ritmoKcal()).replace('.', ',') : ''},
       fields:[{key:'from', label:'Fecha de inicio', type:'date', required:true, half:true}, {key:'kcal', label:'Kcal (opcional)', type:'text', half:true, placeholder:'auto'},
         {key:'ch', label:'CH (g)', type:'text', third:true, placeholder:'250'}, {key:'p', label:'P (g)', type:'text', third:true, placeholder:'180'},
         {key:'g', label:'G (g)', type:'text', third:true, placeholder:'70'},
+        {key:'ritmo', label:'Ritmo deseado para calcular las kcal (% del peso al mes)', type:'text', placeholder:'0,75'},
+        {key:'recom', label:'Kcal recomendadas', type:'info', calc:v => kcalRecomHTML(numES(v.ritmo), true)},
         {key:'reason', label:'Razón de subida', type:'textarea', placeholder:'p. ej. El peso no sube: +20 g de CH'},
         {key:'color', label:'Color de la etapa · si no eliges ninguno, azules automáticos', type:'color'}],
       preview: v => { const x = {ch:num(v.ch), p:num(v.p), g:num(v.g)}; const k = num(String(v.kcal).replace(/\./g, '')) || macroKcal(x);
@@ -4601,6 +4934,7 @@ const actions = {
         const x = {from:v.from, ch:num(v.ch), p:num(v.p), g:num(v.g), reason:v.reason};
         if (v.color) x.color = v.color;
         delete x.obj; if (m){ delete m.obj; delete m.rateMin; delete m.rateMax; }
+        if (numES(v.ritmo) != null) S.health.kcalRate = String(numES(v.ritmo)).replace('.', ',');
         x.kcal = num(String(v.kcal).replace(/\./g, '')) || macroKcal(x);
         if (m){ Object.assign(m, x); delete m.note; } else S.health.macros.push({id:uid(), ...x});
         S.health.tab = 'nutricion'; toast(m ? 'Macros guardadas' : 'Plan de macros guardado');
