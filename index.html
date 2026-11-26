@@ -1040,12 +1040,12 @@ b,.hl-big,.hl-stats b,.et-tile b,.ci-cmp b,.nu-mr b,.hl-kg{font-variant-numeric:
 .nu-chips b{font-size:13.5px;font-variant-numeric:tabular-nums}
 .nu-chips .ok b{color:var(--ok)} .nu-chips .off b{color:var(--off)} .nu-chips .aux b{color:#A9BBDD}
 /* gráfica de peso: línea de datos en verde; tendencia, objetivo y esperado en amarillo */
-.hl-trend{stroke:var(--hl-yel)}
+.hl-trend{stroke:var(--ok)}
 .hl-cur circle{fill:var(--ok);stroke:var(--ok)}
-.has-trend .hl-cur circle{fill:var(--hl-yel);stroke:var(--hl-yel)}
+.has-trend .hl-cur circle{fill:var(--ok);stroke:var(--ok)}
 .hl-tip{background:rgba(9,15,33,.96);color:#EAF2FF;border:1px solid rgba(61,139,255,.5);box-shadow:0 6px 18px rgba(0,0,0,.4)}
 .hl-tip.show{opacity:1}
-.hl-tip .trd,.hl-tip .exp,.hl-tip .nu-t{color:var(--hl-yel)}
+.hl-tip .trd{color:var(--ok)} .hl-tip .exp,.hl-tip .nu-t{color:var(--hl-yel)}
 .hl-tip .okt{font-style:normal;color:var(--ok)}
 /* verde = va hacia el objetivo · amarillo = no */
 b.ok,.hl-d.ok{color:var(--ok)} b.off,.hl-d.off{color:var(--off)}
@@ -1085,6 +1085,23 @@ b.ok,.hl-d.ok{color:var(--ok)} b.off,.hl-d.off{color:var(--off)}
 .rg-f{display:flex;justify-content:flex-end}
 .rg-f .btn .i{width:16px;height:16px}
 .rg-sec .sheet-f{margin-top:0}
+/* Resumen del ciclo en Nutrición, compacto */
+.ci-card{padding:11px 12px 12px}
+.ci-h{align-items:center}
+.ci-t small{font-size:10.5px}
+.ci-t b{font-size:15.5px;margin-top:0;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-t b span{font-size:11.5px;font-weight:600;color:var(--muted)}
+.ci-obj{font-size:10.5px;padding:4px 8px}
+.ci-cmp{gap:5px;margin:9px 0 0 4px}
+.ci-cmp > div{grid-template-columns:72px 1fr auto;font-size:12px;gap:8px}
+.ci-cmp i{height:6px}
+.ci-cmp b{min-width:40px}
+.ci-cmp > small{font-size:10.5px}
+.ci-tiles{margin-top:9px;gap:6px}
+.ci-tiles .et-tile{padding:6px 8px}
+.ci-tiles .et-tile b,.ci-tiles .et-peso b{font-size:15px}
+.ci-tiles .et-tile small{font-size:10px}
+.ci-tiles .et-tile em{font-size:9.5px}
 /* «?» de la barra superior y hoja de ayuda */
 .tb-help{position:relative;color:var(--muted);width:38px;height:38px}
 .tb-help .i{width:21px;height:21px}
@@ -1098,6 +1115,7 @@ b.ok,.hl-d.ok{color:var(--ok)} b.off,.hl-d.off{color:var(--off)}
 /* hojas de filtros: muestra del color de cada cosa (sustituye a las leyendas bajo las gráficas) */
 .tg-t{display:flex;align-items:center;gap:8px}
 .sw-line{display:inline-block;width:22px;height:0;border-top:3px solid var(--hl-yel);border-radius:2px;flex-shrink:0}
+.sw-line.sw-ok{border-top-color:var(--ok)}
 .sw-line.sw-dash{border-top:2px dashed var(--hl-yel)}
 .sw-line.sw-dot{border-top:3px dotted color-mix(in srgb,var(--hl-yel) 70%,transparent)}
 .hl-tools .mc-toggle span.sw-dots{display:inline-flex;flex-direction:row;gap:3px;flex-shrink:0}
@@ -2553,7 +2571,7 @@ function gastoDia(d){ // gasto real de los 28 días que acaban en d (memorizado)
 }
 const nuGasto = n => n ? gastoDia(n.d) : null;
 const nuBal = n => { const g = nuGasto(n); return g != null && n.kcal ? n.kcal - g : null; };
-const nuGastoSparky = n => n && n.bmr != null && n.burned != null ? n.bmr + n.burned : null;   // basal (fórmula) + quemado registrado
+const nuGastoSparky = () => null;   // el gasto que estima Sparky ya no se enseña en ningún sitio (decisión del usuario, 26-11-2026): solo el gasto real
 const fmtKcal = v => v == null || isNaN(v) ? '–' : fmtSteps(Math.round(v));   // con punto de miles también en 4 cifras (2.489)
 const fmtBal = v => v == null || isNaN(v) ? '–' : (v > 0 ? '+' : v < 0 ? '−' : '±') + fmtSteps(Math.abs(Math.round(v)));
 const avgOf = (l, f) => { const v = l.map(f).filter(x => x != null && !isNaN(x)); return v.length ? v.reduce((s, x) => s + x, 0) / v.length : null; };
@@ -2634,21 +2652,20 @@ function nutriResumen(per, a, b, days){
   const kgSem = kgDia != null ? kgDia * 7 : null, pctMes = kgDia != null && kgMedio ? kgDia * 30 / kgMedio * 100 : null;
   if (c && kgDia != null){ P.kout = P.kin - kgDia * KCAL_KG; P.bal = P.kin - P.kout; }
   const cp = pctMes != null ? colorPesoCiclo(c, pctMes) : '';
-  const vals = [['Comido', P.kin, 'var(--nu-in)'], ['Gasto real', P.kout, 'var(--hl-yel)'], ['Según Sparky', P.ks, 'color-mix(in srgb,var(--hl-yel) 45%,var(--surface2))']].filter(v => v[1] != null);
+  const vals = [['Comido', P.kin, 'var(--nu-in)'], ['Gasto real', P.kout, 'var(--hl-yel)']].filter(v => v[1] != null);
   const mx = Math.max(...vals.map(v => v[1]));
   const balTot = P.bal != null ? P.bal * total : null;
   return `<div class="ci-card" style="--bc:${C ? C.c : '#6B7280'}">
     <div class="ci-h"><span class="et-dot"></span>
-      <div class="ci-t"><small>${C ? C.l : 'Sin ciclo fijado'}${c ? ' · desde ' + fmtShort(desde) : ' · ' + fmtShort(a) + ' – ' + fmtShort(b)}</small>
-        <b>${mesesDias(desde, hasta)}</b></div>
-      ${r ? `<span class="ci-obj">Objetivo ${txtRango(r)}</span>` : ''}</div>
+      <div class="ci-t"><small>${C ? C.l : 'Sin ciclo fijado'} · desde ${parseISO(desde).toLocaleDateString('es-ES', {day:'numeric', month:'short'}).replace('.', '')}</small><b>${mesesDias(desde, hasta)}</b></div>
+      ${r ? `<span class="ci-obj">${txtRango(r)}</span>` : ''}</div>
     ${!c ? `<p class="ci-nota">Fija tu ciclo (volumen, mantenimiento o definición) en Métricas → Objetivo y este resumen contará desde su inicio.</p>` : ''}
     <div class="ci-cmp">${vals.map(([l, v, col]) => `<div><span>${l}</span><i><em style="width:${(v / mx * 100).toFixed(1)}%;background:${col}"></em></i><b>${fmtKcal(v)}</b></div>`).join('')}
-      <small>kcal al día de media · ${P.days} de ${total} días con comidas registradas</small></div>
+      <small>kcal/día de media · ${P.days} de ${total} días registrados</small></div>
     <div class="et-tiles ci-tiles">
-      <div class="et-tile ${clsObj(P.bal, hasta, 100)}"><small>Balance acumulado</small><b>${balTot != null ? fmtBal(balTot) : '–'}</b><em>${balTot != null ? 'kcal · ≈ ' + fmtDiff(balTot / KCAL_KG) : 'falta el gasto real'}</em></div>
+      <div class="et-tile ${clsObj(P.bal, hasta, 100)}"><small>Balance total</small><b>${balTot != null ? fmtBal(balTot) : '–'}</b><em>${balTot != null ? '≈ ' + fmtDiff(balTot / KCAL_KG) : 'falta el gasto real'}</em></div>
       <div class="et-tile et-peso ${cp}"><small>Peso en el ciclo</small><b>${P.dw != null ? fmtDiff(P.dw) : '–'}</b><em>${P.dwFrom && P.dwTo ? `${fmtKg(P.dwFrom.kg, 1)} → ${fmtKg(P.dwTo.kg, 1)}` : 'tendencia de 7 días'}</em></div>
-      <div class="et-tile et-peso ${cp}"><small>Media por semana</small><b>${kgSem != null ? (kgSem >= 0 ? '+' : '−') + Math.abs(kgSem).toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' kg' : '–'}</b><em>${pctMes != null ? fmtPct(pctMes, 2) + ' al mes' : 'faltan pesadas'}</em></div>
+      <div class="et-tile et-peso ${cp}"><small>Por semana</small><b>${kgSem != null ? (kgSem >= 0 ? '+' : '−') + Math.abs(kgSem).toLocaleString('es-ES', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' kg' : '–'}</b><em>${pctMes != null ? fmtPct(pctMes, 2) + ' al mes' : 'faltan pesadas'}</em></div>
     </div>
   </div>`;
 }
@@ -2656,7 +2673,7 @@ function nutriResumen(per, a, b, days){
    (tocando la tarjeta); la antigua pestaña Macros se quitó el 26-11-2026. */
 function nutriEtapas(){
   const ps = macroPeriods();
-  const btns = VIS ? '' : `<div class="et-acts">${ps.length ? `<button class="icon-btn et-colbtn" data-act="macroColors" aria-label="Colores de CH, P y G" title="Colores de CH, P y G">${mcParts().map(([k, l, f, c]) => `<i style="background:${c}"></i>`).join('')}</button>` : ''}
+  const btns = VIS ? '' : `<div class="et-acts">
       <button class="icon-btn et-add" data-act="macroEdit" aria-label="Nuevo plan de macros" title="Nuevo plan de macros">${ic('plus')}</button></div>`;
   return `<div class="et-head"><div class="rm-sub">Macros: planificado y comido</div>${btns}</div>
     ${ps.length ? `<div class="nu-swipe">${ps.map(m => etapaCard(m, 'nu')).join('<span class="et-flecha" aria-hidden="true">' + ic('chev') + '</span>')}</div>`
@@ -2666,7 +2683,6 @@ function paintNutriTools(open){
   const sh = $('#sheet'), H = S.health;
   if (!open && !(sh.classList.contains('open') && sh.querySelector('.nu-tools'))) return;
   const body = toolTg(H.nuReal !== false, 'nuTogReal', 'Gasto real (por tu peso)', 'Lo comido menos lo que cambia tu peso, en las 4 semanas anteriores a cada día', '<i class="sw-line sw-yel"></i>')
-    + toolTg(H.nuSparky !== false, 'nuTogSparky', 'Gasto según Sparky', 'Basal por fórmula + lo quemado que registra Sparky', '<i class="sw-line sw-yel sw-dot"></i>')
     + (H.macros.length ? toolTg(H.nuBands, 'nuTogBands', 'Fondo por macros', 'Una franja de color por cada etapa de macros', swMacros()) : '')
     + `<div class="sw-leg"><span><i class="sw-bar in"></i>Ingesta dentro del plan (±5 %) <b class="ok">✓</b></span><span><i class="sw-bar"></i>Ingesta fuera del plan</span>${H.macros.length ? '<span><i class="sw-line sw-yel sw-dash"></i>Kcal planificadas</span>' : ''}</div>`;
   const box = sh.querySelector('.nu-tools');
@@ -2684,7 +2700,7 @@ function viewNutricion(){
   const pcg = n => `P ${fmtNum(n.p || 0)} · C ${fmtNum(n.c || 0)} · G ${fmtNum(n.g || 0)}`;
   const g = last ? nuGasto(last) : null, gsp = last ? nuGastoSparky(last) : null, bal = last ? nuBal(last) : null;
   const onReal = H.nuReal !== false, onSp = H.nuSparky !== false;
-  const nTools = (onReal ? 1 : 0) + (onSp ? 1 : 0) + (H.nuBands && H.macros.length ? 1 : 0);
+  const nTools = (onReal ? 1 : 0) + (H.nuBands && H.macros.length ? 1 : 0);
   return `
     <div class="hl-hero ax-hero nu-hero">
       ${last ? `<div class="ax-main"><div class="ax-k">${last.d === TODAY() ? 'Hoy, de momento' : 'Último día · ' + fmtShort(last.d)}</div><div class="hl-big">${fmtKcal(last.kcal)} <small>kcal</small></div><div class="ax-sub">${pcg(last)}</div></div>
@@ -2723,7 +2739,7 @@ function macroNutri(from, to){ const p = nutriPeriod(from, to); return p ? `${fm
 let sparkyBusy = false;
 function sparkyAndroidNote(){
   const s = andJSON('sparkyStatus') || {};
-  if (!s.conectado) return `<div class="note" style="margin-top:0"><b>Conecta tu cuenta de SparkyFitness</b>Axis leerá sola lo que comes cada día (kcal, proteína, hidratos y grasa), el gasto que calcula Sparky y su objetivo. El gasto real lo calcula Axis con tu peso. Se actualiza al abrir la app y cada 15 minutos.
+  if (!s.conectado) return `<div class="note" style="margin-top:0"><b>Conecta tu cuenta de SparkyFitness</b>Axis leerá sola lo que comes cada día (kcal, proteína, hidratos y grasa). El gasto real lo calcula Axis con tu peso. Se actualiza al abrir la app y cada 15 minutos.
     <div class="row-btns" style="margin-top:10px"><button class="btn sm" data-act="sparkyForm">Conectar Sparky</button></div></div>`;
   const when = s.ultima ? new Date(s.ultima).toLocaleString('es-ES', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}) : '';
   return `<div class="note ${s.error ? '' : 'on'}" style="margin-top:0"><b>SparkyFitness conectado</b>${esc(s.cuenta || '')}${s.servidor ? ` · ${esc(s.servidor.replace('https://', ''))}` : ''}<br>
@@ -2866,8 +2882,8 @@ function healthHelpBody(){
     + sec('La gráfica', '<p class="hint">Las barras en azul más intenso son los días por encima de tu media; la línea amarilla discontinua es la media del periodo.</p>');
   if (t === 'nutricion') return (VIS ? '' : sec('De dónde salen los datos', AND ? sparkyAndroidNote() : sparkyIphoneNote()))
     + importar
-    + sec('Planes de macros', `<p class="hint">Pulsa + junto a las tarjetas para añadir un plan nuevo y toca una tarjeta para editarla, cambiar su color o borrarla. El botón de los tres colores cambia los de CH, P y G. ${"Toca una etapa para editarla o cambiar su color. «Peso a 30 días»: cuánto habría cambiado tu peso en 30 días si se hubiera mantenido el ritmo de esa etapa; en verde si va hacia el objetivo de su ciclo (subir en volumen, bajar en definición, quedarse en su rango en mantenimiento) y en amarillo si no. El gasto real y el balance salen de lo comido (Sparky) y de tus pesadas."}</p>`)
-    + sec('¿Cómo se calculan los gastos?', "<p class=\"hint\"><b>Gasto real (por tu peso):</b> lo que comes de media menos lo que cambia tu peso, pasado a kcal (7.700 kcal ≈ 1 kg). El cambio de peso es la pendiente de la recta que mejor encaja con todas tus pesadas de las 4 semanas anteriores a cada día: una pesada suelta con agua o sal apenas lo mueve. Hace falta comer registrado 3 de cada 4 días y 6 pesadas (alguna en la primera y en la última semana). El balance se calcula con este gasto.<br>\n      <b>Según Sparky:</b> metabolismo basal por fórmula + lo quemado con ejercicio y actividad que registra Sparky. Suele quedarse corto (no cuenta la digestión ni toda la actividad diaria).</p>")
+    + sec('Planes de macros', `<p class="hint">Pulsa + junto a las tarjetas para añadir un plan nuevo y toca una tarjeta para editarla, cambiar su color o borrarla. ${"Toca una etapa para editarla o cambiar su color. «Peso a 30 días»: cuánto habría cambiado tu peso en 30 días si se hubiera mantenido el ritmo de esa etapa; en verde si va hacia el objetivo de su ciclo (subir en volumen, bajar en definición, quedarse en su rango en mantenimiento) y en amarillo si no. El gasto real y el balance salen de lo comido (Sparky) y de tus pesadas."}</p>`)
+    + sec('¿Cómo se calcula el gasto?', "<p class=\"hint\"><b>Gasto real (por tu peso):</b> lo que comes de media menos lo que cambia tu peso, pasado a kcal (7.700 kcal ≈ 1 kg). El cambio de peso es la pendiente de la recta que mejor encaja con todas tus pesadas de las 4 semanas anteriores a cada día: una pesada suelta con agua o sal apenas lo mueve. Hace falta comer registrado 3 de cada 4 días y 6 pesadas (alguna en la primera y en la última semana). El balance se calcula con este gasto.</p>")
     + sec('La gráfica', '<p class="hint">Azul oscuro con un punto verde: días a ±5 % de las kcal planificadas en tu etapa de macros. Azul claro: días fuera de ese margen. Las etapas de macros de debajo se deslizan a izquierda o derecha.</p>')
     + colores;
   return (VIS ? '' : sec('Conexión con RENPHO', AND ? healthAndroidNote() : `<div class="note ${weights().some(w => w.src === 'renpho') ? 'on' : ''}" style="margin-top:0"><b>La báscula se conecta desde la app Android</b>
@@ -2921,7 +2937,7 @@ function paintHealthTools(open){
   const sh = $('#sheet'), H = S.health;
   if (!open && !(sh.classList.contains('open') && sh.querySelector('.hl-tools'))) return;
   const r = rateTarget();
-  const body = toolTg(H.trend, 'healthTrend', 'Tendencia de 7 días', 'Media de los últimos 7 días en cada día: quita el vaivén diario del agua', '<i class="sw-line sw-yel"></i>')
+  const body = toolTg(H.trend, 'healthTrend', 'Tendencia de 7 días', 'Media de los últimos 7 días en cada día: quita el vaivén diario del agua', '<i class="sw-line sw-ok"></i>')
     + toolTg(H.expected, 'healthExpected', 'Progreso esperado', r ? `Recta desde el peso de hace 30 días a ${rateTxt(r)} al mes, con su franja mínimo–máximo` : 'Antes fija el ritmo en Objetivo', '<i class="sw-line sw-yel sw-dash"></i>')
     + (H.macros.length ? toolTg(H.bands, 'healthBands', 'Fondo por macros', 'Una franja de color por cada etapa de macros', swMacros()) : '');
   const box = sh.querySelector('.hl-tools');
