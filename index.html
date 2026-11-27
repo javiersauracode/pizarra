@@ -1271,6 +1271,7 @@ b.ok,.hl-d.ok{color:var(--ok)} b.off,.hl-d.off{color:var(--off)}
 .fz-exh b{font-size:15px}
 .fz-exh small{display:block;font-size:11.5px;color:var(--muted);margin-top:1px}
 .fz-exh .icon-btn{width:32px;height:32px}
+.fz-prevnota{display:flex;gap:6px;align-items:flex-start;margin:6px 0 2px;padding:6px 9px;border-radius:9px;font-size:12px;line-height:1.35;color:var(--hl-yel);background:color-mix(in srgb,var(--hl-yel) 10%,transparent)}.fz-prevnota svg{width:13px;height:13px;flex:none;margin-top:1px}
 .fz-sug{display:block;width:100%;text-align:left;margin:6px 0 2px;padding:6px 9px;border-radius:9px;font-size:12px;font-weight:600;color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent);border:1px solid color-mix(in srgb,var(--ok) 35%,transparent)}
 .fz-sets{margin-top:6px}
 .fz-sh,.fz-set{display:grid;grid-template-columns:38px 1fr 1fr 58px 42px;gap:6px;align-items:center}
@@ -3113,7 +3114,7 @@ function healthHelpBody(){
   if (t === 'fuerza') return sec('Registrar un entreno', '<p class="hint">Pulsa <b>Empezar</b>: se abre la rutina del día (según tu plan semanal) con tus pesos de la última vez. Marca cada serie con ✓ y arranca el descanso; toca el número de la serie para marcarla como calentamiento (C), que no cuenta para récords ni volumen. Puedes minimizar el entreno y seguir luego, incluso en otro dispositivo.</p>')
     + sec('Progresión', '<p class="hint">Si en una rutina pones un rango de repeticiones (p. ej. 8-10) y la última vez hiciste todas las series al tope, Axis te propone subir el peso (progresión doble). En la barra te dice qué discos poner a cada lado.</p>')
     + sec('Las tarjetas', '<p class="hint"><b>1RM estimado</b>: lo máximo que levantarías una vez, calculado con tu mejor serie de 1 a 12 repeticiones (fórmula de Epley). Verde si ha subido en 4 semanas. <b>Series por músculo</b>: series de trabajo de la semana; cada ejercicio cuenta entera para su músculo principal y media para los secundarios; la franja es tu objetivo. <b>Equilibrio</b>: relaciones entre tus levantamientos frente a referencias orientativas, con el eslabón más débil. <b>Tu año</b>: un cuadro por día entrenado.</p>')
-    + sec('Importar de openGym', '<p class="hint">En openGym: Ajustes → Data &amp; backup → Spreadsheet (CSV). Aquí, <b>Pegar</b> o el botón de importar. También sirven los CSV de Strong, Hevy o FitNotes. Los ejercicios en inglés se reconocen; los que no, se crean como ejercicios propios.</p>');
+    + sec('Importar de openGym', '<p class="hint">En openGym: Ajustes → Data &amp; backup → Spreadsheet (CSV). Aquí, <b>Pegar</b> o el botón de importar. También sirven los CSV de Strong, Hevy o FitNotes. Los ejercicios se reconocen por su nombre o su número de openGym; los que no, se crean como propios. La primera vez crea también tus rutinas (la última versión de cada una), el plan semanal según los días en que sueles hacerlas y tus ejercicios clave. Las notas que dejaste en un ejercicio salen en amarillo la siguiente vez que lo haces.</p>');
   if (t === 'nutricion') return (VIS ? '' : sec('De dónde salen los datos', AND ? sparkyAndroidNote() : sparkyIphoneNote()))
     + importar
     + sec('Planes de macros', `<p class="hint">Pulsa + junto a las tarjetas para añadir un plan nuevo y toca una tarjeta para editarla, cambiar su color o borrarla. ${"Toca una etapa para editarla o cambiar su color. «Peso a 30 días»: cuánto habría cambiado tu peso en 30 días si se hubiera mantenido el ritmo de esa etapa; en verde si va hacia el objetivo de su ciclo (subir en volumen, bajar en definición, quedarse en su rango en mantenimiento) y en amarillo si no. El gasto real y el balance salen de lo comido (Sparky) y de tus pesadas."}</p>`)
@@ -3349,54 +3350,71 @@ function paintSemana(lun){
    Series por músculo: 1 para el músculo principal y 0,5 para cada secundario; los calentamientos no cuentan.
    ========================================================= */
 const GRUPOS = {pecho:'Pecho', espalda:'Espalda', hombro:'Hombros', biceps:'Bíceps', triceps:'Tríceps', cuadriceps:'Cuádriceps', isquios:'Isquios',
-  gluteo:'Glúteos', gemelo:'Gemelos', abdomen:'Abdomen', antebrazo:'Antebrazo', otro:'Otros'};
+  gluteo:'Glúteos', aductor:'Aductores', gemelo:'Gemelos', abdomen:'Abdomen', antebrazo:'Antebrazo', otro:'Otros'};
 const EQUIPOS = {barra:'Barra', mancuernas:'Mancuernas', maquina:'Máquina', polea:'Polea', corporal:'Peso corporal', kettlebell:'Kettlebell', otro:'Otro'};
 // [id, nombre, grupo, secundarios, equipo, alias (otros nombres, también en inglés, para importar), tipo]
 const EJ_BASE = [
   ['sentadilla', 'Sentadilla con barra', 'cuadriceps', ['gluteo', 'isquios'], 'barra', 'squat|back squat|barbell squat|sentadilla'],
   ['sentadilla_frontal', 'Sentadilla frontal', 'cuadriceps', ['gluteo'], 'barra', 'front squat'],
-  ['prensa', 'Prensa de piernas', 'cuadriceps', ['gluteo'], 'maquina', 'leg press|prensa'],
+  ['prensa', 'Prensa de piernas', 'cuadriceps', ['gluteo'], 'maquina', 'leg press|prensa|sled 45 leg press|og739'],
   ['hack', 'Sentadilla hack', 'cuadriceps', ['gluteo'], 'maquina', 'hack squat'],
   ['bulgara', 'Sentadilla búlgara', 'cuadriceps', ['gluteo'], 'mancuernas', 'bulgarian split squat|split squat'],
   ['zancadas', 'Zancadas', 'cuadriceps', ['gluteo'], 'mancuernas', 'lunge|lunges|walking lunge'],
-  ['ext_cuadriceps', 'Extensión de cuádriceps', 'cuadriceps', [], 'maquina', 'leg extension'],
+  ['ext_cuadriceps', 'Extensión de cuádriceps', 'cuadriceps', [], 'maquina', 'leg extension|lever leg extension|og585'],
   ['peso_muerto', 'Peso muerto', 'gluteo', ['isquios', 'espalda', 'antebrazo'], 'barra', 'deadlift|conventional deadlift|barbell deadlift'],
-  ['peso_muerto_rumano', 'Peso muerto rumano', 'isquios', ['gluteo', 'espalda'], 'barra', 'romanian deadlift|rdl|stiff leg deadlift'],
-  ['curl_femoral', 'Curl femoral', 'isquios', [], 'maquina', 'leg curl|lying leg curl|seated leg curl|hamstring curl|leg curl machine'],
+  ['peso_muerto_rumano', 'Peso muerto rumano', 'isquios', ['gluteo', 'espalda'], 'barra', 'romanian deadlift|rdl|stiff leg deadlift|barbell romanian deadlift|og85'],
+  ['curl_femoral', 'Curl femoral', 'isquios', [], 'maquina', 'leg curl|lying leg curl|seated leg curl|hamstring curl|leg curl machine|lever seated leg curl|og599'],
   ['hip_thrust', 'Hip thrust', 'gluteo', ['isquios'], 'barra', 'hip thrust|barbell hip thrust|glute bridge'],
   ['gemelo_pie', 'Elevación de gemelos de pie', 'gemelo', [], 'maquina', 'standing calf raise|calf raise'],
+  ['gemelo_prensa', 'Gemelos en prensa', 'gemelo', [], 'maquina', 'lever calf press|calf press|leg press calf raise|og2289'],
+  ['aductores', 'Aductores en máquina', 'aductor', [], 'maquina', 'lever seated hip adduction|hip adduction|adductor machine|og598'],
   ['gemelo_sentado', 'Elevación de gemelos sentado', 'gemelo', [], 'maquina', 'seated calf raise'],
   ['press_banca', 'Press de banca', 'pecho', ['triceps', 'hombro'], 'barra', 'bench press|barbell bench press|flat bench press|press banca'],
   ['press_inclinado', 'Press inclinado con barra', 'pecho', ['hombro', 'triceps'], 'barra', 'incline bench press|incline barbell bench press'],
+  ['press_banca_smith', 'Press de banca en multipower', 'pecho', ['triceps', 'hombro'], 'maquina', 'smith bench press|smith machine bench press|og748'],
+  ['press_inclinado_smith', 'Press inclinado en multipower', 'pecho', ['hombro', 'triceps'], 'maquina', 'smith incline bench press|og757'],
+  ['pec_deck', 'Contractor de pecho (pec deck)', 'pecho', [], 'maquina', 'lever pec deck fly|pec deck|machine fly|og1030'],
   ['press_mancuernas', 'Press de banca con mancuernas', 'pecho', ['triceps', 'hombro'], 'mancuernas', 'dumbbell bench press|db bench press'],
-  ['press_inclinado_manc', 'Press inclinado con mancuernas', 'pecho', ['hombro', 'triceps'], 'mancuernas', 'incline dumbbell press|incline db press'],
+  ['press_inclinado_manc', 'Press inclinado con mancuernas', 'pecho', ['hombro', 'triceps'], 'mancuernas', 'incline dumbbell press|incline db press|dumbbell incline bench press|og314'],
   ['aperturas', 'Aperturas con mancuernas', 'pecho', [], 'mancuernas', 'dumbbell fly|chest fly|flyes'],
   ['cruce_poleas', 'Cruce de poleas', 'pecho', [], 'polea', 'cable crossover|cable fly'],
   ['fondos', 'Fondos en paralelas', 'pecho', ['triceps', 'hombro'], 'corporal', 'dips|chest dip|dip'],
   ['flexiones', 'Flexiones', 'pecho', ['triceps', 'hombro'], 'corporal', 'push up|push-up|pushups'],
   ['dominadas', 'Dominadas', 'espalda', ['biceps'], 'corporal', 'pull up|pull-up|chin up|chin-up'],
-  ['jalon', 'Jalón al pecho', 'espalda', ['biceps'], 'polea', 'lat pulldown|pulldown|lat pulldown cable|wide grip lat pulldown'],
+  ['jalon', 'Jalón al pecho', 'espalda', ['biceps'], 'polea', 'lat pulldown|pulldown|lat pulldown cable|wide grip lat pulldown|cable wide grip lat pulldown|og2291'],
+  ['jalon_cerrado', 'Jalón al pecho agarre cerrado', 'espalda', ['biceps'], 'polea', 'cable close grip front lat pulldown|close grip lat pulldown|og1047'],
+  ['jalon_neutro', 'Jalón agarre neutro', 'espalda', ['biceps'], 'polea', 'cable neutral grip lat pulldown|neutral grip lat pulldown|og7583'],
+  ['jalon_una_mano', 'Jalón a una mano', 'espalda', ['biceps'], 'polea', 'cable one arm lat pulldown|single arm lat pulldown|og1204'],
+  ['remo_polea_abierto', 'Remo en polea agarre abierto', 'espalda', ['hombro', 'biceps'], 'polea', 'cable seated wide grip row|wide grip cable row|og218'],
+  ['remo_t_apoyo', 'Remo en T con apoyo de pecho', 'espalda', ['biceps'], 'maquina', 'lever lying t bar row|lying t bar row|chest supported t bar row|og1194'],
   ['remo_barra', 'Remo con barra', 'espalda', ['biceps'], 'barra', 'barbell row|bent over row|pendlay row'],
   ['remo_mancuerna', 'Remo con mancuerna', 'espalda', ['biceps'], 'mancuernas', 'dumbbell row|one arm row|db row'],
-  ['remo_polea', 'Remo en polea baja', 'espalda', ['biceps'], 'polea', 'seated cable row|cable row'],
+  ['remo_polea', 'Remo en polea baja', 'espalda', ['biceps'], 'polea', 'seated cable row|cable row|cable low seated row|og180'],
   ['remo_maquina', 'Remo en máquina', 'espalda', ['biceps'], 'maquina', 'machine row|chest supported row|t-bar row'],
-  ['pullover', 'Pull-over en polea', 'espalda', [], 'polea', 'pullover|straight arm pulldown'],
+  ['pullover', 'Pull-over en polea', 'espalda', [], 'polea', 'pullover|straight arm pulldown|cable seated pullover|og4180'],
   ['press_militar', 'Press militar', 'hombro', ['triceps'], 'barra', 'overhead press|ohp|military press|shoulder press'],
-  ['press_hombro_manc', 'Press de hombro con mancuernas', 'hombro', ['triceps'], 'mancuernas', 'dumbbell shoulder press|seated dumbbell press'],
-  ['elev_laterales', 'Elevaciones laterales', 'hombro', [], 'mancuernas', 'lateral raise|side lateral raise|dumbbell lateral raise|cable lateral raise|lateral raise cable|machine lateral raise'],
+  ['press_hombro_manc', 'Press de hombro con mancuernas', 'hombro', ['triceps'], 'mancuernas', 'dumbbell shoulder press|seated dumbbell press|dumbbell seated shoulder press|og405'],
+  ['elev_laterales', 'Elevaciones laterales', 'hombro', [], 'mancuernas', 'lateral raise|side lateral raise|dumbbell lateral raise|machine lateral raise|og334'],
+  ['elev_lateral_polea', 'Elevación lateral a una mano en polea', 'hombro', [], 'polea', 'cable single arm lateral raise|cable single arm lateral raise v 2|cable lateral raise|og8901'],
+  ['pajaros_polea', 'Pájaros en polea con apoyo', 'hombro', ['espalda'], 'polea', 'cable seated rear delt fly with chest support|cable rear delt fly|og3943'],
   ['face_pull', 'Face pull', 'hombro', ['espalda'], 'polea', 'face pull'],
   ['pajaros', 'Pájaros (deltoides posterior)', 'hombro', ['espalda'], 'mancuernas', 'reverse fly|rear delt fly'],
   ['encogimientos', 'Encogimientos', 'espalda', ['antebrazo'], 'mancuernas', 'shrug|shrugs'],
   ['curl_barra', 'Curl con barra', 'biceps', ['antebrazo'], 'barra', 'barbell curl|ez bar curl'],
-  ['curl_mancuernas', 'Curl con mancuernas', 'biceps', ['antebrazo'], 'mancuernas', 'dumbbell curl|bicep curl|biceps curl|incline dumbbell curl'],
+  ['curl_mancuernas', 'Curl con mancuernas', 'biceps', ['antebrazo'], 'mancuernas', 'dumbbell curl|bicep curl|biceps curl'],
+  ['curl_inclinado', 'Curl inclinado con mancuernas', 'biceps', [], 'mancuernas', 'incline dumbbell curl|dumbbell incline biceps curl|og315'],
+  ['curl_predicador_manc', 'Curl predicador con mancuerna', 'biceps', [], 'mancuernas', 'dumbbell preacher curl|preacher curl|og372'],
   ['curl_martillo', 'Curl martillo', 'biceps', ['antebrazo'], 'mancuernas', 'hammer curl'],
   ['curl_polea', 'Curl en polea', 'biceps', [], 'polea', 'cable curl'],
   ['press_frances', 'Press francés', 'triceps', [], 'barra', 'skull crusher|lying triceps extension'],
   ['ext_triceps_polea', 'Extensión de tríceps en polea', 'triceps', [], 'polea', 'triceps pushdown|tricep pushdown|rope pushdown|cable pushdown|triceps rope pushdown'],
   ['ext_triceps_cabeza', 'Extensión de tríceps sobre la cabeza', 'triceps', [], 'mancuernas', 'overhead triceps extension'],
+  ['ext_triceps_una_polea', 'Extensión de tríceps a una mano en polea', 'triceps', [], 'polea', 'cable standing one arm triceps extension|single arm cable triceps extension|og231'],
+  ['jm_press_smith', 'Press JM en multipower', 'triceps', ['pecho'], 'maquina', 'smith jm bench press|jm press|og9385'],
+  ['fondos_maquina', 'Fondos en máquina (discos)', 'triceps', ['pecho', 'hombro'], 'maquina', 'lever triceps dip plate loaded|triceps dip machine|seated dip machine|og1871'],
   ['press_cerrado', 'Press de banca agarre cerrado', 'triceps', ['pecho'], 'barra', 'close grip bench press'],
   ['plancha', 'Plancha', 'abdomen', [], 'corporal', 'plank', 'tiempo'],
-  ['crunch_polea', 'Crunch en polea', 'abdomen', [], 'polea', 'cable crunch'],
+  ['crunch_polea', 'Crunch en polea', 'abdomen', [], 'polea', 'cable crunch|cable kneeling crunch|og175'],
   ['elev_piernas', 'Elevación de piernas colgado', 'abdomen', [], 'corporal', 'hanging leg raise|leg raise'],
   ['rueda', 'Rueda abdominal', 'abdomen', [], 'corporal', 'ab wheel|ab rollout'],
   ['curl_muneca', 'Curl de muñeca', 'antebrazo', [], 'mancuernas', 'wrist curl'],
@@ -3585,6 +3603,7 @@ function paintFz(){
     const kgMax = Math.max(0, ...x.sets.map(s => numES(s.kg) || 0)), ds = ej.eq === 'barra' && kgMax > 20 ? discos(kgMax) : null;
     return `<div class="fz-ex" data-ei="${ei}"><div class="fz-exh"><div><b>${esc(ej.n)}</b><small>${u ? `Última vez (${fmtShort(u.d)}): ${ultTxt}` : 'Primera vez'}${rec ? ` · récord 1RM ${fmtPeso(rec.m)} kg` : ''}</small></div>
         <button type="button" class="icon-btn" data-act="fzExMenu" data-ei="${ei}" aria-label="Opciones del ejercicio">${ic('edit')}</button></div>
+      ${u && u.x.nota ? `<div class="fz-prevnota">${ic('edit')}<span>${esc(u.x.nota)}</span></div>` : ''}
       ${sg ? `<button type="button" class="fz-sug" data-act="fzSug" data-ei="${ei}" data-kg="${sg.kg}">↑ ${sg.txt}</button>` : ''}
       <div class="fz-sets"><div class="fz-sh"><span>Serie</span><span>Kg</span><span>Reps</span><span>RIR</span><span></span></div>
       ${x.sets.map((s, si) => `<div class="fz-set ${s.ok ? 'ok' : ''} ${s.w ? 'w' : ''}">
@@ -3733,51 +3752,109 @@ function paintFzRecords(){
   openListSheet('Récords', 'A la derecha, el 1RM estimado (Epley, series de 1 a 12 repeticiones)', html, '');
   const b = $('#sheet').querySelector('.hl-subrow .danger'); if (b) b.remove();
 }
-/* Importar entrenos de un CSV (openGym, Strong, Hevy, FitNotes…): una fila por serie, columnas por nombre */
+/* Importar entrenos de un CSV (openGym, Strong, Hevy, FitNotes…): una fila por serie, columnas por nombre.
+   openGym (Ajustes → Data & backup → CSV): date, start_time, end_time, workout, workout_note, exercise, exercise_id, body_part, set, set_type (warmup/normal/failure), weight, unit, reps, rpe, rir, note, set_note… */
 const BODY_EN = {chest:'pecho', back:'espalda', lats:'espalda', shoulders:'hombro', shoulder:'hombro', biceps:'biceps', triceps:'triceps', legs:'cuadriceps', quadriceps:'cuadriceps', quads:'cuadriceps',
-  hamstrings:'isquios', glutes:'gluteo', calves:'gemelo', abs:'abdomen', core:'abdomen', abdominals:'abdomen', forearms:'antebrazo', arms:'biceps', traps:'espalda'};
+  hamstrings:'isquios', glutes:'gluteo', calves:'gemelo', abs:'abdomen', core:'abdomen', abdominals:'abdomen', forearms:'antebrazo', arms:'biceps', traps:'espalda',
+  'upper arms':'biceps', 'lower arms':'antebrazo', 'upper legs':'cuadriceps', 'lower legs':'gemelo', waist:'abdomen', neck:'espalda', cardio:'otro'};
+// CSV completo: comillas, "" escapadas y saltos de línea dentro de las notas
+function csvFilas(txt){
+  const t = String(txt || '').replace(/^\uFEFF/, ''), l1 = t.split(/\r?\n/)[0] || '';
+  const sep = [',', ';', '\t'].sort((x, y) => l1.split(y).length - l1.split(x).length)[0];
+  const R = []; let row = [], cur = '', q = false;
+  for (let i = 0; i < t.length; i++){
+    const ch = t[i];
+    if (q){ if (ch === '"'){ if (t[i + 1] === '"'){ cur += '"'; i++; } else q = false; } else cur += ch; }
+    else if (ch === '"') q = true;
+    else if (ch === sep){ row.push(cur); cur = ''; }
+    else if (ch === '\n' || ch === '\r'){ if (ch === '\r' && t[i + 1] === '\n') i++; row.push(cur); R.push(row); row = []; cur = ''; }
+    else cur += ch;
+  }
+  if (cur || row.length){ row.push(cur); R.push(row); }
+  return R.map(r => r.map(c => c.trim())).filter(r => r.some(Boolean));
+}
+// notas de openGym: «{top set 20kg RIR 1}» o «PULL DAY 2 (v2) - {RIR 2, RIR 1}» → «top set 20kg RIR 1»
+const limpiaNota = (t, wn) => { let s = String(t || '').trim(); if (wn && s.startsWith(wn + ' - ')) s = s.slice(wn.length + 3); return s.replace(/^\{([\s\S]*)\}$/, '$1').trim(); };
+const minDe = t => { const m = String(t || '').match(/(\d{1,2}):(\d{2})/); return m ? +m[1] * 60 + +m[2] : null; };
 function parseFuerzaCSV(txt){
-  const lines = String(txt || '').split(/\r?\n/).filter(l => l.trim()); if (lines.length < 2) return [];
-  const sep = [',', ';', '\t'].sort((x, y) => lines[0].split(y).length - lines[0].split(x).length)[0];
-  const split = l => { const out = []; let cur = '', q = false; for (const ch of l){ if (ch === '"') q = !q; else if (ch === sep && !q){ out.push(cur); cur = ''; } else cur += ch; } out.push(cur); return out.map(c => c.trim()); };
-  const head = split(lines[0]).map(h => normTxt(h).replace(/ /g, ''));
+  const filas = csvFilas(txt); if (filas.length < 2) return [];
+  const head = filas[0].map(h => normTxt(h).replace(/ /g, ''));
   const col = (...ns) => { for (const n of ns){ const i = head.indexOf(n); if (i >= 0) return i; } return -1; };
-  const C = {ex:col('exercise', 'exercisename', 'exercisetitle', 'ejercicio'), d:col('date', 'workoutdate', 'fecha', 'starttime', 'startdate'), wn:col('workoutname', 'title', 'workout', 'routine', 'rutina'),
+  const C = {ex:col('exercise', 'exercisename', 'exercisetitle', 'ejercicio'), exid:col('exerciseid'), d:col('date', 'workoutdate', 'fecha', 'starttime', 'startdate'), wn:col('workoutname', 'title', 'workout', 'routine', 'rutina'),
     cat:col('category', 'bodypart', 'musclegroup'), kg:col('weightkg', 'kg', 'peso', 'pesokg'), lb:col('weightlbs', 'weightlb', 'lbs', 'lb'), w:col('weight'), unit:col('weightunit', 'unit', 'unidad'),
     reps:col('reps', 'repetitions', 'repeticiones'), rir:col('rir', 'repsinreserve'), rpe:col('rpe', 'rperating'), st:col('settype', 'tipo', 'warmup', 'iswarmup'),
-    nota:col('setnote', 'note', 'notes', 'comment', 'comments', 'nota'), wnota:col('workoutnotes', 'workoutnote'), dur:col('duration', 'durationminutes', 'durationmin'), fin:col('endtime')};
+    snota:col('setnote', 'setnotes'), nota:col('note', 'notes', 'comment', 'comments', 'nota', 'exercisenote'), wnota:col('workoutnotes', 'workoutnote'), dur:col('duration', 'durationminutes', 'durationmin'),
+    ini:col('starttime'), fin:col('endtime')};
+  if (C.snota < 0){ C.snota = C.nota; C.nota = -1; } // sin columna de nota por serie (Strong, Hevy), «notes» es de la serie
   if (C.ex < 0 || C.d < 0 || C.reps < 0) return [];
   const exMap = new Map(); ejercicios().forEach(x => { exMap.set(normTxt(x.n), x.id); exMap.set(normTxt(x.id.replace(/_/g, ' ')), x.id); (x.al || '').split('|').filter(Boolean).forEach(a => exMap.set(normTxt(a), x.id)); });
-  const nuevosEj = new Map(), grupos = new Map();
-  for (const l of lines.slice(1)){
-    const c = split(l), exN = c[C.ex]; if (!exN) continue;
+  const grupos = new Map();
+  for (const c of filas.slice(1)){
+    const exN = c[C.ex]; if (!exN) continue;
     const dm = String(c[C.d] || '').match(/(\d{4})-(\d{1,2})-(\d{1,2})|(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})/); if (!dm) continue;
     const d = dm[1] ? `${dm[1]}-${pad(+dm[2])}-${pad(+dm[3])}` : `${dm[6].length === 2 ? '20' + dm[6] : dm[6]}-${pad(+dm[5])}-${pad(+dm[4])}`;
     const reps = numES(c[C.reps]); if (!(reps > 0)) continue;
     let kg = C.kg >= 0 ? numES(c[C.kg]) : null;
     if (kg == null && C.lb >= 0 && numES(c[C.lb]) != null) kg = numES(c[C.lb]) * .45359237;
     if (kg == null && C.w >= 0){ kg = numES(c[C.w]); if (kg != null && C.unit >= 0 && /lb/i.test(c[C.unit] || '')) kg *= .45359237; }
-    let id = exMap.get(normTxt(exN)) || nuevosEj.get(normTxt(exN));
-    if (!id){ id = 'x_' + normTxt(exN).replace(/ /g, '_').slice(0, 40); const g = BODY_EN[normTxt(c[C.cat] || '').split(' ')[0]] || 'otro'; nuevosEj.set(normTxt(exN), id);
-      if (!FZ().ejercicios.some(x => x.id === id)) FZ().ejercicios.push({id, n:exN, g, sec:[], eq:'otro', t:'peso', imp:true}); exMap.set(normTxt(exN), id); }
-    const wn = (C.wn >= 0 && c[C.wn]) || 'Entreno', key = d + '|' + wn;
-    if (!grupos.has(key)) grupos.set(key, {d, n:wn, ej:[], nota:C.wnota >= 0 ? c[C.wnota] || '' : '', dur:C.dur >= 0 ? Math.round(numES(c[C.dur]) || 0) || '' : '', ini:C.d >= 0 && /\d:\d/.test(c[C.d]) ? c[C.d] : ''});
-    const g = grupos.get(key); let it = g.ej[g.ej.length - 1]; if (!it || it.e !== id){ it = g.ej.find(x => x.e === id) || null; if (!it){ it = {e:id, nota:'', sets:[]}; g.ej.push(it); } }
-    const s = {kg:Math.round((kg || 0) * 100) / 100, reps};
+    const ogId = C.exid >= 0 && c[C.exid] ? 'og ' + String(c[C.exid]).replace(/^0+/, '') : '';
+    let id = (ogId && exMap.get(ogId)) || exMap.get(normTxt(exN));
+    if (!id){ id = 'x_' + normTxt(exN).replace(/ /g, '_').slice(0, 40); const cat = normTxt(c[C.cat] || ''); const g = BODY_EN[cat] || BODY_EN[cat.split(' ')[0]] || 'otro';
+      if (!FZ().ejercicios.some(x => x.id === id)) FZ().ejercicios.push({id, n:exN, g, sec:[], eq:'otro', t:'peso', imp:true, al:ogId ? ogId.replace(' ', '') : ''});
+      exMap.set(normTxt(exN), id); if (ogId) exMap.set(ogId, id); }
+    const wn = (C.wn >= 0 && c[C.wn]) || 'Entreno', ini = C.ini >= 0 && /\d:\d/.test(c[C.ini] || '') ? c[C.ini] : /\d:\d/.test(c[C.d] || '') ? c[C.d] : '';
+    const key = d + '|' + wn + '|' + (ini.match(/\d{1,2}:\d{2}/) || [''])[0];
+    if (!grupos.has(key)){
+      const fin = C.fin >= 0 ? c[C.fin] || '' : '', m0 = minDe(ini), m1 = minDe(fin);
+      const dur = C.dur >= 0 && numES(c[C.dur]) ? Math.round(numES(c[C.dur])) : m0 != null && m1 != null ? (m1 - m0 + 1440) % 1440 : '';
+      grupos.set(key, {d, n:wn, ej:[], nota:C.wnota >= 0 ? limpiaNota(c[C.wnota]) : '', dur, ini:ini.replace(' ', 'T'), fin:fin.replace(' ', 'T')});
+    }
+    const g = grupos.get(key); let it = g.ej.find(x => x.e === id); if (!it){ it = {e:id, nota:'', sets:[]}; g.ej.push(it); }
+    if (C.nota >= 0 && c[C.nota] && !it.nota) it.nota = limpiaNota(c[C.nota], wn);
+    const s = {kg:Math.round((kg || 0) * 100) / 100, reps}, tipo = C.st >= 0 ? c[C.st] || '' : '';
     const rir = C.rir >= 0 ? numES(c[C.rir]) : null, rpe = C.rpe >= 0 ? numES(c[C.rpe]) : null;
-    if (rir != null) s.rir = rir; else if (rpe != null && rpe >= 5) s.rir = Math.max(0, Math.round(10 - rpe));
-    if (C.st >= 0 && /warm|calent|^w$|true|^1$/i.test(c[C.st] || '')) s.w = true;
-    if (C.nota >= 0 && c[C.nota]) s.nota = c[C.nota];
+    if (rir != null) s.rir = rir; else if (rpe != null && rpe >= 5) s.rir = Math.max(0, Math.round(10 - rpe)); else if (/fail|fallo/i.test(tipo)) s.rir = 0;
+    if (/warm|calent|^w$|true|^1$/i.test(tipo)) s.w = true;
+    if (/fail|fallo/i.test(tipo)) s.f = true;
+    if (C.snota >= 0 && c[C.snota]) s.nota = limpiaNota(c[C.snota], wn);
     it.sets.push(s);
   }
-  return [...grupos.values()].map(g => ({...g, id:'csv-' + g.d + '-' + normTxt(g.n).replace(/ /g, '-'), src:'csv', dur:g.dur || ''}));
+  const vistos = new Map();
+  return [...grupos.values()].map(g => { let id = 'csv-' + g.d + '-' + normTxt(g.n).replace(/ /g, '-'); const n = (vistos.get(id) || 0) + 1; vistos.set(id, n); if (n > 1) id += '-' + n;
+    return {...g, id, src:'csv'}; });
+}
+// Tras importar: rutinas con la última versión de cada entreno, plan semanal por días y ejercicios clave (solo lo que falte)
+const baseRut = n => normTxt(String(n).replace(/\s*\(v\d+\)\s*$/i, ''));
+function rutinasDesdeEntrenos(l){
+  const F = FZ(), hecho = {rutinas:0, plan:false, clave:false};
+  const ult = new Map(); l.slice().sort((a, b) => a.d.localeCompare(b.d)).forEach(e => ult.set(baseRut(e.n), e));
+  for (const [b, e] of ult){
+    if (F.rutinas.some(r => baseRut(r.n) === b)) continue;
+    const ej = e.ej.map(x => { const t = x.sets.filter(trabajo), rr = t.map(s => s.rir).filter(v => v != null);
+      return t.length ? {e:x.e, series:t.length, reps:'', rir:rr.length ? Math.min(...rr) : 2, desc:120} : null; }).filter(Boolean);
+    if (ej.length){ F.rutinas.push({id:uid(), n:e.n, ej}); hecho.rutinas++; }
+  }
+  if (!Object.values(F.plan).some(Boolean)){ // el día de la semana en que más se ha hecho cada rutina en las últimas 6 semanas
+    const desde = iso(addDays(new Date(), -42)), cuenta = {};
+    l.filter(e => e.d >= desde).forEach(e => { const r = F.rutinas.find(x => baseRut(x.n) === baseRut(e.n)); if (!r) return; const dw = (parseISO(e.d).getDay() + 6) % 7 + 1; cuenta[dw] = cuenta[dw] || {}; cuenta[dw][r.id] = (cuenta[dw][r.id] || 0) + 1; });
+    Object.entries(cuenta).forEach(([dw, m]) => { const [rid, n] = Object.entries(m).sort((a, b) => b[1] - a[1])[0]; if (n >= 2){ F.plan[dw] = rid; hecho.plan = true; } });
+  }
+  if (!F.clave.some(id => histEj(id).some(x => x.best))){ // los 4 que más has entrenado, de músculos distintos y mejor si son multiarticulares
+    const uso = new Map(); entrenos().forEach(e => e.ej.forEach(x => uso.set(x.e, (uso.get(x.e) || 0) + x.sets.filter(trabajo).length)));
+    const gs = new Set(), elegidos = [];
+    [...uso.entries()].map(([id, n]) => [id, n * (ejDe(id).sec.length ? 2 : 1)]).sort((a, b) => b[1] - a[1])
+      .forEach(([id]) => { const g = ejDe(id).g; if (elegidos.length < 4 && !gs.has(g) && g !== 'abdomen'){ gs.add(g); elegidos.push(id); } });
+    if (elegidos.length){ F.clave = elegidos; hecho.clave = true; }
+  }
+  return hecho;
 }
 function importFuerza(txt){
   const l = parseFuerzaCSV(txt); if (!l.length){ toast('No encuentro series en ese texto: hacen falta columnas de ejercicio, fecha y repeticiones'); return false; }
   const F = FZ(), ids = new Set(l.map(x => x.id)); const antes = F.entrenos.length;
-  F.entrenos = F.entrenos.filter(e => !ids.has(e.id)).concat(l);
-  const nuevos = F.entrenos.length - antes; render();
-  toast(`Fuerza: ${l.length} entreno${l.length === 1 ? '' : 's'} importado${l.length === 1 ? '' : 's'}${nuevos < l.length ? ` (${l.length - nuevos} actualizados)` : ''}`);
+  F.entrenos = F.entrenos.filter(e => !ids.has(e.id)).concat(l).sort((a, b) => (a.d + (a.ini || '')).localeCompare(b.d + (b.ini || '')));
+  const nuevos = F.entrenos.length - antes, h = rutinasDesdeEntrenos(l); save(); render();
+  const extra = [h.rutinas ? `${h.rutinas} rutina${h.rutinas === 1 ? '' : 's'}` : '', h.plan ? 'plan semanal' : '', h.clave ? 'ejercicios clave' : ''].filter(Boolean);
+  toast(`Fuerza: ${l.length} entreno${l.length === 1 ? '' : 's'} importado${l.length === 1 ? '' : 's'}${nuevos < l.length ? ` (${l.length - nuevos} actualizados)` : ''}${extra.length ? ' · creados: ' + extra.join(', ') : ''}`);
   return true;
 }
 
